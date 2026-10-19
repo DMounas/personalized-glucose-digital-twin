@@ -1,0 +1,212 @@
+{
+  "stage": "Stage 1B-Preflight",
+  "status": "COMPLETE",
+  "audit_timestamp": "2026-10-19T16:43:00Z",
+  "row_count_reconciliation": {
+    "total_participant_files": 45,
+    "expected_files": 45,
+    "verified_ground_truth_total_rows": 687580,
+    "preflight_prior_erroneous_rows": 632536,
+    "stage1a_rows": 687580,
+    "reconciliation_status": "RESOLVED",
+    "independent_readers_agreement": "100% agreement between Python stdlib csv.reader and pandas read_csv",
+    "mathematical_proof": "Every participant CSV file length is an integer multiple of 5 (since measurements were interpolated from 5-min or 15-min intervals). Thus, the sum of any combination of participant files must be a multiple of 5. Because 632,536 mod 5 = 1, it cannot be the sum of complete files. The verified ground truth is 687,580 rows.",
+    "diagnostic_report_location": "reports_local/row_count_reconciliation.json"
+  },
+  "participant_id_reconciliation": {
+    "historical_stage0_missing": [
+      14,
+      18,
+      20,
+      24
+    ],
+    "verified_missing": [
+      24,
+      25,
+      37,
+      40
+    ],
+    "physical_folders_count": 45,
+    "bio_csv_subjects_count": 45,
+    "gut_health_subjects_count": 47,
+    "microbes_subjects_count": 45,
+    "gut_only_subjects": [
+      24,
+      25
+    ],
+    "mapping_status": "100% bijective match (45/45)",
+    "erratum_file": "docs/errata/2026-10-19-participant-id-discrepancy.md"
+  },
+  "macronutrient_distribution": {
+    "total_rows_inspected": 687580,
+    "populated_meal_rows": 1706,
+    "operational_definition": "Rows with a non-null Meal Type value",
+    "rows_with_macro_without_meal_type": 0,
+    "rows_with_meal_type_without_macro": 0,
+    "stats": {
+      "calories": {
+        "count": 1706,
+        "min": 0.0,
+        "q25": 268.0,
+        "median": 435.0,
+        "q75": 665.75,
+        "max": 2826.0,
+        "mean": 505.86,
+        "std": 348.61
+      },
+      "carbs": {
+        "count": 1706,
+        "min": 0.0,
+        "q25": 23.0,
+        "median": 45.0,
+        "q75": 72.0,
+        "max": 761.0,
+        "mean": 52.08,
+        "std": 47.92
+      },
+      "protein": {
+        "count": 1706,
+        "min": 0.0,
+        "q25": 15.0,
+        "median": 26.0,
+        "q75": 39.0,
+        "max": 148.0,
+        "mean": 29.25,
+        "std": 19.34
+      },
+      "fat": {
+        "count": 1706,
+        "min": 0.0,
+        "q25": 8.0,
+        "median": 16.0,
+        "q75": 28.0,
+        "max": 508.0,
+        "mean": 19.78,
+        "std": 21.03
+      },
+      "fiber": {
+        "count": 1705,
+        "min": 0.0,
+        "q25": 3.0,
+        "median": 7.0,
+        "q75": 15.0,
+        "max": 2830.0,
+        "mean": 17.9,
+        "std": 115.11
+      }
+    },
+    "fiber_anomaly": {
+      "rows_fiber_gt_100": 24,
+      "participants_affected_count": 2,
+      "max_observed_fiber": 2830.0,
+      "study_controlled_meals_fiber_range": [
+        0.0,
+        18.0
+      ],
+      "suspected_etiology_hypotheses": [
+        "Hypothesis A: Participant logged in milligrams (mg) instead of grams (g) in dietary app",
+        "Hypothesis B: Field swap with micronutrients (Sodium or Potassium, typically measured in mg)"
+      ],
+      "handling_policy": "Preserve raw values; flag with fiber_unit_anomaly_flag; do not silently delete or convert",
+      "data_dictionary_bounds_evaluation": "176 upper bound is a copy-paste clerical error across 6 columns originating from METs (10-176)"
+    }
+  },
+  "meal_count_reconciliation": {
+    "total_meals": 1706,
+    "breakdown_by_type": {
+      "breakfast": 436,
+      "lunch": 435,
+      "dinner": 492,
+      "snack": 343
+    },
+    "main_meals_total": 1363,
+    "mean_meals_per_participant": 37.91,
+    "zero_calorie_unexplained_observations": 45,
+    "consecutive_1min_meal_pairs": 5,
+    "candidate_near_duplicate_15min_pairs": 54
+  },
+  "coverage_and_gaps": {
+    "total_rows_recorded": 687580,
+    "total_grid_span_minutes": 706312,
+    "total_absent_grid_minutes": 18732,
+    "participants_with_zero_absent_minutes": 35,
+    "participants_with_absent_minutes": 10,
+    "max_elapsed_span_days": 19.15,
+    "max_elapsed_sessions_count": 16,
+    "missingness_denominators": {
+      "libre": {
+        "row_count_missing_pct": 0.032,
+        "elapsed_span_missing_pct": 2.683
+      },
+      "dexcom": {
+        "row_count_missing_pct": 8.4,
+        "elapsed_span_missing_pct": 10.829
+      },
+      "heart_rate": {
+        "row_count_missing_pct": 11.246,
+        "elapsed_span_missing_pct": 13.6
+      },
+      "mets": {
+        "participants_with_col": 34,
+        "participants_without_col": 11
+      }
+    }
+  },
+  "schema_and_git_hygiene": {
+    "unnamed_0_redundancy": "Confirmed 100% redundant with row index (0..N-1) across all 9 files; dropped in approved_ignorable_columns",
+    "record_index_retention": "Confirmed non-redundant transaction IDs in one participant file (17 meal rows); retained as optional canonical record_index",
+    "git_clean_status": true,
+    "data_directory_git_ignored": true,
+    "reports_local_git_ignored": true
+  },
+  "stage1_checks_inventory": {
+    "hba1c_distribution": {
+      "original_dictionary_label": "mmol/mol",
+      "empirical_range": [
+        4.6,
+        8.5
+      ],
+      "interpretation": "NGSP percentage (%) based on numerical distribution",
+      "normal_lt_5_7": 15,
+      "prediabetes_5_7_to_6_4": 16,
+      "diabetes_ge_6_5": 14,
+      "total": 45
+    },
+    "blood_sentinels": {
+      "affected_participants_count": 1,
+      "observed_sentinels": {
+        "triglycerides": 1150,
+        "ldl_cal": 800,
+        "vldl_cal": 400,
+        "cho_hdl_ratio": 400.0
+      },
+      "data_dictionary_note": "800 is an error in calculation, 400 indicates an erroneous reading",
+      "status": "Preserved raw with sentinel masking in downstream models"
+    },
+    "bmi_consistency": {
+      "formula": "(weight_lbs * 703) / height_in^2",
+      "max_abs_diff": 0.0048,
+      "mean_abs_diff": 0.0031,
+      "status": "100% consistent within rounding"
+    },
+    "mets_scaling": {
+      "scale_factor": 10,
+      "resting_baseline": 10.0,
+      "max_observed": 132.0,
+      "interpretation": "10x scaling (10 = 1.0 MET)"
+    },
+    "gut_microbiome_summary": {
+      "gut_health_rows": 47,
+      "gut_health_cols": 23,
+      "microbes_rows": 45,
+      "microbes_cols": 1980,
+      "modeling_decision": "1,979 microbial taxa excluded from primary predictive feature set due to severe curse of dimensionality (N=45 vs P=1,979)"
+    },
+    "demographics_small_cell_suppression": {
+      "hispanic_latino": 34,
+      "white": 7,
+      "black_or_african_american": "<5 (suppressed individual cells)"
+    },
+    "prediction_leakage_risks_cataloged": 6
+  }
+}

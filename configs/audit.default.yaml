@@ -1,0 +1,34 @@
+# Default Audit Configuration for dtwin-audit
+# Thresholds, sentinel values, and column detection heuristics
+
+# Privacy & Statistical Thresholds
+small_cell_threshold: 5        # Counts < 5 are suppressed as '<5 suppressed'
+min_rows_for_stats: 5          # Tables with < 5 rows suppress summary stats
+
+# Memory & Streaming Limits
+chunk_size: 50000              # Number of rows per chunk for streaming large files
+chunk_size_bytes_threshold: 52428800  # 50 MB: files larger than this are read in chunks
+
+# Timeseries & Datetime Heuristics
+datetime_column_hints:
+  - time
+  - date
+  - timestamp
+datetime_parse_threshold: 0.8   # Column must parse as datetime for at least 80% non-null values
+gap_multiplier: 3.0            # Deltas > 3.0 * mode_delta are counted as gaps
+
+# Profiling Sentinels & Quantiles
+# Note: 0 is tracked separately as 'zero_count', not in suspicious_sentinels
+suspicious_sentinels:
+  - -999
+  - -1
+  - 400
+  - 800
+  - 9999
+
+quantiles:
+  - 0.05
+  - 0.25
+  - 0.50
+  - 0.75
+  - 0.95

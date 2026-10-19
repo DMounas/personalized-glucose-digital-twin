@@ -1,0 +1,324 @@
+{
+  "total_recorded_rows": {
+    "value": 687580,
+    "unit": "rows",
+    "definition": "Total recorded 1-minute grid rows across all 45 participant CSV files (every file length Ni divisible by 5)",
+    "denominator": "cohort_total",
+    "inclusion_mask": "all rows across all 45 participant files"
+  },
+  "total_dexcom_valid_rows": {
+    "value": 629825,
+    "unit": "rows",
+    "definition": "Total non-null Dexcom G6 Pro observations in released 1-minute grid",
+    "denominator": "total_recorded_rows (687,580)",
+    "inclusion_mask": "df['Dexcom GL'].notna()"
+  },
+  "total_libre_valid_rows": {
+    "value": 687360,
+    "unit": "rows",
+    "definition": "Total non-null FreeStyle Libre Pro observations in released 1-minute grid",
+    "denominator": "total_recorded_rows (687,580)",
+    "inclusion_mask": "df['Libre GL'].notna()"
+  },
+  "paired_overlap_rows": {
+    "value": 629605,
+    "unit": "rows",
+    "definition": "Rows with concurrent non-null observations for both sensors on common 1-minute grid",
+    "denominator": "total_recorded_rows (687,580)",
+    "inclusion_mask": "df['Dexcom GL'].notna() & df['Libre GL'].notna()"
+  },
+  "dexcom_only_rows": {
+    "value": 220,
+    "unit": "rows",
+    "definition": "Rows with valid Dexcom reading but null Libre reading",
+    "denominator": "total_recorded_rows (687,580)",
+    "inclusion_mask": "df['Dexcom GL'].notna() & df['Libre GL'].isna()"
+  },
+  "libre_only_rows": {
+    "value": 57755,
+    "unit": "rows",
+    "definition": "Rows with valid Libre reading but null Dexcom reading",
+    "denominator": "total_recorded_rows (687,580)",
+    "inclusion_mask": "df['Libre GL'].notna() & df['Dexcom GL'].isna()"
+  },
+  "neither_sensor_valid_rows": {
+    "value": 0,
+    "unit": "rows",
+    "definition": "Rows where both sensors are concurrently null",
+    "denominator": "total_recorded_rows (687,580)",
+    "inclusion_mask": "df['Dexcom GL'].isna() & df['Libre GL'].isna()"
+  },
+  "timestamp_contiguous_runs_all_rows": {
+    "value": 1200,
+    "unit": "runs",
+    "definition": "Contiguous sequences across all 687,580 rows where consecutive timestamps step delta_t == 60s",
+    "denominator": "all_rows_contiguous_partition",
+    "inclusion_mask": "df (all rows)"
+  },
+  "dexcom_valid_contiguous_runs": {
+    "value": 1202,
+    "unit": "runs",
+    "definition": "Contiguous sensor runs across 629,825 non-null Dexcom readings (step == 60s)",
+    "denominator": "dexcom_valid_rows_contiguous_partition",
+    "inclusion_mask": "df[df['Dexcom GL'].notna()]"
+  },
+  "libre_valid_contiguous_runs": {
+    "value": 1215,
+    "unit": "runs",
+    "definition": "Contiguous sensor runs across 687,360 non-null Libre readings (step == 60s)",
+    "denominator": "libre_valid_rows_contiguous_partition",
+    "inclusion_mask": "df[df['Libre GL'].notna()]"
+  },
+  "dexcom_evaluated_runs_count": {
+    "value": 89,
+    "unit": "runs",
+    "definition": "Eligible Dexcom runs meeting length >= 120 min and >= 20 informative curvature bends",
+    "denominator": "dexcom_evaluated_runs (89)",
+    "inclusion_mask": "length_minutes >= 120 & informative_bends >= 20"
+  },
+  "dexcom_evaluated_runs_valid_rows": {
+    "value": 625728,
+    "unit": "rows",
+    "definition": "Eligible runs contained 625,728 of 629,825 valid one-minute-grid Dexcom rows (99.35% of valid rows in the released representation)",
+    "denominator": "total_dexcom_valid_rows (629,825)",
+    "inclusion_mask": "valid Dexcom rows within eligible evaluated runs"
+  },
+  "dexcom_evaluated_runs_row_percentage": {
+    "value": 99.35,
+    "unit": "%",
+    "definition": "Percentage of released 1-minute grid valid Dexcom rows audited in eligible runs (not physical sensor count)",
+    "denominator": "total_dexcom_valid_rows (629,825)",
+    "inclusion_mask": "eligible evaluated runs"
+  },
+  "dexcom_evaluated_runs_participant_coverage": {
+    "value": 45,
+    "unit": "participants",
+    "definition": "Participants contributing at least one eligible evaluated run (100.0% cohort coverage)",
+    "denominator": "cohort_total_participants (45)",
+    "inclusion_mask": "cluster_id in evaluated runs"
+  },
+  "dexcom_underpowered_short_runs_count": {
+    "value": 1111,
+    "unit": "runs",
+    "definition": "Short runs with length < 120 minutes lacking statistical power for lattice inference",
+    "denominator": "dexcom_valid_contiguous_runs (1,202)",
+    "inclusion_mask": "length_minutes < 120"
+  },
+  "dexcom_underpowered_short_runs_valid_rows": {
+    "value": 3855,
+    "unit": "rows",
+    "definition": "Valid Dexcom rows contained in underpowered short runs (3,855 rows / 0.61%)",
+    "denominator": "total_dexcom_valid_rows (629,825)",
+    "inclusion_mask": "length_minutes < 120"
+  },
+  "dexcom_underpowered_low_bends_runs_count": {
+    "value": 2,
+    "unit": "runs",
+    "definition": "Runs with length >= 120 min but < 20 informative curvature bends",
+    "denominator": "dexcom_valid_contiguous_runs (1,202)",
+    "inclusion_mask": "length_minutes >= 120 & informative_bends < 20"
+  },
+  "dexcom_underpowered_low_bends_runs_valid_rows": {
+    "value": 242,
+    "unit": "rows",
+    "definition": "Valid Dexcom rows contained in underpowered low-bend runs (242 rows / 0.04%)",
+    "denominator": "total_dexcom_valid_rows (629,825)",
+    "inclusion_mask": "length_minutes >= 120 & informative_bends < 20"
+  },
+  "dexcom_evaluated_run_compliance_rate": {
+    "value": 1.0,
+    "unit": "ratio",
+    "definition": "Compliance rate across all 89 evaluated sessions under Time Semantics T6",
+    "denominator": "evaluated_runs (89)",
+    "inclusion_mask": "evaluated sessions (N=89)",
+    "wilson_ci_95": [
+      0.9585,
+      1.0
+    ]
+  },
+  "dexcom_per_session_participant_compliance_rate": {
+    "value": 1.0,
+    "unit": "ratio",
+    "definition": "Cohort participant compliance under per-session inference (45/45 participants)",
+    "denominator": "total_participants (45)",
+    "inclusion_mask": "all 45 participants evaluated per session",
+    "wilson_ci_95": [
+      0.9213,
+      1.0
+    ]
+  },
+  "dexcom_global_forced_single_phase_rate": {
+    "value": 0.9778,
+    "unit": "ratio",
+    "definition": "Cohort participant compliance forcing global single phase across gaps (44/45)",
+    "denominator": "total_participants (45)",
+    "inclusion_mask": "global file-wide single phase",
+    "wilson_ci_95": [
+      0.8845,
+      0.9961
+    ]
+  },
+  "libre_concordant_15min_rate": {
+    "value": 0.9778,
+    "unit": "ratio",
+    "definition": "Cohort participants concordant with published 15-minute sampling (44/45)",
+    "denominator": "total_participants (45)",
+    "inclusion_mask": "all 45 participants",
+    "wilson_ci_95": [
+      0.8845,
+      0.9961
+    ]
+  },
+  "libre_metadata_discordant_count": {
+    "value": 1,
+    "unit": "participants",
+    "definition": "Participant Cluster 4 series mathematically satisfying 5m lattice but retained as METADATA-DISCORDANT",
+    "denominator": "total_participants (45)",
+    "inclusion_mask": "Participant Cluster 4"
+  },
+  "synthetic_core_suite_pass_rate": {
+    "value": 1.0,
+    "unit": "ratio",
+    "definition": "Pass rate across frozen core 5-scenario benchmark suite (2,500 traces)",
+    "denominator": "2,500 traces (500 per scenario)",
+    "inclusion_mask": "frozen core suite (Seed 42)",
+    "wilson_ci_95": [
+      0.9924,
+      1.0
+    ]
+  },
+  "synthetic_blind_15m_jitter_unresolved_rate": {
+    "value": 0.99,
+    "unit": "ratio",
+    "definition": "Unresolved rate on detector-blind 15-minute coordinate jitter (99/100)",
+    "denominator": "100 traces",
+    "inclusion_mask": "native_timestamp_jitter_15min",
+    "wilson_ci_95": [
+      0.9455,
+      0.9982
+    ]
+  },
+  "synthetic_blind_15m_jitter_false_classification_rate": {
+    "value": 0.01,
+    "unit": "ratio",
+    "definition": "False confident classification rate on detector-blind 15m coordinate jitter (1/100)",
+    "denominator": "100 traces",
+    "inclusion_mask": "native_timestamp_jitter_15min",
+    "wilson_ci_95": [
+      0.0018,
+      0.0545
+    ]
+  },
+  "set_b_uncensored_mean_difference_pooled": {
+    "value": -31.95,
+    "unit": "mg/dL",
+    "definition": "Pooled grand mean difference (Libre - Dexcom) across 629,605 paired 1-minute rows",
+    "denominator": "629,605 paired rows",
+    "inclusion_mask": "valid paired rows (N=45)"
+  },
+  "set_b_uncensored_mean_difference_equal_weighted": {
+    "value": -32.36,
+    "unit": "mg/dL",
+    "definition": "Equal-weighted mean difference across 45 participant means",
+    "denominator": "45 participants",
+    "inclusion_mask": "valid paired rows (N=45)"
+  },
+  "set_b_uncensored_sd_repeated_measures": {
+    "value": 24.46,
+    "unit": "mg/dL",
+    "definition": "Repeated-measures standard deviation sqrt(var_between + var_within) under unbalanced RM-ANOVA",
+    "denominator": "629,605 paired rows",
+    "inclusion_mask": "valid paired rows (N=45)"
+  },
+  "set_b_uncensored_loa_lower": {
+    "value": -79.89,
+    "unit": "mg/dL",
+    "definition": "Lower 95% limit of agreement (mu_pool - 1.96 * sd_rm)",
+    "denominator": "629,605 paired rows",
+    "inclusion_mask": "valid paired rows (N=45)"
+  },
+  "set_b_uncensored_loa_upper": {
+    "value": 16.0,
+    "unit": "mg/dL",
+    "definition": "Upper 95% limit of agreement (mu_pool + 1.96 * sd_rm)",
+    "denominator": "629,605 paired rows",
+    "inclusion_mask": "valid paired rows (N=45)"
+  },
+  "set_b_agreement_status": {
+    "value": "EXPLORATORY_SERIAL_AUTOCORRELATION_UNADJUSTED",
+    "unit": "status",
+    "definition": "Descriptive status denoting limits of agreement are exploratory due to unadjusted 1-minute serial autocorrelation",
+    "denominator": "N/A",
+    "inclusion_mask": "Set B pairs"
+  },
+  "apparent_lag_median_minutes": {
+    "value": 5.0,
+    "unit": "minutes",
+    "definition": "Median cross-correlation peak displacement (tau > 0 indicates Libre leads Dexcom; IQR [3.0, 7.0] min)",
+    "denominator": "45 participants",
+    "inclusion_mask": "continuous overlapping runs > 200 min"
+  },
+  "t2_hyperglycemia_180_dexcom": {
+    "value": 678,
+    "unit": "episodes",
+    "definition": "Sustained hyperglycemia episodes (>180 mg/dL for >=15 min) detected on Dexcom (17 boundary-censored)",
+    "denominator": "cohort Dexcom runs",
+    "inclusion_mask": "Dexcom contiguous runs, 5 mg/dL hysteresis release"
+  },
+  "t2_hyperglycemia_180_libre": {
+    "value": 369,
+    "unit": "episodes",
+    "definition": "Sustained hyperglycemia episodes (>180 mg/dL for >=15 min) detected on Libre (7 boundary-censored)",
+    "denominator": "cohort Libre runs",
+    "inclusion_mask": "Libre contiguous runs, 5 mg/dL hysteresis release"
+  },
+  "t2_hypoglycemia_70_dexcom": {
+    "value": 43,
+    "unit": "episodes",
+    "definition": "Sustained hypoglycemia episodes (<70 mg/dL for >=15 min) detected on Dexcom (0 boundary-censored)",
+    "denominator": "cohort Dexcom runs",
+    "inclusion_mask": "Dexcom contiguous runs, 5 mg/dL hysteresis release"
+  },
+  "t2_hypoglycemia_70_libre": {
+    "value": 494,
+    "unit": "episodes",
+    "definition": "Sustained hypoglycemia episodes (<70 mg/dL for >=15 min) detected on Libre (58 boundary-censored)",
+    "denominator": "cohort Libre runs",
+    "inclusion_mask": "Libre contiguous runs, 5 mg/dL hysteresis release"
+  },
+  "t3_reconciled_meal_events": {
+    "value": 1706,
+    "unit": "events",
+    "definition": "Reconciled self-logged nutritional meal events across cohort",
+    "denominator": "all 45 participant files",
+    "inclusion_mask": "df['Meal Type'].notna()"
+  },
+  "config_version": {
+    "value": "1.4.0-r3.4",
+    "unit": "version",
+    "definition": "Configuration specification version",
+    "denominator": "N/A",
+    "inclusion_mask": "configs/stage1b.yaml"
+  },
+  "frozen_config_hash": {
+    "value": "cf2763408891feb97c67dd5184ad4674dd2c98a736922ad322c8b66bc11bd467",
+    "unit": "SHA-256",
+    "definition": "Cryptographic SHA-256 digest of frozen configs/stage1b.yaml",
+    "denominator": "N/A",
+    "inclusion_mask": "configs/stage1b.yaml"
+  },
+  "timestamp_integrity_audit_status": {
+    "value": "100%_STRICTLY_MONOTONIC_ZERO_PARSE_FAILURES_ZERO_DUPLICATES",
+    "unit": "status",
+    "definition": "Outcome of explicit file-by-file timestamp audit across all 45 participant CSVs (1,155 gaps, 1,200 runs)",
+    "denominator": "45 files",
+    "inclusion_mask": "all 45 participant files"
+  },
+  "time_of_day_preservation_status": {
+    "value": "SUPPORTED_BY_EVIDENCE",
+    "unit": "status",
+    "definition": "Date-shifting shifted whole days (CGMacros_dateshifted365.zip); intra-day clock time HH:MM preserved, confirmed by meal timings",
+    "denominator": "1,706 meals",
+    "inclusion_mask": "cohort logged meals"
+  }
+}

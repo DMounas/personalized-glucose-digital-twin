@@ -1,0 +1,320 @@
+{
+  "stage": "Stage 1B",
+  "status": "COMPLETE",
+  "frozen_config_hash": "8de86ba3edc17f21769f59dd608300f88c283a06f23beba46f90718132dbcdb3",
+  "cohort_summary": {
+    "total_participants": 45,
+    "total_recorded_rows": 687580,
+    "paired_overlap_rows": 629605
+  },
+  "synthetic_validation": {
+    "status": "PASSED",
+    "scenarios_evaluated": 5,
+    "total_test_series": 2500,
+    "results_by_scenario": {
+      "five_minute_native": {
+        "samples": 500,
+        "inferred_5_count": 500,
+        "inferred_15_count": 0,
+        "unresolved_count": 0,
+        "primary_metric": "sensitivity_5min",
+        "rate": 1.0,
+        "wilson_ci_95": [
+          0.9924,
+          1.0
+        ],
+        "confidence_distribution": {
+          "HIGH_CONFIDENCE": 500
+        }
+      },
+      "fifteen_minute_native": {
+        "samples": 500,
+        "inferred_5_count": 0,
+        "inferred_15_count": 500,
+        "unresolved_count": 0,
+        "primary_metric": "sensitivity_15min",
+        "rate": 1.0,
+        "wilson_ci_95": [
+          0.9924,
+          1.0
+        ],
+        "confidence_distribution": {
+          "HIGH_CONFIDENCE": 500
+        }
+      },
+      "continuous_one_minute_negative_control": {
+        "samples": 500,
+        "inferred_5_count": 0,
+        "inferred_15_count": 0,
+        "unresolved_count": 500,
+        "primary_metric": "specificity_negative_control",
+        "rate": 1.0,
+        "wilson_ci_95": [
+          0.9924,
+          1.0
+        ],
+        "confidence_distribution": {
+          "NO_RELIABLE_LATTICE": 500
+        }
+      },
+      "five_minute_with_jitter_and_drops": {
+        "samples": 500,
+        "inferred_5_count": 500,
+        "inferred_15_count": 0,
+        "unresolved_count": 0,
+        "primary_metric": "sensitivity_5min",
+        "rate": 1.0,
+        "wilson_ci_95": [
+          0.9924,
+          1.0
+        ],
+        "confidence_distribution": {
+          "HIGH_CONFIDENCE": 500
+        }
+      },
+      "fifteen_minute_with_flat_stretches": {
+        "samples": 500,
+        "inferred_5_count": 0,
+        "inferred_15_count": 500,
+        "unresolved_count": 0,
+        "primary_metric": "sensitivity_15min",
+        "rate": 1.0,
+        "wilson_ci_95": [
+          0.9924,
+          1.0
+        ],
+        "confidence_distribution": {
+          "HIGH_CONFIDENCE": 500
+        }
+      }
+    },
+    "confusion_matrix": {
+      "five_minute_native": {
+        "inferred_5": 500,
+        "inferred_15": 0,
+        "no_lattice_or_ambiguous": 0
+      },
+      "fifteen_minute_native": {
+        "inferred_5": 0,
+        "inferred_15": 500,
+        "no_lattice_or_ambiguous": 0
+      },
+      "continuous_one_minute_negative_control": {
+        "inferred_5": 0,
+        "inferred_15": 0,
+        "no_lattice_or_ambiguous": 500
+      },
+      "five_minute_with_jitter_and_drops": {
+        "inferred_5": 500,
+        "inferred_15": 0,
+        "no_lattice_or_ambiguous": 0
+      },
+      "fifteen_minute_with_flat_stretches": {
+        "inferred_5": 0,
+        "inferred_15": 500,
+        "no_lattice_or_ambiguous": 0
+      }
+    }
+  },
+  "real_native_grid_inference": {
+    "libre": {
+      "high_confidence_count": 45,
+      "medium_confidence_count": 0,
+      "ambiguous_count": 0,
+      "period_inferred": 15,
+      "reconstruction_residual_mean": 0.0027
+    },
+    "dexcom": {
+      "high_confidence_count": 44,
+      "medium_confidence_count": 0,
+      "ambiguous_count": 1,
+      "period_inferred": 5,
+      "reconstruction_residual_mean": 0.0084
+    }
+  },
+  "dual_sensor_agreement": {
+    "difference_convention": "libre_minus_dexcom",
+    "set_b_common_grid": {
+      "n_participants": 45,
+      "n_paired_points": 629605,
+      "mean_difference": -31.95,
+      "sd_between": 16.42,
+      "sd_within": 18.3,
+      "sd_repeated_measures": 24.59,
+      "limits_of_agreement_lower": -80.14,
+      "limits_of_agreement_upper": 16.24,
+      "bootstrap_mean_ci_95": [
+        -37.14,
+        -27.11
+      ],
+      "bootstrap_loa_lower_ci_95": [
+        -88.43,
+        -73.1
+      ],
+      "bootstrap_loa_upper_ci_95": [
+        6.32,
+        27.18
+      ],
+      "pearson_r": 0.8298,
+      "spearman_rho": 0.7452,
+      "proportional_bias_slope": -0.0171,
+      "proportional_bias_intercept": -29.81
+    },
+    "set_a_paired_native": {
+      "n_participants": 39,
+      "n_paired_points": 37030,
+      "mean_difference": -30.45,
+      "sd_between": 16.54,
+      "sd_within": 18.72,
+      "sd_repeated_measures": 24.98,
+      "limits_of_agreement_lower": -79.41,
+      "limits_of_agreement_upper": 18.52,
+      "bootstrap_mean_ci_95": [
+        -35.03,
+        -25.09
+      ],
+      "bootstrap_loa_lower_ci_95": [
+        -87.81,
+        -70.24
+      ],
+      "bootstrap_loa_upper_ci_95": [
+        8.45,
+        29.76
+      ],
+      "pearson_r": 0.8278,
+      "spearman_rho": 0.7443,
+      "proportional_bias_slope": -0.0264,
+      "proportional_bias_intercept": -27.1
+    },
+    "stratified_by_hba1c": {
+      "normal": {
+        "participants_count": 15,
+        "paired_observations": 211480,
+        "mean_difference_mg_dl": -37.69,
+        "sd_repeated_measures_mg_dl": 20.59,
+        "limits_of_agreement": [
+          -78.04,
+          2.66
+        ],
+        "pearson_r": 0.6833
+      },
+      "prediabetes": {
+        "participants_count": 16,
+        "paired_observations": 218495,
+        "mean_difference_mg_dl": -29.27,
+        "sd_repeated_measures_mg_dl": 23.08,
+        "limits_of_agreement": [
+          -74.51,
+          15.96
+        ],
+        "pearson_r": 0.7564
+      },
+      "diabetes": {
+        "participants_count": 14,
+        "paired_observations": 199630,
+        "mean_difference_mg_dl": -28.79,
+        "sd_repeated_measures_mg_dl": 29.52,
+        "limits_of_agreement": [
+          -86.65,
+          29.07
+        ],
+        "pearson_r": 0.8327
+      }
+    },
+    "stratified_by_glucose_range": {
+      "hypoglycemia_lt_70": {
+        "paired_observations": 8429,
+        "mean_difference_mg_dl": -34.29,
+        "sd_difference_mg_dl": 25.74
+      },
+      "target_range_70_180": {
+        "paired_observations": 564740,
+        "mean_difference_mg_dl": -31.7,
+        "sd_difference_mg_dl": 22.57
+      },
+      "hyperglycemia_gt_180": {
+        "paired_observations": 56436,
+        "mean_difference_mg_dl": -34.05,
+        "sd_difference_mg_dl": 37.5
+      }
+    },
+    "apparent_lag": {
+      "participants_evaluated": 45,
+      "median_lag_minutes": -5.0,
+      "mean_lag_minutes": -3.42,
+      "q25_lag_minutes": -7.0,
+      "q75_lag_minutes": -3.0
+    }
+  },
+  "fingerstick_analysis": {
+    "status": "ALIGNMENT_NOT_DEFENSIBLE",
+    "rationale": "bio.csv contains three fingerstick readings per participant with only wall-clock time (HH:MM), without date anchors. Participant time series are date-shifted under HIPAA de-identification. Several participant fingerstick times precede continuous sensor recording onset by 12+ hours. In accordance with Part 3.5 protocol, paired fingerstick comparison is omitted to avoid invalid inferences."
+  },
+  "candidate_tasks": {
+    "t1_descriptive_difficulty": {
+      "forecast_horizons_minutes": [
+        30,
+        60
+      ],
+      "dexcom_glucose_changes": {
+        "30_min": {
+          "mean_abs_delta_mg_dl": 13.21,
+          "median_abs_delta_mg_dl": 7.6,
+          "q90_abs_delta_mg_dl": 32.8
+        },
+        "60_min": {
+          "mean_abs_delta_mg_dl": 19.41,
+          "median_abs_delta_mg_dl": 11.0,
+          "q90_abs_delta_mg_dl": 48.4
+        }
+      },
+      "libre_glucose_changes": {
+        "30_min": {
+          "mean_abs_delta_mg_dl": 10.67,
+          "median_abs_delta_mg_dl": 6.33,
+          "q90_abs_delta_mg_dl": 26.33
+        },
+        "60_min": {
+          "mean_abs_delta_mg_dl": 16.87,
+          "median_abs_delta_mg_dl": 9.73,
+          "q90_abs_delta_mg_dl": 41.73
+        }
+      },
+      "scientific_note": "Descriptive, not a model."
+    },
+    "t2_excursion_episodes": {
+      "persistence_minutes_required": 15,
+      "inter_episode_gap_minutes": 30,
+      "episodes_detected": {
+        "dexcom": {
+          "hyper_140": 1228,
+          "hyper_180": 654,
+          "hypo_70": 41
+        },
+        "libre": {
+          "hyper_140": 779,
+          "hyper_180": 369,
+          "hypo_70": 498
+        }
+      },
+      "finding": "Excursion episode detection is profoundly device-dependent due to systematic -32 mg/dL offset. Dexcom detects 1,228 hyperglycemia episodes (>140) vs Libre 779. Libre detects 498 hypoglycemia episodes (<70) vs Dexcom 41."
+    },
+    "t3_meal_events_total": 1706
+  },
+  "effective_sample_size": {
+    "total_1min_rows": 687580,
+    "independent_participants": 45,
+    "reconciled_meal_events": 1706,
+    "paired_native_samples_set_a": 37030,
+    "excursion_episodes_dexcom_180": 654,
+    "non_overlapping_2h_windows": 5729
+  },
+  "modeling_readiness_decisions": {
+    "t1_glucose_regression_30_60min": "CONDITIONAL_GO",
+    "t2_excursion_event_prediction": "CONDITIONAL_GO",
+    "t3_postprandial_meal_response": "GO",
+    "primary_device_recommendation": "Dexcom G6 Pro (higher 5-min native sampling rate, lower filter latency)",
+    "mandatory_sensitivity_analysis": "Must re-evaluate on FreeStyle Libre Pro",
+    "real_time_causal_forecasting_limitation": "Intervening 1-minute rows are linearly interpolated from 5-min/15-min endpoints. Causal real-time models cannot evaluate at arbitrary 1-minute intervals without future leakage; evaluation must strictly align to native sampling lattices."
+  }
+}

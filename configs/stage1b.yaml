@@ -1,0 +1,79 @@
+# Stage 1B-R3.4 Configuration: Bounded Final Reconciliation & Stage 1B Freeze
+# All analysis thresholds, confidence criteria, random seeds, and synthetic acceptance targets
+# are frozen in this specification prior to real-data evaluation.
+
+version: "1.4.0-r3.4"
+random_seed: 42
+
+native_grid:
+  candidate_periods_minutes: [5, 15]
+  max_reconstruction_residual_mg_dl: 0.35
+  second_difference_bend_threshold: 0.15
+  min_informative_bends_count: 20
+  phase_stability_threshold: 0.75
+  integer_rounding_tolerance_mg_dl: 0.50
+  gap_fill_candidate_threshold_minutes: 30
+  confidence_rules:
+    high_confidence:
+      max_mean_residual: 0.25
+      min_phase_stability: 0.80
+      min_intermediate_bend_distinction_ratio: 3.0
+    medium_confidence:
+      max_mean_residual: 0.50
+      min_phase_stability: 0.65
+      min_intermediate_bend_distinction_ratio: 1.5
+    ambiguous_threshold: 0.75
+
+synthetic_validation:
+  samples_per_scenario: 500
+  blind_benchmark_samples_per_scenario: 100
+  series_length_points: 1440  # 1 day of 1-minute points
+  noise_std: 0.2
+  integer_rounding: true
+  scenarios:
+    - "five_minute_native"
+    - "fifteen_minute_native"
+    - "continuous_one_minute_negative_control"
+    - "five_minute_with_amplitude_noise_and_drops"
+    - "fifteen_minute_with_flat_stretches"
+  acceptance_criteria:
+    min_sensitivity_5min: 0.90
+    min_sensitivity_15min: 0.90
+    max_false_lattice_rate_negative_control: 0.05
+    max_cross_misclassification_rate: 0.05
+
+dual_sensor_agreement:
+  difference_convention: "libre_minus_dexcom"
+  bootstrap_replicates: 500
+  bootstrap_seed: 42
+  confidence_interval_level: 0.95
+  lag_search_range_minutes: [-30, 30]
+  saturation_limits: [40.0, 400.0]
+  glucose_strata:
+    hypoglycemia: [0.0, 70.0]
+    target_range: [70.0, 180.0]
+    hyperglycemia: [180.0, 500.0]
+
+fingerstick_alignment:
+  max_matching_window_minutes: 5
+  min_required_pairs: 20
+  min_required_participants: 10
+
+event_feasibility:
+  forecast_horizons_minutes: [30, 60]
+  persistence_duration_minutes: 15
+  episode_separation_gap_minutes: 30
+  hysteresis_margin_mg_dl: 5.0
+  release_duration_minutes: 10
+  thresholds_mg_dl:
+    hyperglycemia_140: 140.0
+    hyperglycemia_180: 180.0
+    hypoglycemia_70: 70.0
+
+device_selection:
+  rule: "hierarchical_composite"
+  priority_order:
+    - "usable_continuous_coverage"
+    - "missingness_burden"
+    - "native_grid_recoverability"
+    - "sampling_frequency_tie_breaker"

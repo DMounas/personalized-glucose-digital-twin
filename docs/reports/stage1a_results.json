@@ -1,0 +1,294 @@
+{
+  "stage": "STAGE_1A",
+  "metadata": {
+    "generated_at": "2026-10-19T09:52:01.977987+00:00",
+    "pipeline_version": "0.1.0",
+    "python_env": "3.14.0"
+  },
+  "gate_g1": {
+    "status": "GATE_G1_PASSED",
+    "is_passed": true,
+    "evidence_tag": "[ESTABLISHED]",
+    "participant_dirs_count": 45,
+    "bio_rows_count": 45,
+    "matched_count": 45,
+    "missing_participant_ids": [
+      24,
+      25,
+      37,
+      40
+    ],
+    "unmatched_dirs": [],
+    "unmatched_bio_ids": [],
+    "mapping_mechanism": "Directory/Filename integer ID (CGMacros-{s:03d}) <-> bio.csv.subject",
+    "primary_source_citation": "Das et al., Scientific Data 12, 1391 (2025), DOI: 10.1038/s41597-025-05851-7: 'The dataset consists of 45 main CSV files (CGMacros-#.csv), where # denotes participant number, and three supplementary CSV files... The supplementary spreadsheet (bio.csv) contains demographics... for each study participant.'",
+    "rationale": "Gate G1 verification confirmed: 45 participant folders (CGMacros-001..049, missing IDs [24, 25, 37, 40]) match 45 rows in bio.csv with 100% bijection (45/45 matched, 0 unmatched dirs, 0 unmatched bio rows). The participant CSV files lack an internal ID column, but folder/file name encoding provides an unambiguous primary key demonstrated by both the publication text and 100% bijective directory mapping."
+  },
+  "manifest": {
+    "manifest_file": "extracted_sha256sums.txt",
+    "total_files": 3502,
+    "total_bytes": 699967761,
+    "creation_status": "CREATED",
+    "verification_status": "PASSED",
+    "matched_files": 3502,
+    "mismatched_files": 0,
+    "missing_files": 0
+  },
+  "timeseries_coverage": {
+    "cohort_size": 45,
+    "total_rows_sum": 687580,
+    "rows_per_participant": {
+      "count": 45,
+      "mean": 15279.56,
+      "std": 1891.24,
+      "median": 14805.0,
+      "q25": 14505.0,
+      "q75": 16260.0,
+      "min": 5655.0,
+      "max": 18735.0
+    },
+    "duration_days": {
+      "count": 45,
+      "mean": 10.9,
+      "std": 1.59,
+      "median": 10.63,
+      "q25": 10.08,
+      "q75": 11.31,
+      "min": 7.23,
+      "max": 19.15
+    },
+    "sensor_coverage_pct": {
+      "libre_gl": {
+        "count": 45,
+        "mean": 99.97,
+        "std": 0.23,
+        "median": 100.0,
+        "q25": 100.0,
+        "q75": 100.0,
+        "min": 98.46,
+        "max": 100.0
+      },
+      "dexcom_gl": {
+        "count": 45,
+        "mean": 92.24,
+        "std": 6.92,
+        "median": 96.34,
+        "q25": 87.79,
+        "q75": 98.38,
+        "min": 75.95,
+        "max": 100.0
+      },
+      "dual_cgm_both": {
+        "count": 45,
+        "mean": 92.21,
+        "std": 6.89,
+        "median": 96.34,
+        "q25": 87.79,
+        "q75": 98.38,
+        "min": 75.95,
+        "max": 99.73
+      },
+      "heart_rate": {
+        "count": 45,
+        "mean": 89.08,
+        "std": 11.52,
+        "median": 92.95,
+        "q25": 83.91,
+        "q75": 98.52,
+        "min": 47.58,
+        "max": 99.73
+      }
+    },
+    "sensor_missingness_pct": {
+      "libre_gl_mean_missing": 0.03,
+      "dexcom_gl_mean_missing": 7.76,
+      "dual_cgm_mean_overlap": 92.21,
+      "heart_rate_mean_missing": 10.92
+    },
+    "activity_column_prevalence": {
+      "calories_activity_participants": 44,
+      "mets_participants": 34,
+      "intensity_participants": 11,
+      "steps_participants": 1
+    }
+  },
+  "meal_encoding": {
+    "total_meal_events": 1706,
+    "total_timeseries_rows": 687580,
+    "row_sparsity_pct": 0.2481,
+    "encoding_pattern": "Mixed impulse/interval",
+    "consecutive_meal_rows_count": 5,
+    "meal_types_distribution": {
+      "lunch": 435,
+      "dinner": 492,
+      "snack": 343,
+      "breakfast": 436
+    },
+    "meals_with_photo_path_count": 1644,
+    "meals_with_photo_path_pct": 96.37,
+    "macro_distributions": {
+      "meal_calories": {
+        "count": 1706,
+        "mean": 505.86,
+        "std": 329.44,
+        "median": 448.0,
+        "q25": 268.0,
+        "q75": 712.0,
+        "min": 0.0,
+        "max": 2826.0
+      },
+      "meal_carbs": {
+        "count": 1706,
+        "mean": 52.08,
+        "std": 40.05,
+        "median": 50.0,
+        "q25": 24.0,
+        "q75": 73.0,
+        "min": 0.0,
+        "max": 761.0
+      },
+      "meal_protein": {
+        "count": 1706,
+        "mean": 29.25,
+        "std": 25.65,
+        "median": 22.0,
+        "q25": 10.0,
+        "q75": 44.0,
+        "min": 0.0,
+        "max": 148.0
+      },
+      "meal_fat": {
+        "count": 1706,
+        "mean": 19.78,
+        "std": 20.75,
+        "median": 14.0,
+        "q25": 10.0,
+        "q75": 30.0,
+        "min": 0.0,
+        "max": 508.0
+      },
+      "meal_fiber": {
+        "count": 1705,
+        "mean": 17.9,
+        "std": 143.63,
+        "median": 4.0,
+        "q25": 0.0,
+        "q75": 7.0,
+        "min": 0.0,
+        "max": 2830.0
+      },
+      "sugar": {
+        "count": 39,
+        "mean": 6.87,
+        "std": 10.64,
+        "median": 0.0,
+        "q25": 0.0,
+        "q75": 12.0,
+        "min": 0.0,
+        "max": 50.0
+      },
+      "amount_consumed": {
+        "count": 1642,
+        "mean": 97.87,
+        "std": 91.64,
+        "median": 100.0,
+        "q25": 100.0,
+        "q75": 100.0,
+        "min": 0.0,
+        "max": 900.0
+      }
+    }
+  },
+  "baseline": {
+    "total_participants": 45,
+    "metabolic_status_counts": {
+      "healthy": 15,
+      "pre_diabetes": 16,
+      "type_2_diabetes": 14,
+      "unknown": 0
+    },
+    "metabolic_status_proportions": {
+      "healthy": 33.3,
+      "pre_diabetes": 35.6,
+      "type_2_diabetes": 31.1,
+      "unknown": 0.0
+    },
+    "demographics_and_labs": {
+      "age_years": {
+        "count": 45,
+        "mean": 48.11,
+        "std": 12.56,
+        "median": 51.0,
+        "q25": 40.0,
+        "q75": 58.0,
+        "min": 18.0,
+        "max": 69.0
+      },
+      "bmi": {
+        "count": 45,
+        "mean": 31.15,
+        "std": 6.65,
+        "median": 30.04,
+        "q25": 26.92,
+        "q75": 35.92,
+        "min": 20.69,
+        "max": 49.09
+      },
+      "weight_lbs": {
+        "count": 45,
+        "mean": 182.5,
+        "std": 35.59,
+        "median": 180.0,
+        "q25": 157.0,
+        "q75": 202.0,
+        "min": 116.8,
+        "max": 284.6
+      },
+      "height_inches": {
+        "count": 45,
+        "mean": 64.38,
+        "std": 3.24,
+        "median": 64.0,
+        "q25": 62.0,
+        "q75": 67.0,
+        "min": 59.0,
+        "max": 72.0
+      },
+      "hba1c_percent": {
+        "count": 45,
+        "mean": 6.12,
+        "std": 0.9,
+        "median": 5.9,
+        "q25": 5.5,
+        "q75": 6.9,
+        "min": 4.6,
+        "max": 8.5
+      },
+      "fasting_glucose_mg_dl": {
+        "count": 45,
+        "mean": 120.69,
+        "std": 29.89,
+        "median": 109.0,
+        "q25": 100.0,
+        "q75": 142.0,
+        "min": 79.0,
+        "max": 218.0
+      },
+      "fasting_insulin_mcu_ml": {
+        "count": 45,
+        "mean": 14.17,
+        "std": 8.17,
+        "median": 13.5,
+        "q25": 9.3,
+        "q75": 17.8,
+        "min": 2.5,
+        "max": 46.4
+      }
+    },
+    "sentinel_counts": {
+      "ldl_800_error_count": 1,
+      "vldl_400_error_count": 1,
+      "cho_hdl_ratio_400_error_count": 1
+    }
+  }
+}

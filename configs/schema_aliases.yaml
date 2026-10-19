@@ -1,0 +1,512 @@
+# Schema Aliases Configuration for CGMacros Ingestion
+# Defines explicit, name-based column mappings to canonical field names.
+# Never relies on column position.
+# Supports whitespace normalization, case-insensitivity, and strict vs permissive modes.
+
+version: "1.0.0"
+
+settings:
+  strict_mode_default: true
+  normalize_whitespace: true
+  case_insensitive_matching: true
+
+participant_timeseries:
+  description: "Per-participant 1-minute continuous glucose and activity time series"
+  approved_ignorable_columns:
+    - "Unnamed: 0"
+  canonical_columns:
+    record_index:
+      description: "App-assigned meal/log transaction index present in CGMacros-007"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "RecordIndex"
+        - "record_index"
+    timestamp:
+      description: "Observation timestamp (shifted by +/- N days for HIPAA de-identification)"
+      dtype: "datetime64[ns]"
+      required: true
+      aliases:
+        - "Timestamp"
+        - "timestamp"
+        - "time"
+        - "DateTime"
+    libre_gl:
+      description: "Abbott FreeStyle Libre Pro interstitial glucose (mg/dL)"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "Libre GL"
+        - "libre_gl"
+        - "Libre"
+        - "libre"
+        - "Libre_GL"
+    dexcom_gl:
+      description: "Dexcom G6 Pro interstitial glucose (mg/dL)"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "Dexcom GL"
+        - "dexcom_gl"
+        - "Dexcom"
+        - "dexcom"
+        - "Dexcom_GL"
+    heart_rate:
+      description: "Fitbit Sense average heart rate over past minute (bpm)"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "HR"
+        - "hr"
+        - "Heart Rate"
+        - "heart_rate"
+    calories_activity:
+      description: "Fitbit Sense estimated calories burned in past minute (kcal)"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "Calories (Activity)"
+        - "calories_activity"
+        - "Activity Calories"
+        - "calories (activity)"
+    mets:
+      description: "Fitbit Sense metabolic equivalent of task (scaled x10, 10-176)"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "METs"
+        - "Mets"
+        - "mets"
+        - "METS"
+    intensity:
+      description: "Alternative activity intensity metric present in some participant files"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "Intensity"
+        - "intensity"
+    steps:
+      description: "Fitbit Sense step count over past minute present in CGMacros-007"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "Steps"
+        - "steps"
+    meal_type:
+      description: "Meal event label (breakfast, lunch, dinner, snack)"
+      dtype: "string"
+      required: false
+      aliases:
+        - "Meal Type"
+        - "Meal type"
+        - "meal type"
+        - "meal_type"
+    meal_calories:
+      description: "Nutritional calorie content of the logged meal (kcal)"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "Calories"
+        - "calories"
+        - "meal_calories"
+    meal_carbs:
+      description: "Estimated carbohydrate content of logged meal (g)"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "Carbs"
+        - "carbs"
+        - "meal_carbs"
+    meal_protein:
+      description: "Estimated protein content of logged meal (g)"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "Protein"
+        - "protein"
+        - "meal_protein"
+    meal_fat:
+      description: "Estimated fat content of logged meal (g)"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "Fat"
+        - "fat"
+        - "meal_fat"
+    meal_fiber:
+      description: "Estimated dietary fiber content of logged meal (g)"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "Fiber"
+        - "fiber"
+        - "meal_fiber"
+    sugar:
+      description: "Logged sugar content of meal present in CGMacros-013 (g)"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "Sugar"
+        - "sugar"
+    amount_consumed:
+      description: "Estimated percentage of meal consumed (0-100%)"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "Amount Consumed"
+        - "amount_consumed"
+        - "Amount Consumed "
+        - "amount consumed"
+    image_path:
+      description: "Relative file path to associated meal photograph"
+      dtype: "string"
+      required: false
+      aliases:
+        - "Image path"
+        - "Image Path"
+        - "image_path"
+        - "image path"
+
+bio_baseline:
+  description: "Baseline clinical and biological measurements from bio.csv"
+  approved_ignorable_columns: []
+  canonical_columns:
+    participant_id:
+      description: "Integer subject ID (1-49, 45 participants completed)"
+      dtype: "int64"
+      required: true
+      aliases:
+        - "subject"
+        - "Subject"
+        - "participant_id"
+        - "\ufeffsubject"
+    age_years:
+      description: "Age in years at start of study"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "Age"
+        - "age"
+    gender:
+      description: "Biological sex (M or F)"
+      dtype: "string"
+      required: false
+      aliases:
+        - "Gender"
+        - "gender"
+    bmi:
+      description: "Body Mass Index (kg/m^2)"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "BMI"
+        - "bmi"
+    weight_lbs:
+      description: "Body weight at start of study (lbs)"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "Body weight "
+        - "Body weight"
+        - "body_weight"
+    height_inches:
+      description: "Height at start of study (inches)"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "Height "
+        - "Height"
+        - "height"
+    ethnicity_self_identified:
+      description: "Self-identified race / ethnicity"
+      dtype: "string"
+      required: false
+      aliases:
+        - "Self-identify "
+        - "Self-identify"
+        - "self_identify"
+    hba1c_percent:
+      description: "Fasting glycated hemoglobin HbA1c (NGSP %, 4.6-8.5)"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "A1c PDL (Lab)"
+        - "a1c_pdl_lab"
+        - "hba1c"
+    fasting_glucose_mg_dl:
+      description: "Fasting laboratory plasma glucose (mg/dL)"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "Fasting GLU - PDL (Lab)"
+        - "fasting_glu_pdl_lab"
+        - "fasting_glucose"
+    fasting_insulin_mcu_ml:
+      description: "Fasting laboratory insulin (mcU/mL)"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "Insulin "
+        - "Insulin"
+        - "insulin"
+    triglycerides_mg_dl:
+      description: "Fasting serum triglycerides (mg/dL)"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "Triglycerides"
+        - "triglycerides"
+    total_cholesterol_mg_dl:
+      description: "Fasting total cholesterol (mg/dL)"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "Cholesterol"
+        - "cholesterol"
+    hdl_mg_dl:
+      description: "Fasting high-density lipoprotein cholesterol (mg/dL)"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "HDL"
+        - "hdl"
+    non_hdl_mg_dl:
+      description: "Fasting non-HDL cholesterol (mg/dL)"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "Non HDL "
+        - "Non HDL"
+        - "non_hdl"
+    ldl_calculated_mg_dl:
+      description: "Calculated LDL cholesterol (mg/dL; sentinel 800 indicates calculation error)"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "LDL (Cal)"
+        - "ldl_cal"
+        - "ldl"
+    vldl_calculated_mg_dl:
+      description: "Calculated VLDL cholesterol (mg/dL; sentinel 400 indicates calculation error)"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "VLDL (Cal)"
+        - "vldl_cal"
+        - "vldl"
+    cholesterol_hdl_ratio:
+      description: "Total cholesterol to HDL ratio (sentinel 400 indicates invalid)"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "Cho/HDL Ratio"
+        - "cho_hdl_ratio"
+    lab_collection_time:
+      description: "Time of day when laboratory blood samples were drawn (HH:MM)"
+      dtype: "string"
+      required: false
+      aliases:
+        - "Collection time PDL (Lab)"
+        - "collection_time_pdl_lab"
+    fingerstick_glu_1_mg_dl:
+      description: "First baseline fingerstick glucose reading (mg/dL)"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "#1 Contour Fingerstick GLU"
+        - "fingerstick_glu_1"
+    fingerstick_time_1:
+      description: "Time of day of first fingerstick measurement (HH:MM)"
+      dtype: "string"
+      required: false
+      aliases:
+        - "Time (t)"
+        - "fingerstick_time_1"
+    fingerstick_glu_2_mg_dl:
+      description: "Second baseline fingerstick glucose reading (mg/dL)"
+      dtype: "float64"
+      required: false
+      aliases:
+        - " #2 Contour Fingerstick GLU"
+        - "#2 Contour Fingerstick GLU"
+        - "fingerstick_glu_2"
+    fingerstick_time_2:
+      description: "Time of day of second fingerstick measurement (HH:MM)"
+      dtype: "string"
+      required: false
+      aliases:
+        - "Time (t).1"
+        - "fingerstick_time_2"
+    fingerstick_glu_3_mg_dl:
+      description: "Third baseline fingerstick glucose reading (mg/dL)"
+      dtype: "float64"
+      required: false
+      aliases:
+        - "#3 Contour Fingerstick GLU"
+        - "fingerstick_glu_3"
+    fingerstick_time_3:
+      description: "Time of day of third fingerstick measurement (HH:MM)"
+      dtype: "string"
+      required: false
+      aliases:
+        - "Time (t).2"
+        - "fingerstick_time_3"
+
+gut_health:
+  description: "Viome gut health scores (ordinal 1=Not Optimal, 2=Average, 3=Good)"
+  approved_ignorable_columns: []
+  canonical_columns:
+    participant_id:
+      description: "Integer subject ID (1-49, 47 subjects in gut health test)"
+      dtype: "int64"
+      required: true
+      aliases:
+        - "subject"
+        - "Subject"
+        - "\ufeffsubject"
+    gut_lining_health:
+      description: "Gut lining health score"
+      dtype: "int64"
+      required: false
+      aliases:
+        - "Gut Lining Health"
+    lps_biosynthesis_pathways:
+      description: "LPS biosynthesis pathways score"
+      dtype: "int64"
+      required: false
+      aliases:
+        - "LPS Biosynthesis Pathways"
+    biofilm_chemotaxis_virulence_pathways:
+      description: "Biofilm, chemotaxis, and virulence pathways score"
+      dtype: "int64"
+      required: false
+      aliases:
+        - "Biofilm, Chemotaxis, and Virulence Pathways"
+        - '"Biofilm, Chemotaxis, and Virulence Pathways"'
+    tma_production_pathways:
+      description: "TMA production pathways score"
+      dtype: "int64"
+      required: false
+      aliases:
+        - "TMA Production Pathways"
+    ammonia_production_pathways:
+      description: "Ammonia production pathways score"
+      dtype: "int64"
+      required: false
+      aliases:
+        - "Ammonia Production Pathways"
+    metabolic_fitness:
+      description: "Metabolic fitness score"
+      dtype: "int64"
+      required: false
+      aliases:
+        - "Metabolic Fitness"
+    active_microbial_diversity:
+      description: "Active microbial diversity score"
+      dtype: "int64"
+      required: false
+      aliases:
+        - "Active Microbial Diversity"
+    butyrate_production_pathways:
+      description: "Butyrate production pathways score"
+      dtype: "int64"
+      required: false
+      aliases:
+        - "Butyrate Production Pathways"
+    flagellar_assembly_pathways:
+      description: "Flagellar assembly pathways score"
+      dtype: "int64"
+      required: false
+      aliases:
+        - "Flagellar Assembly Pathways"
+    putrescine_production_pathways:
+      description: "Putrescine production pathways score"
+      dtype: "int64"
+      required: false
+      aliases:
+        - "Putrescine Production Pathways"
+    uric_acid_production_pathways:
+      description: "Uric acid production pathways score"
+      dtype: "int64"
+      required: false
+      aliases:
+        - "Uric Acid Production Pathways"
+    bile_acid_metabolism_pathways:
+      description: "Bile acid metabolism pathways score"
+      dtype: "int64"
+      required: false
+      aliases:
+        - "Bile Acid Metabolism Pathways"
+    inflammatory_activity:
+      description: "Inflammatory activity score"
+      dtype: "int64"
+      required: false
+      aliases:
+        - "Inflammatory Activity"
+    gut_microbiome_health:
+      description: "Gut microbiome health score"
+      dtype: "int64"
+      required: false
+      aliases:
+        - "Gut Microbiome Health"
+    digestive_efficiency:
+      description: "Digestive efficiency score"
+      dtype: "int64"
+      required: false
+      aliases:
+        - "Digestive Efficiency"
+    protein_fermentation:
+      description: "Protein fermentation score"
+      dtype: "int64"
+      required: false
+      aliases:
+        - "Protein Fermentation"
+    gas_production:
+      description: "Gas production score"
+      dtype: "int64"
+      required: false
+      aliases:
+        - "Gas Production"
+    methane_gas_production_pathways:
+      description: "Methane gas production pathways score"
+      dtype: "int64"
+      required: false
+      aliases:
+        - "Methane Gas Production Pathways"
+    sulfide_gas_production_pathways:
+      description: "Sulfide gas production pathways score"
+      dtype: "int64"
+      required: false
+      aliases:
+        - "Sulfide Gas Production Pathways"
+    oxalate_metabolism_pathways:
+      description: "Oxalate metabolism pathways score"
+      dtype: "int64"
+      required: false
+      aliases:
+        - "Oxalate Metabolism Pathways"
+    salt_stress_pathways:
+      description: "Salt stress pathways score"
+      dtype: "int64"
+      required: false
+      aliases:
+        - "Salt Stress Pathways"
+    microbiome_induced_stress:
+      description: "Microbiome-induced stress score"
+      dtype: "int64"
+      required: false
+      aliases:
+        - "Microbiome-Induced Stress"
+
+microbes:
+  description: "Indicator variables (0/1) for presence of 1,979 bacterial species in microbiome sample"
+  approved_ignorable_columns: []
+  canonical_columns:
+    participant_id:
+      description: "Integer subject ID (1-49, 45 participants completed)"
+      dtype: "int64"
+      required: true
+      aliases:
+        - "subject"
+        - "Subject"
+        - "\ufeffsubject"

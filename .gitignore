@@ -1,0 +1,37 @@
+# Virtual environment
+.venv/
+venv/
+ENV/
+
+# Python cache & build
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+
+# Testing and linting caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Dataset and raw archives
+data/
+*.zip
+*.tar*
+*.gz
+
+# Images (except under docs/)
+*.jpg
+*.jpeg
+*.png
+!docs/**/*.jpg
+!docs/**/*.jpeg
+!docs/**/*.png
+
+# Safety net: never allow raw reports
+docs/reports/raw/
+reports_local/
+scratch/
+
