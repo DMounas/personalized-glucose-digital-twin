@@ -1,0 +1,87 @@
+{
+  "metadata": {
+    "title": "Stage 2 Predictive Modeling Baseline Experiment Manifest",
+    "experiment_id": "STAGE2-EXP-001-BASELINES",
+    "protocol_version": "1.0.0",
+    "created_at_utc": "2026-10-20T15:03:53.105654+00:00"
+  },
+  "artifact_integrity": {
+    "git_commit": "1f8382a6ffe2a5fbbfab239b0bd0030203bc3f14",
+    "protocol": {
+      "path": "docs/STAGE2_PROTOCOL_DRAFT.md",
+      "sha256": "d2af976a8163205d0cec9fbc6907f47d7bb2c6d7688df72e01692b3fb0d3435b"
+    },
+    "stage1b_config": {
+      "path": "configs/stage1b.yaml",
+      "sha256": "cf2763408891feb97c67dd5184ad4674dd2c98a736922ad322c8b66bc11bd467"
+    },
+    "stage2_feasibility_report": {
+      "path": "docs/reports/stage2_aggregate_feasibility.json",
+      "sha256": "860f730c12baa70bfbe6f9bfcdded69a537838a12ac5bdc861374879df3fafa1"
+    }
+  },
+  "experimental_setup": {
+    "sensor": "Dexcom G6 Pro (1-minute release grid, 5-minute candidate sampling)",
+    "primary_phase": "phi=0",
+    "deterministic_minute_coordinate": "m(t) = round((t - t0) / 60s)",
+    "history_window_minutes": 60,
+    "guard_band_minutes": 5,
+    "predictor_lags_minutes": [
+      5,
+      10,
+      15,
+      20,
+      25,
+      30,
+      35,
+      40,
+      45,
+      50,
+      55,
+      60,
+      65
+    ],
+    "forecast_horizons_minutes": [
+      30,
+      60
+    ],
+    "models": [
+      {
+        "rung": 0,
+        "name": "Guarded Persistence",
+        "formula": "y_hat(t+h) = y(t-5)",
+        "trainable_parameters": 0
+      },
+      {
+        "rung": 1,
+        "name": "Damped Trend",
+        "formula": "y_hat(t+h) = y(t-5) + gamma_h * ((y(t-5) - y(t-20)) / 15) * h",
+        "damping_range": [
+          0.0,
+          1.0
+        ],
+        "selection_method": "Inner 4-fold participant-grouped cross-validation on training participants"
+      }
+    ],
+    "validation_design": {
+      "scheme": "Repeated Participant-Disjoint Stratified Cross-Validation",
+      "n_repeats": 10,
+      "n_splits": 5,
+      "seeds": [
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51
+      ],
+      "total_participants": 45,
+      "stratification_target": "Clinical baseline HbA1c diagnostic group (15 Normal, 16 Prediabetes, 14 Diabetes)",
+      "bootstrap_resampling_unit": "45 independent participants (B=2,000 iterations)"
+    }
+  }
+}
