@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "title": "Stage 2 Predictive Modeling Baseline Results (Rungs 0 & 1)",
+    "title": "Stage 2 Predictive Modeling Benchmark Results (Rungs 0, 1 & 2)",
     "version": "1.0.0",
-    "experiment_id": "STAGE2-EXP-001-BASELINES",
-    "created_at_utc": "2026-10-20T15:03:53.105654+00:00",
-    "git_commit": "1f8382a6ffe2a5fbbfab239b0bd0030203bc3f14",
+    "experiment_id": "STAGE2-EXP-002-RIDGE",
+    "created_at_utc": "2026-10-20T15:25:43.024897+00:00",
+    "git_commit": "a06e42f55e8a7e15600eeb3ffc84709df0fb20a8",
     "protocol_sha256": "d2af976a8163205d0cec9fbc6907f47d7bb2c6d7688df72e01692b3fb0d3435b",
     "stage1b_config_sha256": "cf2763408891feb97c67dd5184ad4674dd2c98a736922ad322c8b66bc11bd467",
     "stage2_feasibility_sha256": "860f730c12baa70bfbe6f9bfcdded69a537838a12ac5bdc861374879df3fafa1"
@@ -816,6 +816,814 @@
               "persistence_inner_rmse": 21.687935255794365,
               "inner_folds_count": 4,
               "candidate_count": 101
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          }
+        ]
+      },
+      "alphas_summary": {
+        "mean": 2.5568399153212336,
+        "std": 0.970860261531035,
+        "min": 1.0,
+        "max": 3.1622776601683795,
+        "all_50_splits": [
+          {
+            "repeat_idx": 0,
+            "seed": 42,
+            "fold_idx": 0,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 20.188104552661088,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 0,
+            "seed": 42,
+            "fold_idx": 1,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 19.81092195951401,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 0,
+            "seed": 42,
+            "fold_idx": 2,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 19.96025194880623,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 0,
+            "seed": 42,
+            "fold_idx": 3,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 19.64915113201593,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 0,
+            "seed": 42,
+            "fold_idx": 4,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 19.68426069795388,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 1,
+            "seed": 43,
+            "fold_idx": 0,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 19.40765291642111,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 1,
+            "seed": 43,
+            "fold_idx": 1,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 20.217331579337,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 1,
+            "seed": 43,
+            "fold_idx": 2,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 19.769620648975902,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 1,
+            "seed": 43,
+            "fold_idx": 3,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 20.10894436014719,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 1,
+            "seed": 43,
+            "fold_idx": 4,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 20.02098771679796,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 2,
+            "seed": 44,
+            "fold_idx": 0,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 19.989650228442255,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 2,
+            "seed": 44,
+            "fold_idx": 1,
+            "horizon_minutes": 30,
+            "alpha_opt": 1.0,
+            "tuning_diagnostics": {
+              "best_alpha": 1.0,
+              "best_inner_rmse": 20.018964656328833,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 2,
+            "seed": 44,
+            "fold_idx": 2,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 20.214724130911748,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 2,
+            "seed": 44,
+            "fold_idx": 3,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 19.727676772397505,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 2,
+            "seed": 44,
+            "fold_idx": 4,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 19.559800265300158,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 3,
+            "seed": 45,
+            "fold_idx": 0,
+            "horizon_minutes": 30,
+            "alpha_opt": 1.0,
+            "tuning_diagnostics": {
+              "best_alpha": 1.0,
+              "best_inner_rmse": 19.828724376685738,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 3,
+            "seed": 45,
+            "fold_idx": 1,
+            "horizon_minutes": 30,
+            "alpha_opt": 1.0,
+            "tuning_diagnostics": {
+              "best_alpha": 1.0,
+              "best_inner_rmse": 20.10854569609414,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 3,
+            "seed": 45,
+            "fold_idx": 2,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 19.670488265955882,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 3,
+            "seed": 45,
+            "fold_idx": 3,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 19.65962691368653,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 3,
+            "seed": 45,
+            "fold_idx": 4,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 20.1943504243055,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 4,
+            "seed": 46,
+            "fold_idx": 0,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 19.65538976071047,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 4,
+            "seed": 46,
+            "fold_idx": 1,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 20.093838971595808,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 4,
+            "seed": 46,
+            "fold_idx": 2,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 19.976337183265915,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 4,
+            "seed": 46,
+            "fold_idx": 3,
+            "horizon_minutes": 30,
+            "alpha_opt": 1.0,
+            "tuning_diagnostics": {
+              "best_alpha": 1.0,
+              "best_inner_rmse": 19.9683784022763,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 4,
+            "seed": 46,
+            "fold_idx": 4,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 19.76802804815271,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 5,
+            "seed": 47,
+            "fold_idx": 0,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 20.187846926028524,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 5,
+            "seed": 47,
+            "fold_idx": 1,
+            "horizon_minutes": 30,
+            "alpha_opt": 1.0,
+            "tuning_diagnostics": {
+              "best_alpha": 1.0,
+              "best_inner_rmse": 19.607042134293298,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 5,
+            "seed": 47,
+            "fold_idx": 2,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 20.016719872494573,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 5,
+            "seed": 47,
+            "fold_idx": 3,
+            "horizon_minutes": 30,
+            "alpha_opt": 1.0,
+            "tuning_diagnostics": {
+              "best_alpha": 1.0,
+              "best_inner_rmse": 20.13070135611749,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 5,
+            "seed": 47,
+            "fold_idx": 4,
+            "horizon_minutes": 30,
+            "alpha_opt": 1.0,
+            "tuning_diagnostics": {
+              "best_alpha": 1.0,
+              "best_inner_rmse": 19.5088455044457,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 6,
+            "seed": 48,
+            "fold_idx": 0,
+            "horizon_minutes": 30,
+            "alpha_opt": 1.0,
+            "tuning_diagnostics": {
+              "best_alpha": 1.0,
+              "best_inner_rmse": 19.35005585053925,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 6,
+            "seed": 48,
+            "fold_idx": 1,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 20.297065379248725,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 6,
+            "seed": 48,
+            "fold_idx": 2,
+            "horizon_minutes": 30,
+            "alpha_opt": 1.0,
+            "tuning_diagnostics": {
+              "best_alpha": 1.0,
+              "best_inner_rmse": 19.79394565428823,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 6,
+            "seed": 48,
+            "fold_idx": 3,
+            "horizon_minutes": 30,
+            "alpha_opt": 1.0,
+            "tuning_diagnostics": {
+              "best_alpha": 1.0,
+              "best_inner_rmse": 19.765632043259828,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 6,
+            "seed": 48,
+            "fold_idx": 4,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 20.286344633293023,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 7,
+            "seed": 49,
+            "fold_idx": 0,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 19.90640382418902,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 7,
+            "seed": 49,
+            "fold_idx": 1,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 19.57364682823288,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 7,
+            "seed": 49,
+            "fold_idx": 2,
+            "horizon_minutes": 30,
+            "alpha_opt": 1.0,
+            "tuning_diagnostics": {
+              "best_alpha": 1.0,
+              "best_inner_rmse": 19.61493942255929,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 7,
+            "seed": 49,
+            "fold_idx": 3,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 19.977600941570344,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 7,
+            "seed": 49,
+            "fold_idx": 4,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 20.368936607811797,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 8,
+            "seed": 50,
+            "fold_idx": 0,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 19.819267135027186,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 8,
+            "seed": 50,
+            "fold_idx": 1,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 19.91669782474709,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 8,
+            "seed": 50,
+            "fold_idx": 2,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 20.106560126933804,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 8,
+            "seed": 50,
+            "fold_idx": 3,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 19.436907367952248,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 8,
+            "seed": 50,
+            "fold_idx": 4,
+            "horizon_minutes": 30,
+            "alpha_opt": 1.0,
+            "tuning_diagnostics": {
+              "best_alpha": 1.0,
+              "best_inner_rmse": 20.08752474024281,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 9,
+            "seed": 51,
+            "fold_idx": 0,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 19.83075549240901,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 9,
+            "seed": 51,
+            "fold_idx": 1,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 19.558017325973115,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 9,
+            "seed": 51,
+            "fold_idx": 2,
+            "horizon_minutes": 30,
+            "alpha_opt": 3.1622776601683795,
+            "tuning_diagnostics": {
+              "best_alpha": 3.1622776601683795,
+              "best_inner_rmse": 20.142493550075596,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 9,
+            "seed": 51,
+            "fold_idx": 3,
+            "horizon_minutes": 30,
+            "alpha_opt": 1.0,
+            "tuning_diagnostics": {
+              "best_alpha": 1.0,
+              "best_inner_rmse": 19.99470661613143,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 9,
+            "seed": 51,
+            "fold_idx": 4,
+            "horizon_minutes": 30,
+            "alpha_opt": 1.0,
+            "tuning_diagnostics": {
+              "best_alpha": 1.0,
+              "best_inner_rmse": 20.00931482510916,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 30
             },
             "train_participants_count": 36,
             "test_participants_count": 9
@@ -4843,6 +5651,2017 @@
             ]
           }
         }
+      },
+      "rung2_ridge_regression": {
+        "summary": {
+          "cohort_participants": 45,
+          "headline_skill": {
+            "mean": 0.07168222499653806,
+            "median": 0.0776480696976942,
+            "std": 0.05753071579724049,
+            "ci_95_mean": [
+              0.05532255183855118,
+              0.08748745992807519
+            ],
+            "ci_95_median": [
+              0.06912623726478881,
+              0.10594541491104045
+            ],
+            "fraction_improved": 0.9111111111111111,
+            "n_participants_improved": 41
+          },
+          "headline_rmse": {
+            "mean": 19.86629147051081,
+            "median": 18.558147070365187,
+            "ci_95_mean": [
+              18.566766203127084,
+              21.32714963343492
+            ]
+          },
+          "headline_mae": {
+            "mean": 13.533687050731057,
+            "median": 12.707742158390527,
+            "ci_95_mean": [
+              12.69749818760625,
+              14.472944563105598
+            ]
+          },
+          "subgroups": {
+            "normal": {
+              "n_participants": 15,
+              "mean_skill": 0.02775960036612205,
+              "median_skill": 0.020078765727342362,
+              "fraction_improved": 0.7333333333333333,
+              "mean_rmse": 17.707085014028273,
+              "median_rmse": 16.078817178165195,
+              "mean_mae": 12.351061080894782,
+              "median_mae": 11.643394058240085
+            },
+            "prediabetes": {
+              "n_participants": 16,
+              "mean_skill": 0.09009104583181947,
+              "median_skill": 0.09659124183302539,
+              "fraction_improved": 1.0,
+              "mean_rmse": 19.12108720371326,
+              "median_rmse": 17.7966373813315,
+              "mean_mae": 13.035543571991024,
+              "median_mae": 12.35303873701822
+            },
+            "diabetes": {
+              "n_participants": 14,
+              "mean_skill": 0.09770352757451928,
+              "median_skill": 0.11011778857210239,
+              "fraction_improved": 1.0,
+              "mean_rmse": 23.03138897879645,
+              "median_rmse": 22.65408847391113,
+              "mean_mae": 15.370093136972812,
+              "median_mae": 15.58405875940779
+            }
+          },
+          "bootstrap_metadata": {
+            "resampling_unit": "45 independent participants",
+            "iterations": 2000,
+            "seed": 42,
+            "prohibited_pooling_checked": true
+          }
+        },
+        "participants": {
+          "CGMacros-001": {
+            "diag_group": "normal",
+            "n_origins": 2808,
+            "mean_rmse": 15.256910446929535,
+            "mean_mae": 11.157144991239676,
+            "mean_skill": -0.09656215777413917,
+            "rmse_per_repeat": [
+              15.194281285506019,
+              15.233835251028928,
+              15.434338237281338,
+              15.375067068940785,
+              15.021482759560111,
+              15.18657337272226,
+              15.192972102345907,
+              15.30267209511296,
+              15.523092491192301,
+              15.104789805604732
+            ],
+            "mae_per_repeat": [
+              11.107940667474987,
+              11.129180535619895,
+              11.292253777604213,
+              11.304750475484969,
+              10.958064514316371,
+              11.062640626557853,
+              11.1131518467232,
+              11.203512349801825,
+              11.341389639049114,
+              11.058565479764322
+            ],
+            "skill_per_repeat": [
+              -0.09206080288783736,
+              -0.0949036708415556,
+              -0.10931445132099071,
+              -0.10505444596306512,
+              -0.07964122913923699,
+              -0.09150681094408863,
+              -0.09196670777493976,
+              -0.09985119141236298,
+              -0.11569349880368907,
+              -0.08562876865362545
+            ]
+          },
+          "CGMacros-002": {
+            "diag_group": "normal",
+            "n_origins": 2717,
+            "mean_rmse": 18.025778075484464,
+            "mean_mae": 11.71112707406474,
+            "mean_skill": 0.13531694363448338,
+            "rmse_per_repeat": [
+              18.067546891286998,
+              17.91919541349507,
+              18.1016846142724,
+              18.113156756753714,
+              17.998392881116185,
+              17.966636408215773,
+              18.071532716306116,
+              17.955864927825417,
+              17.9935897914295,
+              18.07018035414347
+            ],
+            "mae_per_repeat": [
+              11.787350843853604,
+              11.647692878625973,
+              11.79952027847361,
+              11.703735550142826,
+              11.67987101740216,
+              11.614622536499068,
+              11.725344901696976,
+              11.652827036138387,
+              11.800139343598453,
+              11.700166354216343
+            ],
+            "skill_per_repeat": [
+              0.1333133248637618,
+              0.140429634001503,
+              0.1316757638927587,
+              0.13112545382113439,
+              0.13663059087158835,
+              0.13815392506176472,
+              0.1331221278266499,
+              0.13867062489832727,
+              0.13686099148191921,
+              0.1331869996254268
+            ]
+          },
+          "CGMacros-003": {
+            "diag_group": "diabetes",
+            "n_origins": 2812,
+            "mean_rmse": 18.944570695707785,
+            "mean_mae": 12.031957683591852,
+            "mean_skill": 0.13368663388370877,
+            "rmse_per_repeat": [
+              18.98331260053057,
+              18.865012080947974,
+              18.934198820047573,
+              18.91258453689875,
+              19.057018756571566,
+              18.980933285752165,
+              18.910963715680435,
+              18.968663178915083,
+              18.906677031554285,
+              18.926342950179457
+            ],
+            "mae_per_repeat": [
+              12.036995215506456,
+              11.9755028732976,
+              11.917705921224638,
+              12.075022981400071,
+              11.957992809899874,
+              12.095150369315833,
+              12.235025540005449,
+              11.93629435998468,
+              11.96965328481189,
+              12.120233480472011
+            ],
+            "skill_per_repeat": [
+              0.1319150112633879,
+              0.13732475756902074,
+              0.13416092779410993,
+              0.13514932403130164,
+              0.12854451376471232,
+              0.13202381458376078,
+              0.1352234423160632,
+              0.13258491241634696,
+              0.1354194674366347,
+              0.1345201676617498
+            ]
+          },
+          "CGMacros-004": {
+            "diag_group": "normal",
+            "n_origins": 2836,
+            "mean_rmse": 15.291559287472856,
+            "mean_mae": 10.994962828236996,
+            "mean_skill": 0.07739972521309399,
+            "rmse_per_repeat": [
+              15.267665428614697,
+              15.330194598313156,
+              15.342364458633737,
+              15.232319286479107,
+              15.329766170699115,
+              15.291192584707732,
+              15.264107694218591,
+              15.288944014681107,
+              15.22523762664055,
+              15.343801011740762
+            ],
+            "mae_per_repeat": [
+              10.95882806885482,
+              11.017913262759878,
+              11.029339164474377,
+              10.886601148930621,
+              11.028193719256501,
+              11.066348711671624,
+              10.958019508441044,
+              11.009885895671049,
+              10.8564034198955,
+              11.138095382414557
+            ],
+            "skill_per_repeat": [
+              0.07884133625705836,
+              0.07506870404464194,
+              0.07433444821992141,
+              0.08097390886354627,
+              0.0750945527777247,
+              0.07742184984181943,
+              0.07905598844979811,
+              0.07755751496827523,
+              0.08140117342108255,
+              0.07424777528707183
+            ]
+          },
+          "CGMacros-005": {
+            "diag_group": "diabetes",
+            "n_origins": 2836,
+            "mean_rmse": 20.475464450262297,
+            "mean_mae": 12.968489481151632,
+            "mean_skill": 0.13622213460468052,
+            "rmse_per_repeat": [
+              20.520770019313293,
+              20.496340299955886,
+              20.49570200800597,
+              20.397376317558912,
+              20.418183078430328,
+              20.46299014378124,
+              20.562689011191726,
+              20.527701079998057,
+              20.442854735798768,
+              20.43003780858877
+            ],
+            "mae_per_repeat": [
+              13.012008951974002,
+              12.960991620315546,
+              12.969950269049745,
+              12.92622355420205,
+              12.950486569660123,
+              12.946444138762043,
+              13.017809869257613,
+              13.009802567226886,
+              12.954903940858468,
+              12.936273330209858
+            ],
+            "skill_per_repeat": [
+              0.13431087404107023,
+              0.1353414660889335,
+              0.13536839307070414,
+              0.13951636027380188,
+              0.13863860633884417,
+              0.13674837565042908,
+              0.13254247960917676,
+              0.13401848034139352,
+              0.137597807894968,
+              0.13813850273748407
+            ]
+          },
+          "CGMacros-006": {
+            "diag_group": "normal",
+            "n_origins": 2836,
+            "mean_rmse": 12.143850875937488,
+            "mean_mae": 8.534607566797757,
+            "mean_skill": 0.06997656414366558,
+            "rmse_per_repeat": [
+              12.13149342907237,
+              12.114487899862219,
+              12.178080838845267,
+              12.135651306248254,
+              12.116453786470888,
+              12.028267555812896,
+              12.356807166110036,
+              12.118820376838954,
+              12.149693086397093,
+              12.10875331371691
+            ],
+            "mae_per_repeat": [
+              8.47474467724445,
+              8.464310488999686,
+              8.547927645775705,
+              8.635669064751667,
+              8.424786080659805,
+              8.345676391886329,
+              8.92028715975,
+              8.502586368449116,
+              8.585736768387097,
+              8.444351022073713
+            ],
+            "skill_per_repeat": [
+              0.07092294559295387,
+              0.07222529530608457,
+              0.06735510015848067,
+              0.07060451915174581,
+              0.0720747400467211,
+              0.07882838533351189,
+              0.05366754135535656,
+              0.07189349733155115,
+              0.06952914489419149,
+              0.07266447226605877
+            ]
+          },
+          "CGMacros-007": {
+            "diag_group": "prediabetes",
+            "n_origins": 231,
+            "mean_rmse": 10.578450123706371,
+            "mean_mae": 7.450780401480905,
+            "mean_skill": 0.0048249956887961186,
+            "rmse_per_repeat": [
+              10.526204061316704,
+              10.631855906194632,
+              10.463993974622246,
+              10.529099694876074,
+              10.573272376746633,
+              10.434829484356706,
+              10.870878652317831,
+              10.539503814835324,
+              10.692426675170728,
+              10.522436596626836
+            ],
+            "mae_per_repeat": [
+              7.351292083966981,
+              7.59892163238845,
+              7.291188518120888,
+              7.326792676433764,
+              7.420465839784562,
+              7.177204690956568,
+              7.9652581669358105,
+              7.403388872950821,
+              7.662169285430518,
+              7.31112224784069
+            ],
+            "skill_per_repeat": [
+              0.009740080106253601,
+              -0.00019919019821701411,
+              0.015592536994585182,
+              0.00946767137848814,
+              0.005312095811472184,
+              0.018336206566813007,
+              -0.022685420186725702,
+              0.008488896604847307,
+              -0.005897427139546885,
+              0.010094506949991366
+            ]
+          },
+          "CGMacros-008": {
+            "diag_group": "prediabetes",
+            "n_origins": 2774,
+            "mean_rmse": 20.740518823384196,
+            "mean_mae": 13.383138557722608,
+            "mean_skill": 0.09236665973080149,
+            "rmse_per_repeat": [
+              20.73557799313124,
+              20.795581183011432,
+              20.746855126672553,
+              20.817020736085748,
+              20.7607389171022,
+              20.67897595426408,
+              20.735350371339155,
+              20.69023271699227,
+              20.68578958047448,
+              20.759065654768786
+            ],
+            "mae_per_repeat": [
+              13.339308396573365,
+              13.405608993395589,
+              13.449429811735381,
+              13.377469871927723,
+              13.420176007296018,
+              13.279850678311071,
+              13.397015686010318,
+              13.347672754976221,
+              13.371916755335885,
+              13.44293662166449
+            ],
+            "skill_per_repeat": [
+              0.0925828771892161,
+              0.08995705591051384,
+              0.09208937447253263,
+              0.08901883187974469,
+              0.09148180090166091,
+              0.09505985946919293,
+              0.09259283822872655,
+              0.094567248207025,
+              0.09476168591001843,
+              0.09155502513938385
+            ]
+          },
+          "CGMacros-009": {
+            "diag_group": "prediabetes",
+            "n_origins": 2788,
+            "mean_rmse": 16.66302222667061,
+            "mean_mae": 11.769138885290277,
+            "mean_skill": 0.10790845460357974,
+            "rmse_per_repeat": [
+              16.56171535679832,
+              16.64931279414831,
+              16.694922003919313,
+              16.588125824958247,
+              16.580918851883954,
+              16.74665876464317,
+              16.72458030586509,
+              16.6588152533286,
+              16.72397774895572,
+              16.70119536220537
+            ],
+            "mae_per_repeat": [
+              11.697016681878825,
+              11.74630344486399,
+              11.771460896535416,
+              11.720220698587209,
+              11.705149819568492,
+              11.855021008900529,
+              11.793954707380893,
+              11.770483654345826,
+              11.826638138302537,
+              11.805139802539047
+            ],
+            "skill_per_repeat": [
+              0.11333214070771225,
+              0.10864241922770113,
+              0.10620062986467682,
+              0.11191819820466975,
+              0.11230403936001465,
+              0.10343078858377908,
+              0.10461280743626444,
+              0.10813368417472602,
+              0.1046450666457378,
+              0.10586477183051557
+            ]
+          },
+          "CGMacros-010": {
+            "diag_group": "prediabetes",
+            "n_origins": 2836,
+            "mean_rmse": 18.256679409917698,
+            "mean_mae": 12.707742158390527,
+            "mean_skill": 0.07006146462524734,
+            "rmse_per_repeat": [
+              18.27381823559468,
+              18.429898740407747,
+              18.15461753933642,
+              18.298190433749646,
+              18.39129503559875,
+              18.27556652607061,
+              18.266663391346633,
+              18.109494361459834,
+              18.26942279128521,
+              18.09782704432744
+            ],
+            "mae_per_repeat": [
+              12.713636632319568,
+              12.839559861999593,
+              12.63917177567724,
+              12.740806838419157,
+              12.803203165253795,
+              12.72354357080353,
+              12.719484429443257,
+              12.602068121136629,
+              12.709767590956343,
+              12.58617959789617
+            ],
+            "skill_per_repeat": [
+              0.0691884660864529,
+              0.061238210030164386,
+              0.07526017926085626,
+              0.0679470220238606,
+              0.0632045628320117,
+              0.06909941360061522,
+              0.06955291162616306,
+              0.07755861376824058,
+              0.06941235636527598,
+              0.07815291065883279
+            ]
+          },
+          "CGMacros-011": {
+            "diag_group": "prediabetes",
+            "n_origins": 2836,
+            "mean_rmse": 17.3365953527453,
+            "mean_mae": 11.330324912076648,
+            "mean_skill": 0.10081582393524928,
+            "rmse_per_repeat": [
+              17.29483970159698,
+              17.20937567808888,
+              17.441937576718445,
+              17.153413013184192,
+              17.406131218912716,
+              17.549722933057758,
+              17.372272717696564,
+              17.311304386339767,
+              17.293020306986,
+              17.333935994871705
+            ],
+            "mae_per_repeat": [
+              11.250559344447653,
+              11.215430710476772,
+              11.380160337864579,
+              11.195796841037302,
+              11.36827636567379,
+              11.522736359712352,
+              11.446935867861791,
+              11.278887278105683,
+              11.280677860246053,
+              11.363788155340504
+            ],
+            "skill_per_repeat": [
+              0.10298153294615398,
+              0.10741423129307259,
+              0.09535211788796472,
+              0.11031680482085238,
+              0.09720925936738012,
+              0.089761695728376,
+              0.09896537283137763,
+              0.1021275715031269,
+              0.10307589812056817,
+              0.10095375485362024
+            ]
+          },
+          "CGMacros-012": {
+            "diag_group": "diabetes",
+            "n_origins": 2822,
+            "mean_rmse": 19.245028283635033,
+            "mean_mae": 13.090805198548162,
+            "mean_skill": 0.15134812511592374,
+            "rmse_per_repeat": [
+              19.273184167617316,
+              19.09836279679363,
+              19.41370232298563,
+              19.48517557133221,
+              19.22935265322614,
+              19.42887704328336,
+              19.09496801945956,
+              19.156680263892124,
+              19.094354748882633,
+              19.17562524887773
+            ],
+            "mae_per_repeat": [
+              13.058918505095834,
+              13.007756662208088,
+              13.164562072438724,
+              13.199853719905153,
+              13.093427225301042,
+              13.24978769369078,
+              13.087055784685836,
+              12.980545070933866,
+              12.99234736430498,
+              13.073797886917346
+            ],
+            "skill_per_repeat": [
+              0.15010652944880276,
+              0.1578156625263304,
+              0.14391007214819307,
+              0.14075830197049155,
+              0.15203937653631316,
+              0.1432409094615129,
+              0.1579653627037949,
+              0.15524402547481653,
+              0.15799240621951494,
+              0.15440860466946715
+            ]
+          },
+          "CGMacros-013": {
+            "diag_group": "prediabetes",
+            "n_origins": 2836,
+            "mean_rmse": 19.454140165658576,
+            "mean_mae": 13.432498277607953,
+            "mean_skill": 0.09025184211932305,
+            "rmse_per_repeat": [
+              19.564866266233466,
+              19.30891388992531,
+              19.346243736575737,
+              19.537876001137356,
+              19.514134145227334,
+              19.673073997256555,
+              19.35741900927937,
+              19.3679237131979,
+              19.423918119894054,
+              19.447032777858645
+            ],
+            "mae_per_repeat": [
+              13.501804856781407,
+              13.322495708606427,
+              13.362584409096153,
+              13.454005335447173,
+              13.469395950796372,
+              13.620729100814419,
+              13.359126714275103,
+              13.350339261100792,
+              13.423759500164543,
+              13.460741938997135
+            ],
+            "skill_per_repeat": [
+              0.08507387664927168,
+              0.09704316446506356,
+              0.09529748159576146,
+              0.08633604211856549,
+              0.0874462998577864,
+              0.08001367953295413,
+              0.09477488416049218,
+              0.09428364502282849,
+              0.09166513770717899,
+              0.09058421008332807
+            ]
+          },
+          "CGMacros-014": {
+            "diag_group": "diabetes",
+            "n_origins": 2836,
+            "mean_rmse": 18.558147070365187,
+            "mean_mae": 11.65538092714785,
+            "mean_skill": 0.12359396000274572,
+            "rmse_per_repeat": [
+              18.552238816865422,
+              18.58438021103274,
+              18.550080356023678,
+              18.595616404062284,
+              18.52052232710145,
+              18.45314916313282,
+              18.605536886576772,
+              18.565683439349456,
+              18.643665618401222,
+              18.510597481106025
+            ],
+            "mae_per_repeat": [
+              11.664055127799713,
+              11.674368290866607,
+              11.657134335583512,
+              11.670516311068774,
+              11.642963686958204,
+              11.610187126257122,
+              11.64828687987481,
+              11.659888165991925,
+              11.674208633233501,
+              11.652200713844302
+            ],
+            "skill_per_repeat": [
+              0.1238729764925599,
+              0.1223551034055882,
+              0.1239749095202286,
+              0.12182447567641197,
+              0.12537078352530207,
+              0.1285524722796778,
+              0.12135598220222943,
+              0.12323805597458937,
+              0.11955535788657545,
+              0.1258394830642945
+            ]
+          },
+          "CGMacros-015": {
+            "diag_group": "normal",
+            "n_origins": 2747,
+            "mean_rmse": 16.23507060630064,
+            "mean_mae": 11.643394058240085,
+            "mean_skill": 0.020078765727342362,
+            "rmse_per_repeat": [
+              16.29071379033953,
+              16.026845188117264,
+              16.28871452890434,
+              16.344890105122452,
+              16.142082635481152,
+              16.18392936859046,
+              16.24801297157529,
+              16.093584186858447,
+              16.359929795737905,
+              16.37200349227952
+            ],
+            "mae_per_repeat": [
+              11.809811614803351,
+              11.467880557603609,
+              11.716006917406599,
+              11.739344341549835,
+              11.492503909856033,
+              11.570835542938443,
+              11.587635028742438,
+              11.52079765031207,
+              11.738941199693476,
+              11.79018381949501
+            ],
+            "skill_per_repeat": [
+              0.016720237827802853,
+              0.0326468976277976,
+              0.016840909845850405,
+              0.013450247660354964,
+              0.025691361406635305,
+              0.02316556380752688,
+              0.019297586583629678,
+              0.028618645234783635,
+              0.012542477528129425,
+              0.011813729750912882
+            ]
+          },
+          "CGMacros-016": {
+            "diag_group": "prediabetes",
+            "n_origins": 2836,
+            "mean_rmse": 14.962173704248178,
+            "mean_mae": 10.537590296152478,
+            "mean_skill": 0.06437998083728179,
+            "rmse_per_repeat": [
+              15.101090318607822,
+              15.089885578662441,
+              14.996017135045614,
+              15.002251218175365,
+              14.884160735225455,
+              14.967060506110132,
+              14.939694979809945,
+              14.976316286369054,
+              14.845930125415117,
+              14.819330159060831
+            ],
+            "mae_per_repeat": [
+              10.638371489956356,
+              10.652868496640403,
+              10.58211179045867,
+              10.586741879336257,
+              10.473339851787417,
+              10.547206469583703,
+              10.433861683582148,
+              10.562146031770846,
+              10.473546570372548,
+              10.425708698036424
+            ],
+            "skill_per_repeat": [
+              0.055693197221590496,
+              0.05639385604360603,
+              0.06226367126909127,
+              0.06187383934409063,
+              0.06925831583156516,
+              0.06407439758834332,
+              0.06578562850622183,
+              0.0634956118133353,
+              0.07164896605327686,
+              0.07331232470169702
+            ]
+          },
+          "CGMacros-017": {
+            "diag_group": "normal",
+            "n_origins": 2810,
+            "mean_rmse": 16.072017242507336,
+            "mean_mae": 10.834734885294901,
+            "mean_skill": -0.036045674027968724,
+            "rmse_per_repeat": [
+              16.298856518983165,
+              15.929873911785144,
+              16.05453179696779,
+              16.005069307307476,
+              16.027125890055707,
+              16.138406219087788,
+              16.156659276356724,
+              16.09576311692052,
+              16.074553760604243,
+              15.939332627004799
+            ],
+            "mae_per_repeat": [
+              11.00749121634601,
+              10.734464155300891,
+              10.806735615530895,
+              10.749182253847096,
+              10.809479345177238,
+              10.891397834330425,
+              10.902077872150224,
+              10.87503968035221,
+              10.845566566944175,
+              10.725914312969842
+            ],
+            "skill_per_repeat": [
+              -0.05066834693494182,
+              -0.02688273071695968,
+              -0.03491851494542475,
+              -0.031730029165077944,
+              -0.033151856107853206,
+              -0.040325286907390456,
+              -0.04150192831686139,
+              -0.03757639727761308,
+              -0.03620918484069002,
+              -0.02749246506687486
+            ]
+          },
+          "CGMacros-018": {
+            "diag_group": "normal",
+            "n_origins": 2749,
+            "mean_rmse": 18.54016400004193,
+            "mean_mae": 13.000721964059732,
+            "mean_skill": 0.04655890499304942,
+            "rmse_per_repeat": [
+              18.53448974619738,
+              18.42245908634571,
+              18.420866248714777,
+              18.590318423937106,
+              18.656004796438463,
+              18.561133104332193,
+              18.52949983274187,
+              18.71726765506506,
+              18.52044800830334,
+              18.449153098343395
+            ],
+            "mae_per_repeat": [
+              12.99322089135318,
+              12.938566958432867,
+              12.921186725989985,
+              13.023744820650261,
+              13.081515643775974,
+              13.042368158648513,
+              12.974665892315222,
+              13.109922785343379,
+              12.999100212458188,
+              12.922927551629769
+            ],
+            "skill_per_repeat": [
+              0.04685070752504872,
+              0.05261196373632526,
+              0.052693876542220686,
+              0.0439796781405819,
+              0.04060170980521083,
+              0.04548055391936001,
+              0.047107317366741674,
+              0.0374512238110164,
+              0.04757281386420864,
+              0.05123920521978009
+            ]
+          },
+          "CGMacros-019": {
+            "diag_group": "normal",
+            "n_origins": 2812,
+            "mean_rmse": 16.078817178165195,
+            "mean_mae": 10.464162013258093,
+            "mean_skill": 0.05437803626091355,
+            "rmse_per_repeat": [
+              16.097175738743346,
+              16.172147566987487,
+              16.103940707430237,
+              15.946105461602155,
+              15.986882550360015,
+              15.934425187001981,
+              16.032839643434876,
+              16.259350145539603,
+              16.02732900626966,
+              16.227975774282573
+            ],
+            "mae_per_repeat": [
+              10.476335584817825,
+              10.53841002164534,
+              10.482981224249974,
+              10.367513411046904,
+              10.39901808838146,
+              10.355259687620276,
+              10.447650399539429,
+              10.591106686995627,
+              10.41653023520013,
+              10.566814793083982
+            ],
+            "skill_per_repeat": [
+              0.05329833879853363,
+              0.048889120964674015,
+              0.05290047974562906,
+              0.062183032899468915,
+              0.0597848645317649,
+              0.06286996926313548,
+              0.05708205150020651,
+              0.04376059237579599,
+              0.05740614123142762,
+              0.04560577129849941
+            ]
+          },
+          "CGMacros-020": {
+            "diag_group": "prediabetes",
+            "n_origins": 2836,
+            "mean_rmse": 21.641627940082493,
+            "mean_mae": 15.22755246237281,
+            "mean_skill": 0.0776480696976942,
+            "rmse_per_repeat": [
+              21.70970343689374,
+              21.607682185478062,
+              21.647811904939516,
+              21.6082076541171,
+              21.642367439255526,
+              21.66258974656301,
+              21.631072515575024,
+              21.652749295449716,
+              21.594728080903437,
+              21.65936714164981
+            ],
+            "mae_per_repeat": [
+              15.387039947867002,
+              15.167794059028036,
+              15.242482964399525,
+              15.199117754443133,
+              15.214436719807482,
+              15.241651786429147,
+              15.212514472797585,
+              15.25811281759418,
+              15.15483271472155,
+              15.197541386640474
+            ],
+            "skill_per_repeat": [
+              0.07474673685600675,
+              0.07909481540331542,
+              0.07738451318805506,
+              0.07907242027597705,
+              0.07761655272995072,
+              0.07675469131028922,
+              0.07809793493872785,
+              0.07717408485612243,
+              0.07964691080911501,
+              0.07689203660938237
+            ]
+          },
+          "CGMacros-021": {
+            "diag_group": "normal",
+            "n_origins": 2836,
+            "mean_rmse": 18.42990429114319,
+            "mean_mae": 12.442170598395437,
+            "mean_skill": 0.06912623726478881,
+            "rmse_per_repeat": [
+              18.391154683490335,
+              18.602466164522557,
+              18.38189702880599,
+              18.48624030538244,
+              18.410082664551656,
+              18.40270682911403,
+              18.38367178654893,
+              18.379254681749917,
+              18.327671994263465,
+              18.533896773002574
+            ],
+            "mae_per_repeat": [
+              12.373505699453238,
+              12.586122733803512,
+              12.482157176625883,
+              12.501987606303445,
+              12.355447744449656,
+              12.488401845955792,
+              12.401617274530345,
+              12.391443580943712,
+              12.413641511081847,
+              12.427380810806941
+            ],
+            "skill_per_repeat": [
+              0.07108343641843062,
+              0.060410330885693586,
+              0.07155103015706232,
+              0.06628076846994546,
+              0.07012740535754236,
+              0.07049995051994107,
+              0.07146138913711908,
+              0.07168449213861594,
+              0.07428987573876755,
+              0.06387369382477004
+            ]
+          },
+          "CGMacros-022": {
+            "diag_group": "prediabetes",
+            "n_origins": 2836,
+            "mean_rmse": 16.982451811338077,
+            "mean_mae": 11.998335315645912,
+            "mean_skill": 0.03662038197720511,
+            "rmse_per_repeat": [
+              16.99539903337707,
+              16.699113527399934,
+              16.8580210377489,
+              17.07144329116917,
+              16.911065785904622,
+              17.023777436470624,
+              17.188791848527554,
+              16.79744379461166,
+              17.19426601115711,
+              17.08519634701412
+            ],
+            "mae_per_repeat": [
+              11.958014369783726,
+              11.807550153113809,
+              11.875665176099487,
+              12.004665176034305,
+              11.967102399743887,
+              12.0251547734967,
+              12.230464637832506,
+              11.884388082135168,
+              12.152774600262234,
+              12.077573787957311
+            ],
+            "skill_per_repeat": [
+              0.03588591265787788,
+              0.05269358099369359,
+              0.04367908424601341,
+              0.03157207806918372,
+              0.040669964609810205,
+              0.034276064125046246,
+              0.02491513538391321,
+              0.047115506854642164,
+              0.02460459737905718,
+              0.030791895452813467
+            ]
+          },
+          "CGMacros-023": {
+            "diag_group": "prediabetes",
+            "n_origins": 2820,
+            "mean_rmse": 24.49107944298593,
+            "mean_mae": 17.026231787950913,
+            "mean_skill": 0.13895670424148063,
+            "rmse_per_repeat": [
+              24.472795684540863,
+              24.556871231320592,
+              24.31898932743588,
+              24.39641314126365,
+              24.576948708396568,
+              24.42275898945347,
+              24.587027165151998,
+              24.41268629732783,
+              24.636739068870508,
+              24.529564816097952
+            ],
+            "mae_per_repeat": [
+              17.029514854352634,
+              17.09796720039527,
+              16.899258464549227,
+              16.990529980928468,
+              17.100661533755062,
+              16.974408942669843,
+              17.06123290457688,
+              16.961939753623998,
+              17.082811701152355,
+              17.063992543505414
+            ],
+            "skill_per_repeat": [
+              0.1395995141130113,
+              0.13664363435848914,
+              0.14500694962187022,
+              0.14228492767164747,
+              0.13593776195820317,
+              0.14135867548224412,
+              0.13558342936779788,
+              0.14171280540310827,
+              0.13383568682685099,
+              0.13760365761158366
+            ]
+          },
+          "CGMacros-026": {
+            "diag_group": "prediabetes",
+            "n_origins": 2726,
+            "mean_rmse": 25.86509001884795,
+            "mean_mae": 17.285138746211363,
+            "mean_skill": 0.07198396394939117,
+            "rmse_per_repeat": [
+              25.985554520867872,
+              25.87559000222888,
+              25.85734670052579,
+              25.66719944954793,
+              25.91909226523721,
+              25.726960431746107,
+              25.710994530607554,
+              26.042388161123263,
+              25.940834531015067,
+              25.92493959557981
+            ],
+            "mae_per_repeat": [
+              17.38285208108346,
+              17.298401443573002,
+              17.283791852564132,
+              17.145964554312602,
+              17.32984040622679,
+              17.14899299856049,
+              17.178607500832,
+              17.4132625859872,
+              17.362291609948436,
+              17.30738242902548
+            ],
+            "skill_per_repeat": [
+              0.06766180657171039,
+              0.07160723404245217,
+              0.07226178720730247,
+              0.0790840985926412,
+              0.07004641219157892,
+              0.07693992860252585,
+              0.07751277069492846,
+              0.06562266696285157,
+              0.06926631936038352,
+              0.06983661526753715
+            ]
+          },
+          "CGMacros-027": {
+            "diag_group": "normal",
+            "n_origins": 2804,
+            "mean_rmse": 15.11010777245977,
+            "mean_mae": 10.641188964171546,
+            "mean_skill": 0.0027012610492701318,
+            "rmse_per_repeat": [
+              15.027208829209,
+              15.141340960793018,
+              15.003015790172485,
+              15.137388873279189,
+              15.1982661452834,
+              15.069285297034966,
+              15.160191205641608,
+              15.074083951355545,
+              15.106720538482774,
+              15.183576133345731
+            ],
+            "mae_per_repeat": [
+              10.594178235842877,
+              10.664448914593308,
+              10.53465036877116,
+              10.648921632287479,
+              10.727999450016462,
+              10.576873350346622,
+              10.686624920055028,
+              10.617297651447172,
+              10.640905256201753,
+              10.719989862153612
+            ],
+            "skill_per_repeat": [
+              0.008172764814122768,
+              0.0006398052471526805,
+              0.009769556027384496,
+              0.0009006512949186751,
+              -0.0031173760755556224,
+              0.005395629870133867,
+              -0.0006043503670565276,
+              0.005078908641229285,
+              0.0029248255813476565,
+              -0.0021478045409759616
+            ]
+          },
+          "CGMacros-028": {
+            "diag_group": "diabetes",
+            "n_origins": 2807,
+            "mean_rmse": 17.69414419865805,
+            "mean_mae": 12.061617279737629,
+            "mean_skill": 0.09765742848947605,
+            "rmse_per_repeat": [
+              17.732598650039108,
+              17.70736377702287,
+              17.66844969906743,
+              17.653895771571136,
+              17.710570333229935,
+              17.711368197784033,
+              17.702057283207974,
+              17.68216638549012,
+              17.662299665132437,
+              17.710672224035463
+            ],
+            "mae_per_repeat": [
+              12.084671156098189,
+              12.064246786747532,
+              12.063324759184587,
+              12.02723584955673,
+              12.070680784760597,
+              12.081428163318133,
+              12.060329274847444,
+              12.054550806139515,
+              12.049128275866742,
+              12.060576940856816
+            ],
+            "skill_per_repeat": [
+              0.09569637922054097,
+              0.09698327391030737,
+              0.098967762607587,
+              0.09970996455955139,
+              0.09681975019641142,
+              0.09677906175477902,
+              0.0972538874658927,
+              0.09826825716893506,
+              0.09928139390692947,
+              0.09681455410382611
+            ]
+          },
+          "CGMacros-029": {
+            "diag_group": "prediabetes",
+            "n_origins": 2836,
+            "mean_rmse": 15.58692293021885,
+            "mean_mae": 10.496347431657039,
+            "mean_skill": 0.1130355956114468,
+            "rmse_per_repeat": [
+              15.594889345099022,
+              15.634613314519143,
+              15.571389719418432,
+              15.581715934111422,
+              15.550546030853267,
+              15.591296057325994,
+              15.580462159933719,
+              15.57845772092725,
+              15.588928400865502,
+              15.596930619134746
+            ],
+            "mae_per_repeat": [
+              10.479354521249375,
+              10.53255446700059,
+              10.46551417744542,
+              10.589279792004309,
+              10.481267528899302,
+              10.57829172471065,
+              10.472897873384403,
+              10.522074210826792,
+              10.375957162497158,
+              10.466282858552406
+            ],
+            "skill_per_repeat": [
+              0.11258227159997014,
+              0.11032180319100937,
+              0.11391950355963609,
+              0.11333189656974074,
+              0.11510560102712397,
+              0.11278674546332779,
+              0.11340324182959372,
+              0.11351730321665932,
+              0.1129214755195217,
+              0.1124661141378851
+            ]
+          },
+          "CGMacros-030": {
+            "diag_group": "diabetes",
+            "n_origins": 2804,
+            "mean_rmse": 27.836141875701667,
+            "mean_mae": 18.109408744617067,
+            "mean_skill": 0.08508739365349614,
+            "rmse_per_repeat": [
+              27.758018377232318,
+              27.959499344699267,
+              27.627072402183572,
+              28.229261112301927,
+              27.406102175864174,
+              27.697942440963267,
+              27.722005993997026,
+              28.142603203079982,
+              28.061611819174527,
+              27.757301887520665
+            ],
+            "mae_per_repeat": [
+              18.081549371188753,
+              18.172441949318525,
+              17.976550302322437,
+              18.351199062392173,
+              17.83293808565696,
+              18.014074544006426,
+              18.03671454882133,
+              18.3092206997941,
+              18.259885137685757,
+              18.059513744984198
+            ],
+            "skill_per_repeat": [
+              0.08765514079031811,
+              0.08103290564374022,
+              0.09195904626175166,
+              0.07216643115197774,
+              0.09922185037410358,
+              0.08962970435146322,
+              0.08883878842200776,
+              0.07501468555234769,
+              0.07767669375993025,
+              0.08767869022732122
+            ]
+          },
+          "CGMacros-031": {
+            "diag_group": "normal",
+            "n_origins": 2716,
+            "mean_rmse": 14.813263912864233,
+            "mean_mae": 10.638066664707447,
+            "mean_skill": 0.013006257373691033,
+            "rmse_per_repeat": [
+              14.959000010238148,
+              14.805040294418912,
+              14.776779634077329,
+              14.866385731786062,
+              14.775329526984999,
+              14.85691587176331,
+              14.746795247406107,
+              14.713818384260758,
+              14.720944255109837,
+              14.911630172596864
+            ],
+            "mae_per_repeat": [
+              10.699620576299221,
+              10.604323653660215,
+              10.660166867988695,
+              10.681725358141103,
+              10.648987597489814,
+              10.661807095867726,
+              10.54280732303004,
+              10.58246091097292,
+              10.588848524139937,
+              10.709918739484808
+            ],
+            "skill_per_repeat": [
+              0.00329599925441737,
+              0.013554189280867046,
+              0.015437170309471226,
+              0.009466800898657146,
+              0.015533789571416934,
+              0.010097768701633147,
+              0.017435001590616728,
+              0.01963221874460519,
+              0.01915742871992354,
+              0.006452206665301996
+            ]
+          },
+          "CGMacros-032": {
+            "diag_group": "normal",
+            "n_origins": 2698,
+            "mean_rmse": 24.287210536024595,
+            "mean_mae": 16.72099493123667,
+            "mean_skill": 0.011888948799100574,
+            "rmse_per_repeat": [
+              24.040590245137828,
+              24.547193819935394,
+              24.12782443593984,
+              23.954872017566046,
+              24.3509849776259,
+              24.710736216628536,
+              24.410250400785518,
+              24.190997813404376,
+              24.31253527658285,
+              24.226120156639663
+            ],
+            "mae_per_repeat": [
+              16.512770551187767,
+              16.87383531623518,
+              16.527650046239284,
+              16.544565455701676,
+              16.703357430605873,
+              17.00903101246225,
+              16.924780011497635,
+              16.621133828666718,
+              16.759491683754508,
+              16.73333397601585
+            ],
+            "skill_per_repeat": [
+              0.021922552061778178,
+              0.0013116799283622305,
+              0.018373479686991434,
+              0.025409948353229628,
+              0.009294322691794199,
+              -0.005341947472474073,
+              0.006883143380310264,
+              0.015803307524906107,
+              0.01085862644168989,
+              0.014374375394417882
+            ]
+          },
+          "CGMacros-033": {
+            "diag_group": "normal",
+            "n_origins": 2770,
+            "mean_rmse": 28.372381657137293,
+            "mean_mae": 19.409988005714844,
+            "mean_skill": 0.13025933485607183,
+            "rmse_per_repeat": [
+              28.407922499188217,
+              28.33126276542,
+              28.357354432392512,
+              28.355392425892123,
+              28.315362470476224,
+              28.406793041682374,
+              28.428079320945123,
+              28.293831858464703,
+              28.52395498320294,
+              28.303862773708694
+            ],
+            "mae_per_repeat": [
+              19.436395080542173,
+              19.37130592556011,
+              19.412507650831618,
+              19.439239273224445,
+              19.35968955151464,
+              19.40745289728376,
+              19.435982225807287,
+              19.363401856698935,
+              19.49443999916237,
+              19.379465596523104
+            ],
+            "skill_per_repeat": [
+              0.12916984875022808,
+              0.1315198131854679,
+              0.13071998664775897,
+              0.1307801309408707,
+              0.13200722849192692,
+              0.12920447168510374,
+              0.1285519518188427,
+              0.1326672382520574,
+              0.12561293304802157,
+              0.1323597457404403
+            ]
+          },
+          "CGMacros-034": {
+            "diag_group": "normal",
+            "n_origins": 2836,
+            "mean_rmse": 15.971103803580636,
+            "mean_mae": 11.95048034770711,
+            "mean_skill": -0.07297755297322528,
+            "rmse_per_repeat": [
+              15.949560768520126,
+              15.621777577574663,
+              16.000695674873818,
+              15.948929990547011,
+              15.970758666101151,
+              16.21654503259495,
+              16.169377632721737,
+              15.837147627768903,
+              16.080660112510262,
+              15.915584952593745
+            ],
+            "mae_per_repeat": [
+              12.014086074917998,
+              11.690207379059576,
+              11.954813749326503,
+              11.922920873344436,
+              11.911155172694873,
+              12.150532008064815,
+              12.208255570413485,
+              11.815105767426592,
+              12.01177259537503,
+              11.82595428644779
+            ],
+            "skill_per_repeat": [
+              -0.0715302395422237,
+              -0.049508968473434445,
+              -0.074965606775802,
+              -0.07148786234560744,
+              -0.0729543657988927,
+              -0.08946689100178884,
+              -0.08629807049204286,
+              -0.06397805165535764,
+              -0.08033781195806355,
+              -0.06924766168903962
+            ]
+          },
+          "CGMacros-035": {
+            "diag_group": "diabetes",
+            "n_origins": 2822,
+            "mean_rmse": 29.14511401653158,
+            "mean_mae": 20.014244343304078,
+            "mean_skill": 0.008739194228405611,
+            "rmse_per_repeat": [
+              29.847850750344517,
+              29.120856415656018,
+              29.295452912558556,
+              28.902315196301842,
+              29.541131382662943,
+              29.055102201126843,
+              28.893406725144725,
+              28.918285069435857,
+              28.98996590939058,
+              28.88677360269388
+            ],
+            "mae_per_repeat": [
+              20.698711729986492,
+              19.976005571339115,
+              20.150572031451723,
+              19.78428084020873,
+              20.39954816220162,
+              19.883991725881906,
+              19.78792706151971,
+              19.805290602620087,
+              19.88973921155481,
+              19.766376496276603
+            ],
+            "skill_per_repeat": [
+              -0.01516173752329708,
+              0.009564224762729556,
+              0.003625985368423623,
+              0.016997077661107363,
+              -0.0047298384618854605,
+              0.011800605640845063,
+              0.017300065609357818,
+              0.016453922835845236,
+              0.014015970212582163,
+              0.017525666178347832
+            ]
+          },
+          "CGMacros-036": {
+            "diag_group": "diabetes",
+            "n_origins": 2836,
+            "mean_rmse": 23.050205210150864,
+            "mean_mae": 15.660958852924901,
+            "mean_skill": 0.11382336051320732,
+            "rmse_per_repeat": [
+              23.108514033704072,
+              23.06682137798746,
+              23.080145624402867,
+              23.004008640383258,
+              23.07994243791171,
+              23.12613958824779,
+              23.01509143876385,
+              23.029144141485396,
+              22.988021799009307,
+              23.004223019612922
+            ],
+            "mae_per_repeat": [
+              15.693374576000375,
+              15.68688664745568,
+              15.708602839212467,
+              15.643131811264816,
+              15.664543249179417,
+              15.65510978263486,
+              15.640866060126466,
+              15.657193916273775,
+              15.656578500372243,
+              15.603301146728919
+            ],
+            "skill_per_repeat": [
+              0.11158164870033127,
+              0.11318454365060959,
+              0.11267228634945115,
+              0.11559941068626367,
+              0.11268009795547718,
+              0.11090402546217626,
+              0.11517332697310445,
+              0.11463306380581595,
+              0.1162140327790222,
+              0.11559116876982145
+            ]
+          },
+          "CGMacros-038": {
+            "diag_group": "diabetes",
+            "n_origins": 2822,
+            "mean_rmse": 19.824616662675957,
+            "mean_mae": 13.15358656876335,
+            "mean_skill": 0.11187262929045708,
+            "rmse_per_repeat": [
+              19.824185501080958,
+              19.836892997736822,
+              19.84056875295851,
+              19.90585501303009,
+              19.73231278532815,
+              19.761385449191494,
+              19.897104777314837,
+              19.80577853784003,
+              19.775026270602496,
+              19.86705654167623
+            ],
+            "mae_per_repeat": [
+              13.152177991361196,
+              13.15122460702709,
+              13.14126914389811,
+              13.193018509803126,
+              13.143900458569949,
+              13.114982130830722,
+              13.187271134137786,
+              13.153400768759347,
+              13.130135630719463,
+              13.168485312526697
+            ],
+            "skill_per_repeat": [
+              0.11189194499376864,
+              0.11132265905067551,
+              0.11115798808245658,
+              0.10823321453008838,
+              0.11600777103317472,
+              0.11470533835788954,
+              0.10862521826822413,
+              0.11271656259642271,
+              0.11409424019340997,
+              0.10997135579846051
+            ]
+          },
+          "CGMacros-039": {
+            "diag_group": "diabetes",
+            "n_origins": 2836,
+            "mean_rmse": 29.3134360946171,
+            "mean_mae": 19.242735824706955,
+            "mean_skill": 0.0506119673679258,
+            "rmse_per_repeat": [
+              29.772539848245167,
+              29.608814355391132,
+              29.03436588720945,
+              29.647373642691715,
+              29.557495348796444,
+              28.902600432805507,
+              28.99361672306633,
+              29.369370620100025,
+              28.88366918152244,
+              29.364514906342794
+            ],
+            "mae_per_repeat": [
+              19.537585621446283,
+              19.44821266430023,
+              19.061824708306272,
+              19.45604651528577,
+              19.397209882506097,
+              18.964654734774673,
+              19.02936705990538,
+              19.27651990612174,
+              18.95377101392271,
+              19.302166140500418
+            ],
+            "skill_per_repeat": [
+              0.0357427583122536,
+              0.04104541280320739,
+              0.05965034534319247,
+              0.0397965750418533,
+              0.0427075055906343,
+              0.06391789504707734,
+              0.06097010767512667,
+              0.048800389600889726,
+              0.06453103038040642,
+              0.048957653884616814
+            ]
+          },
+          "CGMacros-041": {
+            "diag_group": "prediabetes",
+            "n_origins": 2829,
+            "mean_rmse": 23.478117459967642,
+            "mean_mae": 15.340215708810081,
+            "mean_skill": 0.11114160716966233,
+            "rmse_per_repeat": [
+              23.520234131028126,
+              23.740054674212775,
+              23.444615813269227,
+              23.567822026457474,
+              23.304703579707503,
+              23.70002759792424,
+              23.49593874212055,
+              23.374039921228473,
+              23.31117910154522,
+              23.322559012182875
+            ],
+            "mae_per_repeat": [
+              15.378091958600205,
+              15.527811149647995,
+              15.282542617104733,
+              15.455250202819903,
+              15.244732656251632,
+              15.494032654992326,
+              15.380038024441333,
+              15.237356244296075,
+              15.195962846270842,
+              15.206338733675771
+            ],
+            "skill_per_repeat": [
+              0.10954711150304797,
+              0.10122492233863323,
+              0.11240994650275837,
+              0.10774548067290868,
+              0.11770688580264166,
+              0.10274030800616762,
+              0.11046691098758488,
+              0.11508188023334287,
+              0.1174617289265324,
+              0.1170308967230056
+            ]
+          },
+          "CGMacros-042": {
+            "diag_group": "diabetes",
+            "n_origins": 2836,
+            "mean_rmse": 22.257971737671397,
+            "mean_mae": 15.50715866589068,
+            "mean_skill": 0.1083629478537477,
+            "rmse_per_repeat": [
+              22.17306217880439,
+              22.292457768433614,
+              22.199433965528208,
+              22.3040338812729,
+              22.29883760479913,
+              22.224541621497128,
+              22.20619619310987,
+              22.23686497952043,
+              22.36616092308048,
+              22.278128260667806
+            ],
+            "mae_per_repeat": [
+              15.390192524471068,
+              15.540009208220138,
+              15.4746647699159,
+              15.56000281390053,
+              15.525746750118634,
+              15.53460022561784,
+              15.463758221054112,
+              15.474690002522633,
+              15.555415321709168,
+              15.55250682137678
+            ],
+            "skill_per_repeat": [
+              0.11176435880257551,
+              0.10698146425895061,
+              0.11070792551874409,
+              0.10651773417388344,
+              0.10672589297163093,
+              0.10970213233065496,
+              0.11043703593644438,
+              0.10920846818416663,
+              0.104028973155191,
+              0.10755549320523539
+            ]
+          },
+          "CGMacros-043": {
+            "diag_group": "prediabetes",
+            "n_origins": 2812,
+            "mean_rmse": 15.919974616554777,
+            "mean_mae": 11.316415688155752,
+            "mean_skill": 0.10594541491104045,
+            "rmse_per_repeat": [
+              15.77599296691085,
+              15.984456086744965,
+              16.015165661937914,
+              15.812056109302238,
+              15.985257345801395,
+              15.914448931913842,
+              15.87792722887326,
+              16.03712769586127,
+              15.861267005357156,
+              15.9360471328449
+            ],
+            "mae_per_repeat": [
+              11.237164036536381,
+              11.329643535097553,
+              11.377201361523312,
+              11.258678540321295,
+              11.342761124289744,
+              11.3708921034591,
+              11.280833351400892,
+              11.360367805208732,
+              11.310735677124468,
+              11.295879346596038
+            ],
+            "skill_per_repeat": [
+              0.11403132315733666,
+              0.10232418086605244,
+              0.100599552707485,
+              0.1120060424276671,
+              0.10227918272060943,
+              0.10625573347674011,
+              0.10830676665016847,
+              0.09936618031839606,
+              0.10924239309317108,
+              0.10504279369277814
+            ]
+          },
+          "CGMacros-044": {
+            "diag_group": "prediabetes",
+            "n_origins": 2807,
+            "mean_rmse": 16.33929490812927,
+            "mean_mae": 11.66173048396161,
+            "mean_skill": 0.13409859225752413,
+            "rmse_per_repeat": [
+              16.40426972118513,
+              16.286576899409006,
+              16.377696376519733,
+              16.38376533491185,
+              16.18496885613097,
+              16.4102892148181,
+              16.33643551886535,
+              16.35545574918364,
+              16.32488014343179,
+              16.328611266837132
+            ],
+            "mae_per_repeat": [
+              11.72366840081401,
+              11.620218682222113,
+              11.656690333065091,
+              11.667631476319961,
+              11.572199501543093,
+              11.762405356474906,
+              11.652741249280846,
+              11.670900109378614,
+              11.655722343287541,
+              11.635127387229936
+            ],
+            "skill_per_repeat": [
+              0.1306552501543785,
+              0.13689238465927245,
+              0.13206350532594935,
+              0.1317418806998677,
+              0.14227710586095887,
+              0.13033624691464318,
+              0.13425012567453098,
+              0.13324214801693945,
+              0.13486250313091275,
+              0.13466477213778782
+            ]
+          },
+          "CGMacros-045": {
+            "diag_group": "prediabetes",
+            "n_origins": 2702,
+            "mean_rmse": 27.64125632495624,
+            "mean_mae": 17.605516038369494,
+            "mean_skill": 0.12141718195338784,
+            "rmse_per_repeat": [
+              27.67906492012433,
+              27.59925900988589,
+              27.60686452153691,
+              27.466728482327095,
+              27.717269905297847,
+              27.77921273056915,
+              27.688039687196998,
+              27.61081701010018,
+              27.754214449228165,
+              27.511092533295844
+            ],
+            "mae_per_repeat": [
+              17.6667460952053,
+              17.613053893093188,
+              17.58694092411498,
+              17.42565553087767,
+              17.67372207161401,
+              17.660928917619497,
+              17.61823815401881,
+              17.619480462148033,
+              17.667246477022545,
+              17.523147857980877
+            ],
+            "skill_per_repeat": [
+              0.12021542825237497,
+              0.12275207494779872,
+              0.12251033225056085,
+              0.1269645840686191,
+              0.11900107521637082,
+              0.11703221022178323,
+              0.11993016349981378,
+              0.12238470161715576,
+              0.11782678555543236,
+              0.12555446390396885
+            ]
+          },
+          "CGMacros-046": {
+            "diag_group": "diabetes",
+            "n_origins": 2788,
+            "mean_rmse": 25.142388600688626,
+            "mean_mae": 16.960417792985083,
+            "mean_skill": 0.04120212986425733,
+            "rmse_per_repeat": [
+              24.879878355796908,
+              25.45072259665358,
+              25.257474014105476,
+              25.45274137594251,
+              25.08507353406143,
+              24.967844809877104,
+              25.056883208701294,
+              25.07932208689518,
+              24.89900306459562,
+              25.294942960257167
+            ],
+            "mae_per_repeat": [
+              16.725773570971487,
+              17.23110848742717,
+              17.069997514343033,
+              17.25097606111186,
+              16.901531663435772,
+              16.813438268916954,
+              16.887777508343728,
+              16.896520500666654,
+              16.735939111352465,
+              17.091115243281696
+            ],
+            "skill_per_repeat": [
+              0.051212883722548175,
+              0.02944390023393717,
+              0.036813380210425906,
+              0.029366914657378063,
+              0.04338782370113248,
+              0.047858307904195985,
+              0.04446285377655623,
+              0.04360715351027589,
+              0.0504835683677346,
+              0.035384512558388814
+            ]
+          },
+          "CGMacros-047": {
+            "diag_group": "diabetes",
+            "n_origins": 2778,
+            "mean_rmse": 24.395243589620943,
+            "mean_mae": 16.636788136531234,
+            "mean_skill": 0.07581043903062974,
+            "rmse_per_repeat": [
+              24.40677207155661,
+              24.247282910212267,
+              24.324468134986915,
+              24.321852962686602,
+              24.552869867315916,
+              24.42425452137336,
+              24.356714393398864,
+              24.514534191023838,
+              24.555315031023934,
+              24.248371812631152
+            ],
+            "mae_per_repeat": [
+              16.63171067122895,
+              16.510162073917908,
+              16.592724474212336,
+              16.576926041185377,
+              16.757692554611346,
+              16.67180856179945,
+              16.605049765975174,
+              16.73747776584744,
+              16.761998555973822,
+              16.52233090056054
+            ],
+            "skill_per_repeat": [
+              0.0753736939487607,
+              0.0814157823362246,
+              0.07849169679734702,
+              0.07859077000115444,
+              0.06983892413900838,
+              0.07471138871038685,
+              0.07727007934166719,
+              0.07129123313980534,
+              0.06974629154177658,
+              0.08137453035016629
+            ]
+          },
+          "CGMacros-048": {
+            "diag_group": "normal",
+            "n_origins": 2812,
+            "mean_rmse": 20.978135524374935,
+            "mean_mae": 15.122171320296692,
+            "mean_skill": -0.008711589048306701,
+            "rmse_per_repeat": [
+              21.056894980113487,
+              21.109839717662833,
+              20.89687399339652,
+              20.86497496659992,
+              20.999877727657516,
+              21.226227008616576,
+              20.680754921114385,
+              21.05807286686977,
+              20.950703430340575,
+              20.937135631377743
+            ],
+            "mae_per_repeat": [
+              15.153122855422126,
+              15.23536381494883,
+              15.078934102066096,
+              15.095561966089711,
+              15.125531572678634,
+              15.35524270735208,
+              14.784619635782382,
+              15.142165585409277,
+              15.144400785620977,
+              15.106770177596806
+            ],
+            "skill_per_repeat": [
+              -0.01249865466518707,
+              -0.015044446701047098,
+              -0.0048042137743464775,
+              -0.003270382611338274,
+              -0.009757040032122744,
+              -0.0206408072101385,
+              0.005587644576080408,
+              -0.012555292111363858,
+              -0.007392545650376059,
+              -0.006740152303227331
+            ]
+          },
+          "CGMacros-049": {
+            "diag_group": "diabetes",
+            "n_origins": 2836,
+            "mean_rmse": 26.55697321686382,
+            "mean_mae": 18.0877544177189,
+            "mean_skill": 0.1298310421446082,
+            "rmse_per_repeat": [
+              26.212969942749204,
+              26.79503010697035,
+              26.314157633600296,
+              26.68837867742703,
+              26.62520157117935,
+              26.584304757857932,
+              26.531842500103913,
+              26.477009597116005,
+              26.64169601709635,
+              26.69914136453774
+            ],
+            "mae_per_repeat": [
+              17.81112539725298,
+              18.2793520547448,
+              17.898279018332726,
+              18.1965046245867,
+              18.11469014005006,
+              18.111587460142733,
+              18.064255034201672,
+              18.030988995984988,
+              18.157638227749377,
+              18.213123224142972
+            ],
+            "skill_per_repeat": [
+              0.1411026945309981,
+              0.12203084163671463,
+              0.13778716656112477,
+              0.1255253951214682,
+              0.12759546373414254,
+              0.12893549360640622,
+              0.13065447821296394,
+              0.13245113966453614,
+              0.12705500474821851,
+              0.1251727436295088
+            ]
+          }
+        }
       }
     },
     "h60": {
@@ -5651,6 +8470,814 @@
               "persistence_inner_rmse": 29.597775870962817,
               "inner_folds_count": 4,
               "candidate_count": 101
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          }
+        ]
+      },
+      "alphas_summary": {
+        "mean": 10.0,
+        "std": 0.0,
+        "min": 10.0,
+        "max": 10.0,
+        "all_50_splits": [
+          {
+            "repeat_idx": 0,
+            "seed": 42,
+            "fold_idx": 0,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 27.41929630601347,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 0,
+            "seed": 42,
+            "fold_idx": 1,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 26.68212508372306,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 0,
+            "seed": 42,
+            "fold_idx": 2,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 27.541360255947207,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 0,
+            "seed": 42,
+            "fold_idx": 3,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 26.621033126747772,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 0,
+            "seed": 42,
+            "fold_idx": 4,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 26.48092319236033,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 1,
+            "seed": 43,
+            "fold_idx": 0,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 25.988567333826346,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 1,
+            "seed": 43,
+            "fold_idx": 1,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 27.837982864718295,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 1,
+            "seed": 43,
+            "fold_idx": 2,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 26.69585960317078,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 1,
+            "seed": 43,
+            "fold_idx": 3,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 27.35618006836457,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 1,
+            "seed": 43,
+            "fold_idx": 4,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 27.308279112993095,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 2,
+            "seed": 44,
+            "fold_idx": 0,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 26.91094651883165,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 2,
+            "seed": 44,
+            "fold_idx": 1,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 27.372994656303828,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 2,
+            "seed": 44,
+            "fold_idx": 2,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 27.510072684879063,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 2,
+            "seed": 44,
+            "fold_idx": 3,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 26.828862693888837,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 2,
+            "seed": 44,
+            "fold_idx": 4,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 26.458742901858397,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 3,
+            "seed": 45,
+            "fold_idx": 0,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 26.877124158004012,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 3,
+            "seed": 45,
+            "fold_idx": 1,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 27.422700513078244,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 3,
+            "seed": 45,
+            "fold_idx": 2,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 26.54475994817027,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 3,
+            "seed": 45,
+            "fold_idx": 3,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 26.718052903296854,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 3,
+            "seed": 45,
+            "fold_idx": 4,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 27.60663147388498,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 4,
+            "seed": 46,
+            "fold_idx": 0,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 26.471992809544776,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 4,
+            "seed": 46,
+            "fold_idx": 1,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 27.53554160517808,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 4,
+            "seed": 46,
+            "fold_idx": 2,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 26.864428604170723,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 4,
+            "seed": 46,
+            "fold_idx": 3,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 27.057933255469905,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 4,
+            "seed": 46,
+            "fold_idx": 4,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 27.16990975545984,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 5,
+            "seed": 47,
+            "fold_idx": 0,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 27.160228579433614,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 5,
+            "seed": 47,
+            "fold_idx": 1,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 26.60856826929178,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 5,
+            "seed": 47,
+            "fold_idx": 2,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 27.708904945780212,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 5,
+            "seed": 47,
+            "fold_idx": 3,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 27.507627010807187,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 5,
+            "seed": 47,
+            "fold_idx": 4,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 26.08728020747522,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 6,
+            "seed": 48,
+            "fold_idx": 0,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 26.289507815603258,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 6,
+            "seed": 48,
+            "fold_idx": 1,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 27.72283498180842,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 6,
+            "seed": 48,
+            "fold_idx": 2,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 26.84715711431308,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 6,
+            "seed": 48,
+            "fold_idx": 3,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 26.945693746260545,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 6,
+            "seed": 48,
+            "fold_idx": 4,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 27.393560328984915,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 7,
+            "seed": 49,
+            "fold_idx": 0,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 26.88054144972688,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 7,
+            "seed": 49,
+            "fold_idx": 1,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 26.723749255397234,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 7,
+            "seed": 49,
+            "fold_idx": 2,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 26.402702359097688,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 7,
+            "seed": 49,
+            "fold_idx": 3,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 27.49199609395947,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 7,
+            "seed": 49,
+            "fold_idx": 4,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 27.664554594612408,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 8,
+            "seed": 50,
+            "fold_idx": 0,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 27.04777765559423,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 8,
+            "seed": 50,
+            "fold_idx": 1,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 26.743464888313458,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 8,
+            "seed": 50,
+            "fold_idx": 2,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 27.36867929272735,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 8,
+            "seed": 50,
+            "fold_idx": 3,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 26.16723048674371,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 8,
+            "seed": 50,
+            "fold_idx": 4,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 27.68574547966258,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 9,
+            "seed": 51,
+            "fold_idx": 0,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 26.95274319708891,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 9,
+            "seed": 51,
+            "fold_idx": 1,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 26.344088964138987,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 9,
+            "seed": 51,
+            "fold_idx": 2,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 27.143181410547967,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 9,
+            "seed": 51,
+            "fold_idx": 3,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 27.364032892267304,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
+            },
+            "train_participants_count": 36,
+            "test_participants_count": 9
+          },
+          {
+            "repeat_idx": 9,
+            "seed": 51,
+            "fold_idx": 4,
+            "horizon_minutes": 60,
+            "alpha_opt": 10.0,
+            "tuning_diagnostics": {
+              "best_alpha": 10.0,
+              "best_inner_rmse": 27.36147171286277,
+              "inner_folds_count": 4,
+              "candidate_count": 17,
+              "horizon_minutes": 60
             },
             "train_participants_count": 36,
             "test_participants_count": 9
@@ -9675,6 +13302,2017 @@
               0.007366296493471203,
               0.0,
               0.0
+            ]
+          }
+        }
+      },
+      "rung2_ridge_regression": {
+        "summary": {
+          "cohort_participants": 45,
+          "headline_skill": {
+            "mean": 0.07024362747839309,
+            "median": 0.09658558985403616,
+            "std": 0.07075429749942944,
+            "ci_95_mean": [
+              0.048625969709217065,
+              0.08888189079626206
+            ],
+            "ci_95_median": [
+              0.06884636526121941,
+              0.107638670266159
+            ],
+            "fraction_improved": 0.8666666666666667,
+            "n_participants_improved": 39
+          },
+          "headline_rmse": {
+            "mean": 26.966054329199455,
+            "median": 24.513525339433947,
+            "ci_95_mean": [
+              24.648303624804228,
+              29.60370151523856
+            ]
+          },
+          "headline_mae": {
+            "mean": 18.935911828338426,
+            "median": 17.111945008688146,
+            "ci_95_mean": [
+              17.46119557264543,
+              20.578808846440833
+            ]
+          },
+          "subgroups": {
+            "normal": {
+              "n_participants": 15,
+              "mean_skill": 0.027790559977187736,
+              "median_skill": 0.03603309308897999,
+              "fraction_improved": 0.7333333333333333,
+              "mean_rmse": 21.592753178083434,
+              "median_rmse": 20.302603661941056,
+              "mean_mae": 15.811686436372499,
+              "median_mae": 15.234955754864398
+            },
+            "prediabetes": {
+              "n_participants": 16,
+              "mean_skill": 0.09312934648167859,
+              "median_skill": 0.10285047456041711,
+              "fraction_improved": 0.9375,
+              "mean_rmse": 25.511545439578562,
+              "median_rmse": 23.363154344465094,
+              "mean_mae": 17.998311543777696,
+              "median_mae": 16.926680443676148
+            },
+            "diabetes": {
+              "n_participants": 14,
+              "mean_skill": 0.089573949511644,
+              "median_skill": 0.11595361259399159,
+              "fraction_improved": 0.9285714285714286,
+              "mean_rmse": 34.385458579247654,
+              "median_rmse": 31.87501991055934,
+              "mean_mae": 23.35483935922848,
+              "median_mae": 22.20882413869418
+            }
+          },
+          "bootstrap_metadata": {
+            "resampling_unit": "45 independent participants",
+            "iterations": 2000,
+            "seed": 42,
+            "prohibited_pooling_checked": true
+          }
+        },
+        "participants": {
+          "CGMacros-001": {
+            "diag_group": "normal",
+            "n_origins": 2802,
+            "mean_rmse": 16.99715452266,
+            "mean_mae": 13.584307949793589,
+            "mean_skill": -0.1754943345568507,
+            "rmse_per_repeat": [
+              16.88327659819605,
+              17.004325120708845,
+              17.213469919999536,
+              17.43414884862798,
+              16.609489097543687,
+              16.72498400492444,
+              16.880193633176276,
+              17.150711237072848,
+              17.36430726991831,
+              16.706639496432015
+            ],
+            "mae_per_repeat": [
+              13.48826736266615,
+              13.548432618746,
+              13.803490091686319,
+              14.075100467031039,
+              13.167439776788637,
+              13.278860055556782,
+              13.485087818505963,
+              13.742480422888521,
+              13.914973880003943,
+              13.338947004062526
+            ],
+            "skill_per_repeat": [
+              -0.16761873073975275,
+              -0.17599024093756666,
+              -0.19045433999252803,
+              -0.20571611984003013,
+              -0.1486840522639954,
+              -0.15667148387293017,
+              -0.16740551811586624,
+              -0.18611405608640585,
+              -0.20088599489292358,
+              -0.15540280882650825
+            ]
+          },
+          "CGMacros-002": {
+            "diag_group": "normal",
+            "n_origins": 2711,
+            "mean_rmse": 25.742136698408423,
+            "mean_mae": 17.096261636221307,
+            "mean_skill": 0.13872758068251473,
+            "rmse_per_repeat": [
+              25.821801615459734,
+              25.4769474566269,
+              25.89778710579365,
+              25.960034807585927,
+              25.61861435227695,
+              25.647419378473874,
+              25.859722799016005,
+              25.586904371797036,
+              25.78388972547064,
+              25.76824537158349
+            ],
+            "mae_per_repeat": [
+              17.229489919142882,
+              16.91879139812959,
+              17.31469924680084,
+              17.083158242144364,
+              16.99405477086943,
+              16.906331376792554,
+              17.13666056957818,
+              16.96503738315811,
+              17.37705230555441,
+              17.037341150042714
+            ],
+            "skill_per_repeat": [
+              0.13606217661573605,
+              0.14760020001952034,
+              0.13351987766597695,
+              0.13143721338104597,
+              0.1428603529981478,
+              0.14189660337270726,
+              0.13479342142701423,
+              0.14392129568229306,
+              0.13733062086317194,
+              0.13785404479953378
+            ]
+          },
+          "CGMacros-003": {
+            "diag_group": "diabetes",
+            "n_origins": 2800,
+            "mean_rmse": 27.40357862541976,
+            "mean_mae": 18.74792995213401,
+            "mean_skill": 0.12418327314151553,
+            "rmse_per_repeat": [
+              27.45727414054128,
+              27.152676544788115,
+              27.381623806608953,
+              27.311632422608017,
+              27.534260896830812,
+              27.616424131778746,
+              27.368683587619582,
+              27.533555050180386,
+              27.342525091317906,
+              27.33713058192384
+            ],
+            "mae_per_repeat": [
+              18.717511626756984,
+              18.526297246185923,
+              18.511937021208816,
+              18.815272532012692,
+              18.507534473513672,
+              19.044185407992348,
+              19.167948022862287,
+              18.671398586779286,
+              18.608699100130526,
+              18.908515503897565
+            ],
+            "skill_per_repeat": [
+              0.12246716770348043,
+              0.13220208856794158,
+              0.12488494783198167,
+              0.12712186826058336,
+              0.12000667559671574,
+              0.11738074354295636,
+              0.1252985164536211,
+              0.1200292344132663,
+              0.12613454042419925,
+              0.1263069486204096
+            ]
+          },
+          "CGMacros-004": {
+            "diag_group": "normal",
+            "n_origins": 2830,
+            "mean_rmse": 20.302603661941056,
+            "mean_mae": 15.378633499846998,
+            "mean_skill": 0.07315851731054981,
+            "rmse_per_repeat": [
+              20.22759343002559,
+              20.394474156994225,
+              20.395554599052726,
+              20.161987933954773,
+              20.366690264367758,
+              20.312438538989618,
+              20.262903388916367,
+              20.297745633834793,
+              20.136726245425685,
+              20.46992242784902
+            ],
+            "mae_per_repeat": [
+              15.290665576042354,
+              15.45285790723578,
+              15.470453013592053,
+              15.091664915962266,
+              15.496323590575244,
+              15.507590885587508,
+              15.293385203471704,
+              15.405465707386233,
+              15.013077066219292,
+              15.764851132397542
+            ],
+            "skill_per_repeat": [
+              0.07658283646306008,
+              0.06896450420423517,
+              0.06891518055411927,
+              0.07957781662734509,
+              0.07023287670785994,
+              0.07270954179107758,
+              0.07497088879383673,
+              0.07338029290386427,
+              0.08073104708199008,
+              0.06552018797810988
+            ]
+          },
+          "CGMacros-005": {
+            "diag_group": "diabetes",
+            "n_origins": 2830,
+            "mean_rmse": 30.370776574785943,
+            "mean_mae": 19.22798874421705,
+            "mean_skill": 0.14144086182007562,
+            "rmse_per_repeat": [
+              30.442289132735745,
+              30.39438115870821,
+              30.436919641060427,
+              30.231271933059006,
+              30.353130778722146,
+              30.35108319042557,
+              30.496979681283243,
+              30.313328641965285,
+              30.30656756571192,
+              30.381814024187868
+            ],
+            "mae_per_repeat": [
+              19.310976729860617,
+              19.203797121817118,
+              19.26077272558397,
+              19.1430065617876,
+              19.21995453324304,
+              19.20568860934641,
+              19.294167572108964,
+              19.2320401731341,
+              19.200254859340735,
+              19.209228555947966
+            ],
+            "skill_per_repeat": [
+              0.1394192552941036,
+              0.14077357788746048,
+              0.13957104680769483,
+              0.14538455370026993,
+              0.14193969527676142,
+              0.14199757906642763,
+              0.13787319439204193,
+              0.14306487191317507,
+              0.14325600248196269,
+              0.1411288413808588
+            ]
+          },
+          "CGMacros-006": {
+            "diag_group": "normal",
+            "n_origins": 2830,
+            "mean_rmse": 17.424302176121593,
+            "mean_mae": 13.150521710331898,
+            "mean_skill": 0.034194999409230285,
+            "rmse_per_repeat": [
+              17.367215308017727,
+              17.40664867589491,
+              17.511495214694435,
+              17.435904684526488,
+              17.32085664133355,
+              17.126818115378967,
+              17.99858473879355,
+              17.374553065345946,
+              17.40696479260519,
+              17.2939805246252
+            ],
+            "mae_per_repeat": [
+              13.025868700594536,
+              13.059830106108267,
+              13.210490344513351,
+              13.327757654951641,
+              12.909926409047566,
+              12.715501285566155,
+              14.038363497904305,
+              13.095084625011463,
+              13.197752982932824,
+              12.924641496688865
+            ],
+            "skill_per_repeat": [
+              0.03735924565137483,
+              0.035173508541161524,
+              0.029362009725100724,
+              0.03355188839545342,
+              0.039928842508209494,
+              0.050684129967067726,
+              0.00236331024461367,
+              0.036952523898670764,
+              0.035155986628577995,
+              0.04141854853207272
+            ]
+          },
+          "CGMacros-007": {
+            "diag_group": "prediabetes",
+            "n_origins": 153,
+            "mean_rmse": 15.104257313879248,
+            "mean_mae": 10.689806239057052,
+            "mean_skill": -0.0492223054383246,
+            "rmse_per_repeat": [
+              14.962257971697843,
+              15.349163004494708,
+              14.78723764121339,
+              15.003971287156727,
+              15.003247755572422,
+              14.678561224630633,
+              15.861376831987856,
+              14.958256355931756,
+              15.456179177369757,
+              14.982321888737362
+            ],
+            "mae_per_repeat": [
+              10.396418166733506,
+              11.07288138820802,
+              10.227115744373744,
+              10.383131912295271,
+              10.577366153992845,
+              10.029577335833606,
+              12.068213121137378,
+              10.484641304275119,
+              11.324996811197959,
+              10.333720452523067
+            ],
+            "skill_per_repeat": [
+              -0.03935827345858667,
+              -0.06623476146199159,
+              -0.02720042743985296,
+              -0.04225590292183923,
+              -0.04220564255741577,
+              -0.01965118367472196,
+              -0.10181586696036726,
+              -0.039080299875885904,
+              -0.07366867584055337,
+              -0.04075202019203128
+            ]
+          },
+          "CGMacros-008": {
+            "diag_group": "prediabetes",
+            "n_origins": 2767,
+            "mean_rmse": 28.101799669901,
+            "mean_mae": 18.69983310485602,
+            "mean_skill": 0.11813765523010529,
+            "rmse_per_repeat": [
+              28.14385920194267,
+              28.253899381663416,
+              28.06292660677651,
+              28.269706909367546,
+              28.16933737426505,
+              27.941596689393066,
+              28.057770739826356,
+              27.983521160974163,
+              27.978943491532824,
+              28.156435143268418
+            ],
+            "mae_per_repeat": [
+              18.67364228980986,
+              18.786457019116266,
+              18.784294753468856,
+              18.660665896183172,
+              18.829219047275288,
+              18.43065666664094,
+              18.68063766929891,
+              18.61486196420527,
+              18.69520720609477,
+              18.842688536466827
+            ],
+            "skill_per_repeat": [
+              0.11681778540034782,
+              0.11336461542378673,
+              0.1193575305049287,
+              0.1128685595266582,
+              0.11601825508383468,
+              0.12316498364641204,
+              0.11951932672336996,
+              0.12184935214785919,
+              0.12199300395502244,
+              0.11642313988883313
+            ]
+          },
+          "CGMacros-009": {
+            "diag_group": "prediabetes",
+            "n_origins": 2782,
+            "mean_rmse": 22.868448307543137,
+            "mean_mae": 16.530582128622463,
+            "mean_skill": 0.12631709234626634,
+            "rmse_per_repeat": [
+              22.63452716673206,
+              22.803036797505648,
+              22.949981297187545,
+              22.67241412366384,
+              22.676511112769447,
+              23.083052479029305,
+              23.027705812794654,
+              22.851713808609283,
+              23.012238222299118,
+              22.97330225484044
+            ],
+            "mae_per_repeat": [
+              16.315603451160204,
+              16.410011246769326,
+              16.564367817772844,
+              16.362995454364665,
+              16.345360869716522,
+              16.82642852269693,
+              16.61449376106208,
+              16.497980840232568,
+              16.718224228259714,
+              16.650355094189788
+            ],
+            "skill_per_repeat": [
+              0.13525398652102705,
+              0.12881612146774468,
+              0.12320214643895122,
+              0.13380652553682937,
+              0.13365000117163095,
+              0.11811819778126809,
+              0.1202327022563654,
+              0.1269564293703631,
+              0.12082363738483581,
+              0.12231117553364801
+            ]
+          },
+          "CGMacros-010": {
+            "diag_group": "prediabetes",
+            "n_origins": 2830,
+            "mean_rmse": 22.12132304124518,
+            "mean_mae": 15.678330571568697,
+            "mean_skill": 0.10363995455939608,
+            "rmse_per_repeat": [
+              22.20698888996912,
+              22.30381276746501,
+              21.94730072253548,
+              22.197477667442843,
+              22.324528042927003,
+              22.10364074805571,
+              22.094500937414434,
+              21.950711121692233,
+              22.152235600507105,
+              21.932033914442865
+            ],
+            "mae_per_repeat": [
+              15.720143392470414,
+              15.873921147022125,
+              15.59448344855699,
+              15.756021018812723,
+              15.835126664332183,
+              15.663242792296781,
+              15.661607067697412,
+              15.528949365670952,
+              15.680137210258362,
+              15.469673608569027
+            ],
+            "skill_per_repeat": [
+              0.10016875874024322,
+              0.0962454375595827,
+              0.11069137066210699,
+              0.10055415521223343,
+              0.09540605081857245,
+              0.10435644430538715,
+              0.10472679110003669,
+              0.11055318066608288,
+              0.1023873720184223,
+              0.11130998451129293
+            ]
+          },
+          "CGMacros-011": {
+            "diag_group": "prediabetes",
+            "n_origins": 2830,
+            "mean_rmse": 21.427521060829747,
+            "mean_mae": 14.937660908522124,
+            "mean_skill": 0.10245687217420633,
+            "rmse_per_repeat": [
+              21.42064838771777,
+              21.226379036415945,
+              21.61376350288859,
+              21.06154318258727,
+              21.558448495706134,
+              21.772781430135463,
+              21.469957256536897,
+              21.353012662295626,
+              21.394036134133344,
+              21.404640519880445
+            ],
+            "mae_per_repeat": [
+              14.792119946769407,
+              14.681625750412236,
+              15.03410969659905,
+              14.609340785066518,
+              15.02005191916246,
+              15.360370630893065,
+              15.226065095692759,
+              14.79166906509038,
+              14.836004900677288,
+              15.02525129485809
+            ],
+            "skill_per_repeat": [
+              0.10274475057618937,
+              0.11088218844000619,
+              0.09465566066192443,
+              0.117786733646296,
+              0.09697266244767955,
+              0.08799481326868863,
+              0.1006793303055088,
+              0.10557783520486952,
+              0.10385946866480311,
+              0.10341527852609766
+            ]
+          },
+          "CGMacros-012": {
+            "diag_group": "diabetes",
+            "n_origins": 2816,
+            "mean_rmse": 30.03331556996031,
+            "mean_mae": 21.05962179789021,
+            "mean_skill": 0.14108836214011997,
+            "rmse_per_repeat": [
+              30.100860820574706,
+              29.910305272801246,
+              30.260858951447208,
+              30.471162652448307,
+              30.13607134052266,
+              30.26467036919868,
+              29.74728902986073,
+              29.836925529308107,
+              29.771608489239423,
+              29.833403244201975
+            ],
+            "mae_per_repeat": [
+              21.01620417202487,
+              21.020245651296122,
+              21.116264940297807,
+              21.233074588817484,
+              21.148655011352798,
+              21.267958725942105,
+              21.054472000065072,
+              20.84938123490207,
+              20.892781688757456,
+              20.997179965446325
+            ],
+            "skill_per_repeat": [
+              0.13915666060354703,
+              0.14460628794356323,
+              0.1345809334807091,
+              0.12856653604083668,
+              0.1381496880204519,
+              0.13447193215996378,
+              0.1492683289325324,
+              0.14670484797509264,
+              0.14857282574580766,
+              0.1468055804986954
+            ]
+          },
+          "CGMacros-013": {
+            "diag_group": "prediabetes",
+            "n_origins": 2830,
+            "mean_rmse": 24.513525339433947,
+            "mean_mae": 17.32277875872983,
+            "mean_skill": 0.09658558985403616,
+            "rmse_per_repeat": [
+              24.716382728352546,
+              24.227153052279668,
+              24.301799538327383,
+              24.711014538101008,
+              24.60192826460265,
+              24.929245449884007,
+              24.362832655182306,
+              24.360884810792463,
+              24.421629500036442,
+              24.502382856781004
+            ],
+            "mae_per_repeat": [
+              17.460681186612764,
+              17.06073540982344,
+              17.173159860564663,
+              17.36697664923695,
+              17.392301144772645,
+              17.777948804408656,
+              17.151513363587732,
+              17.125527767064685,
+              17.29931735194453,
+              17.419626049282222
+            ],
+            "skill_per_repeat": [
+              0.0891095420063267,
+              0.10713947173350014,
+              0.10438847161301634,
+              0.08930737974539082,
+              0.09332761388401178,
+              0.08126476050910736,
+              0.10213917468410172,
+              0.10221095998083651,
+              0.09997229268011298,
+              0.09699623170395721
+            ]
+          },
+          "CGMacros-014": {
+            "diag_group": "diabetes",
+            "n_origins": 2830,
+            "mean_rmse": 26.181999570322553,
+            "mean_mae": 17.111945008688146,
+            "mean_skill": 0.13475313550398074,
+            "rmse_per_repeat": [
+              26.220649676531707,
+              26.267305663138764,
+              26.122563505104733,
+              26.264379453237062,
+              26.12468581346945,
+              25.949805380326186,
+              26.25946171589707,
+              26.237723973703684,
+              26.29163814695276,
+              26.081782374864115
+            ],
+            "mae_per_repeat": [
+              17.168169535961795,
+              17.1837016434902,
+              17.07081169192726,
+              17.147130050488588,
+              17.108683304522312,
+              16.98839424791188,
+              17.0884496502348,
+              17.16790748687667,
+              17.10780054997384,
+              17.088401925494097
+            ],
+            "skill_per_repeat": [
+              0.13347585020267716,
+              0.131933991414799,
+              0.1367173425894469,
+              0.13203069502735176,
+              0.13664720582800005,
+              0.14242654846500902,
+              0.13219321343250312,
+              0.1329115891709005,
+              0.13112986622684641,
+              0.1380650526822732
+            ]
+          },
+          "CGMacros-015": {
+            "diag_group": "normal",
+            "n_origins": 2723,
+            "mean_rmse": 20.345113264877405,
+            "mean_mae": 16.044237939433298,
+            "mean_skill": -0.02806355355468535,
+            "rmse_per_repeat": [
+              20.53913892852227,
+              19.933850380421443,
+              20.494562744641485,
+              20.594112727650113,
+              20.124322721055197,
+              20.233412738147855,
+              20.22529948257248,
+              20.053903267859262,
+              20.569858185942277,
+              20.682671471961683
+            ],
+            "mae_per_repeat": [
+              16.408265578174085,
+              15.648203342100842,
+              16.2213055194198,
+              16.281685585159064,
+              15.709028913298617,
+              15.87222435364971,
+              15.865941335922487,
+              15.763742719799897,
+              16.263994424309466,
+              16.40798762249901
+            ],
+            "skill_per_repeat": [
+              -0.03786790856861888,
+              -0.007281935043430776,
+              -0.035615419265278225,
+              -0.040645802136866305,
+              -0.016906736282746637,
+              -0.022419188790112843,
+              -0.022009216024214462,
+              -0.013348354849846533,
+              -0.03942019036398703,
+              -0.04512078422175181
+            ]
+          },
+          "CGMacros-016": {
+            "diag_group": "prediabetes",
+            "n_origins": 2830,
+            "mean_rmse": 18.537219524943556,
+            "mean_mae": 13.765412855015882,
+            "mean_skill": 0.06884636526121941,
+            "rmse_per_repeat": [
+              18.778520705739002,
+              18.731770331385796,
+              18.578427110917904,
+              18.602841198526534,
+              18.418858264880914,
+              18.506533923001253,
+              18.485896616871436,
+              18.60300952240313,
+              18.381634197605923,
+              18.284703378103643
+            ],
+            "mae_per_repeat": [
+              13.952133539934895,
+              13.983254524576951,
+              13.846915073718462,
+              13.86359643309387,
+              13.662920798775938,
+              13.754077018431108,
+              13.532146083255112,
+              13.835164249529905,
+              13.684357832833552,
+              13.539562996009032
+            ],
+            "skill_per_repeat": [
+              0.0567254281777424,
+              0.059073772865887886,
+              0.06677644353389689,
+              0.06555008559035436,
+              0.07479183714664905,
+              0.0703877512141814,
+              0.07142439549560331,
+              0.0655416304178138,
+              0.07666166047674605,
+              0.08153064769331897
+            ]
+          },
+          "CGMacros-017": {
+            "diag_group": "normal",
+            "n_origins": 2804,
+            "mean_rmse": 17.570556998727202,
+            "mean_mae": 12.521345824375452,
+            "mean_skill": 0.03603309308897999,
+            "rmse_per_repeat": [
+              17.938144252469442,
+              17.42208682730733,
+              17.624611333509016,
+              17.563196742537713,
+              17.36689559527935,
+              17.607563909740428,
+              17.597812507219995,
+              17.67577654332134,
+              17.604414677822717,
+              17.305067598064706
+            ],
+            "mae_per_repeat": [
+              12.839419295973272,
+              12.397975845909638,
+              12.528868692411699,
+              12.431403798379879,
+              12.376282220726138,
+              12.565190339573837,
+              12.572254273561171,
+              12.654513471959872,
+              12.567161085892641,
+              12.28038921936638
+            ],
+            "skill_per_repeat": [
+              0.015866290862079024,
+              0.04417855665752446,
+              0.033067530306392534,
+              0.036436896075622394,
+              0.04720649260915499,
+              0.03400279675026219,
+              0.03453778430508736,
+              0.03026047250806474,
+              0.0341755718848854,
+              0.050598538930726855
+            ]
+          },
+          "CGMacros-018": {
+            "diag_group": "normal",
+            "n_origins": 2737,
+            "mean_rmse": 21.107580106440388,
+            "mean_mae": 15.234955754864398,
+            "mean_skill": 0.08206132400588265,
+            "rmse_per_repeat": [
+              21.11994576201843,
+              20.983636137984682,
+              20.998698784456227,
+              21.20681304361724,
+              21.154884962125504,
+              21.06822911094949,
+              21.180498337477978,
+              21.244863067797265,
+              21.048198044999157,
+              21.070033812977933
+            ],
+            "mae_per_repeat": [
+              15.242124206444698,
+              15.176652276179425,
+              15.142390389147877,
+              15.287710166083903,
+              15.281606238649184,
+              15.241041950353393,
+              15.25103201856171,
+              15.335100462465402,
+              15.199771852794814,
+              15.192127987963577
+            ],
+            "skill_per_repeat": [
+              0.08152355920992482,
+              0.08745147113444784,
+              0.08679641803554528,
+              0.07774582452617995,
+              0.08000410302760308,
+              0.08377264290259256,
+              0.0788902137167381,
+              0.0760910830237802,
+              0.08464376550710118,
+              0.08369415897491339
+            ]
+          },
+          "CGMacros-019": {
+            "diag_group": "normal",
+            "n_origins": 2800,
+            "mean_rmse": 18.417920077330443,
+            "mean_mae": 12.089377191191867,
+            "mean_skill": 0.10464919548476075,
+            "rmse_per_repeat": [
+              18.46885422083182,
+              18.5419665299935,
+              18.452764414660603,
+              18.115392512948652,
+              18.195016932794104,
+              18.31458205514021,
+              18.356433144207585,
+              18.60951401952021,
+              18.53076504135822,
+              18.593911901849523
+            ],
+            "mae_per_repeat": [
+              12.124153131657529,
+              12.236753402813452,
+              12.13243195206911,
+              11.852419423481306,
+              11.89436085767793,
+              11.960011766578,
+              12.056179024587404,
+              12.29243748380539,
+              12.122494719492227,
+              12.222530149756315
+            ],
+            "skill_per_repeat": [
+              0.10217313270623973,
+              0.09861892221162216,
+              0.1029553068518223,
+              0.11935597545882892,
+              0.11548519156638315,
+              0.10967276931484382,
+              0.10763826128630505,
+              0.09533523443163416,
+              0.09916346045585689,
+              0.0960937005640713
+            ]
+          },
+          "CGMacros-020": {
+            "diag_group": "prediabetes",
+            "n_origins": 2830,
+            "mean_rmse": 29.966598482177165,
+            "mean_mae": 21.946606282749123,
+            "mean_skill": 0.09754996533241084,
+            "rmse_per_repeat": [
+              30.08321442853976,
+              29.925091537430824,
+              29.908461018728655,
+              29.8950716477046,
+              30.001798268975325,
+              30.04539458565923,
+              29.971458743218577,
+              29.992637490132523,
+              29.849464757778705,
+              29.99339234360343
+            ],
+            "mae_per_repeat": [
+              22.099374072694822,
+              21.883211142090992,
+              21.919450215910583,
+              21.900455663492995,
+              21.96100717976934,
+              21.99892074855465,
+              21.94515920323116,
+              21.971760066183908,
+              21.85653451492663,
+              21.930190020636168
+            ],
+            "skill_per_repeat": [
+              0.09403805306447988,
+              0.09879995517518725,
+              0.09930078653208074,
+              0.09970401008619956,
+              0.09648991679753338,
+              0.09517700510599891,
+              0.09740359761076478,
+              0.09676579546254716,
+              0.10107747058820427,
+              0.09674306290111245
+            ]
+          },
+          "CGMacros-021": {
+            "diag_group": "normal",
+            "n_origins": 2830,
+            "mean_rmse": 23.027273826593206,
+            "mean_mae": 16.705339461843742,
+            "mean_skill": 0.08257662745591479,
+            "rmse_per_repeat": [
+              23.006298050627425,
+              23.227293358238505,
+              22.930670898229586,
+              23.096565345351056,
+              23.05207963186881,
+              23.05040243561562,
+              22.95623363118859,
+              22.937430550872694,
+              22.874806594817162,
+              23.140957769122597
+            ],
+            "mae_per_repeat": [
+              16.5928369340168,
+              16.959076870558235,
+              16.810267617080527,
+              16.817819149320055,
+              16.54314426205948,
+              16.81249381044098,
+              16.630288575950495,
+              16.60996502904383,
+              16.645225535891797,
+              16.632276834075224
+            ],
+            "skill_per_repeat": [
+              0.08341231765846191,
+              0.07460770353211099,
+              0.08642535853039546,
+              0.07981600284588752,
+              0.08158834609416987,
+              0.0816551668153116,
+              0.08540692061806177,
+              0.08615604904236118,
+              0.08865103309471423,
+              0.07804737632767333
+            ]
+          },
+          "CGMacros-022": {
+            "diag_group": "prediabetes",
+            "n_origins": 2830,
+            "mean_rmse": 19.737699506894778,
+            "mean_mae": 14.598249757857706,
+            "mean_skill": 0.030012910309268802,
+            "rmse_per_repeat": [
+              19.726518769998226,
+              19.310713742525103,
+              19.50690066175739,
+              19.89016985829285,
+              19.59147758209477,
+              19.732714510178475,
+              20.209579029602576,
+              19.459114013924392,
+              20.061309994597263,
+              19.888496905976748
+            ],
+            "mae_per_repeat": [
+              14.475515844014573,
+              14.272203095030974,
+              14.330278425218275,
+              14.577540411655473,
+              14.531436934268415,
+              14.57443176910988,
+              15.20547892279314,
+              14.420445508255288,
+              14.862576493896798,
+              14.732590174334229
+            ],
+            "skill_per_repeat": [
+              0.03056237507536763,
+              0.05099664647242386,
+              0.041355260516829584,
+              0.02251992601466668,
+              0.03719882269162067,
+              0.030257892377988482,
+              0.006822920779025021,
+              0.04370368169131411,
+              0.014109436094845829,
+              0.022602141378606166
+            ]
+          },
+          "CGMacros-023": {
+            "diag_group": "prediabetes",
+            "n_origins": 2814,
+            "mean_rmse": 33.78480347399786,
+            "mean_mae": 23.968233667974918,
+            "mean_skill": 0.13031684562729298,
+            "rmse_per_repeat": [
+              33.79189538020817,
+              33.94563353647344,
+              33.423880446784416,
+              33.57177599629789,
+              33.94953691967511,
+              33.72801843648493,
+              33.99060355234722,
+              33.63570737743779,
+              34.023382608170245,
+              33.78760048609941
+            ],
+            "mae_per_repeat": [
+              23.995805437391827,
+              24.152873223277535,
+              23.663098240312845,
+              23.86987317141331,
+              24.133426275286986,
+              23.892400204029386,
+              24.062072276527434,
+              23.828697783089225,
+              24.07950926748507,
+              24.00458080093556
+            ],
+            "skill_per_repeat": [
+              0.1301342868810732,
+              0.12617678318296444,
+              0.13960767003698105,
+              0.13580056581281252,
+              0.12607630289992333,
+              0.13177859722763685,
+              0.1250191720313294,
+              0.13415485414673922,
+              0.12417537867650141,
+              0.13024484537696845
+            ]
+          },
+          "CGMacros-026": {
+            "diag_group": "prediabetes",
+            "n_origins": 2714,
+            "mean_rmse": 29.64027896420216,
+            "mean_mae": 20.93622911729913,
+            "mean_skill": 0.0935668738106597,
+            "rmse_per_repeat": [
+              29.792819875930764,
+              29.678600645884412,
+              29.675900497184166,
+              29.553039571415507,
+              29.633193123010063,
+              29.46464089649801,
+              29.35274859183206,
+              29.822384174821284,
+              29.68193722330548,
+              29.747525042139905
+            ],
+            "mae_per_repeat": [
+              21.090319152778054,
+              20.973330389733402,
+              20.992459826053672,
+              20.814253368641335,
+              20.959523533629376,
+              20.70735558454675,
+              20.701974877611793,
+              21.10809561065783,
+              21.036373116275673,
+              20.978605713063423
+            ],
+            "skill_per_repeat": [
+              0.08890200086338018,
+              0.09239495360808592,
+              0.0924775271975753,
+              0.09623475273399829,
+              0.09378356681787448,
+              0.09893808381105174,
+              0.10235987655589662,
+              0.08799789129345015,
+              0.09229291731125466,
+              0.09028716791402969
+            ]
+          },
+          "CGMacros-027": {
+            "diag_group": "normal",
+            "n_origins": 2792,
+            "mean_rmse": 17.993135203262057,
+            "mean_mae": 12.875939309956175,
+            "mean_skill": 0.053389716897924024,
+            "rmse_per_repeat": [
+              17.811753178021714,
+              18.086562160599428,
+              17.88546346175021,
+              18.095009856935526,
+              18.12878031739309,
+              17.902480374833555,
+              17.992844908728234,
+              17.952908192179596,
+              17.991608515406686,
+              18.08394106677254
+            ],
+            "mae_per_repeat": [
+              12.792342656043756,
+              12.933320714143703,
+              12.696131941582708,
+              12.937450313370228,
+              13.04419584672812,
+              12.702040593321538,
+              12.892834848631999,
+              12.856187020756163,
+              12.876469520446257,
+              13.028419644537287
+            ],
+            "skill_per_repeat": [
+              0.06293213895626892,
+              0.048474569118761024,
+              0.059054275995781835,
+              0.04803013983337301,
+              0.04625349197444817,
+              0.05815902429398678,
+              0.05340498915524561,
+              0.05550604081362587,
+              0.053470035219698175,
+              0.04861246361805083
+            ]
+          },
+          "CGMacros-028": {
+            "diag_group": "diabetes",
+            "n_origins": 2798,
+            "mean_rmse": 23.332465603194503,
+            "mean_mae": 16.27599854412488,
+            "mean_skill": 0.11919146133363227,
+            "rmse_per_repeat": [
+              23.387807547959643,
+              23.29010707760947,
+              23.27980125231413,
+              23.229702533664625,
+              23.346509768741054,
+              23.408829344679233,
+              23.401308450413733,
+              23.343815494959397,
+              23.235218323637472,
+              23.401556237966282
+            ],
+            "mae_per_repeat": [
+              16.28054821451105,
+              16.22579099515205,
+              16.250351775231213,
+              16.204720620312894,
+              16.26250611480977,
+              16.36658826375222,
+              16.31928798986563,
+              16.276092110549126,
+              16.234604685599294,
+              16.339494671465584
+            ],
+            "skill_per_repeat": [
+              0.11710228403344747,
+              0.12079051012920872,
+              0.12117955855094498,
+              0.12307080227602674,
+              0.11866128929171349,
+              0.11630870403364713,
+              0.11659262035865625,
+              0.11876299904638521,
+              0.12286257932230216,
+              0.11658326629399063
+            ]
+          },
+          "CGMacros-029": {
+            "diag_group": "prediabetes",
+            "n_origins": 2830,
+            "mean_rmse": 21.123531964076037,
+            "mean_mae": 15.179481247251138,
+            "mean_skill": 0.09466106312371904,
+            "rmse_per_repeat": [
+              21.101535541494897,
+              21.22683949464221,
+              21.114443310277146,
+              21.103426172136597,
+              21.01184749494245,
+              21.16827194734631,
+              21.136193640490713,
+              21.19022421824153,
+              21.080222473185497,
+              21.102315348003007
+            ],
+            "mae_per_repeat": [
+              15.125847213716682,
+              15.27606035813592,
+              15.13740613007769,
+              15.373165119878095,
+              15.105290826284755,
+              15.356976557417626,
+              15.14866226247877,
+              15.285203222188075,
+              14.896840653325448,
+              15.089360129008293
+            ],
+            "skill_per_repeat": [
+              0.09560381350602043,
+              0.09023337886839877,
+              0.09505059609490574,
+              0.09552278247683021,
+              0.09944777676246797,
+              0.09274354057310308,
+              0.09411839304923386,
+              0.09180268249936352,
+              0.09651727583029557,
+              0.09557039157657121
+            ]
+          },
+          "CGMacros-030": {
+            "diag_group": "diabetes",
+            "n_origins": 2792,
+            "mean_rmse": 44.90304091949152,
+            "mean_mae": 29.414202553247435,
+            "mean_skill": 0.06512961625071699,
+            "rmse_per_repeat": [
+              44.722348421573905,
+              45.04684327082167,
+              44.59252106366476,
+              45.6266129287277,
+              44.34554928400794,
+              44.793084894985654,
+              44.88752293116632,
+              45.22684918489083,
+              45.09595985928069,
+              44.69311735579565
+            ],
+            "mae_per_repeat": [
+              29.35449654419693,
+              29.462102763997972,
+              29.24231673943577,
+              29.837686009264466,
+              29.085248109603153,
+              29.321246400767713,
+              29.39918932036349,
+              29.594841419053843,
+              29.532636683705167,
+              29.312261542085796
+            ],
+            "skill_per_repeat": [
+              0.06889159008165913,
+              0.0621356862936544,
+              0.0715945640768344,
+              0.050065023116418916,
+              0.07673645642298943,
+              0.06741887392058488,
+              0.06545269699098566,
+              0.05838800697134083,
+              0.061113090875596465,
+              0.06950017375710582
+            ]
+          },
+          "CGMacros-031": {
+            "diag_group": "normal",
+            "n_origins": 2710,
+            "mean_rmse": 18.141563411810267,
+            "mean_mae": 13.926580460981052,
+            "mean_skill": 0.023648409014600948,
+            "rmse_per_repeat": [
+              18.280691230330397,
+              18.177690732194133,
+              18.13548861727325,
+              18.224768115241144,
+              18.046320354966618,
+              18.138026276310946,
+              18.05164268556814,
+              18.025654691374694,
+              18.071125873209148,
+              18.264225541634218
+            ],
+            "mae_per_repeat": [
+              13.978155376929214,
+              13.879913162917108,
+              14.039624231182628,
+              14.019278595079014,
+              13.952156027576349,
+              13.9264786410683,
+              13.718800727918069,
+              13.832199084228746,
+              13.864833065909751,
+              14.054365697001334
+            ],
+            "skill_per_repeat": [
+              0.016160759583349393,
+              0.02170409110031013,
+              0.023975345297681527,
+              0.019170457322779444,
+              0.02877424673700335,
+              0.02383877231427367,
+              0.028487806928449433,
+              0.029886441594124014,
+              0.02743925114420087,
+              0.01704691812383763
+            ]
+          },
+          "CGMacros-032": {
+            "diag_group": "normal",
+            "n_origins": 2692,
+            "mean_rmse": 24.900663698621088,
+            "mean_mae": 19.160934471512014,
+            "mean_skill": -0.03224586355333392,
+            "rmse_per_repeat": [
+              24.46790267923811,
+              25.158066590678548,
+              24.576125006899304,
+              24.39168556307721,
+              24.869204443791244,
+              25.541068693891535,
+              25.291249799889297,
+              24.791894472943845,
+              24.94515596381581,
+              24.97428377198599
+            ],
+            "mae_per_repeat": [
+              18.741481158068378,
+              19.30196153254427,
+              18.730049428567845,
+              18.897593561362566,
+              19.01150185984411,
+              19.629900630961863,
+              19.693106994642296,
+              19.02028950788346,
+              19.248631460067397,
+              19.334828581177998
+            ],
+            "skill_per_repeat": [
+              -0.014305949277477081,
+              -0.04291638518315266,
+              -0.018792257410644053,
+              -0.011146402855691795,
+              -0.03094173423125568,
+              -0.05879356587033757,
+              -0.04843743548391899,
+              -0.02773688400780272,
+              -0.034090270484138374,
+              -0.035297750728920274
+            ]
+          },
+          "CGMacros-033": {
+            "diag_group": "normal",
+            "n_origins": 2757,
+            "mean_rmse": 40.93638326832792,
+            "mean_mae": 27.79137513625422,
+            "mean_skill": 0.13860395571392384,
+            "rmse_per_repeat": [
+              41.0031907752626,
+              40.719270406892086,
+              40.94503433268768,
+              41.078988057587004,
+              40.77377389951278,
+              40.94683415026932,
+              41.157326910341794,
+              40.73347891436644,
+              41.23734656829552,
+              40.76858866806394
+            ],
+            "mae_per_repeat": [
+              27.854030088465308,
+              27.61519651208854,
+              27.81496628873404,
+              27.935289854366328,
+              27.67493681679243,
+              27.755422905515235,
+              27.933761557004612,
+              27.66096866664378,
+              27.984957442827586,
+              27.684221230104352
+            ],
+            "skill_per_repeat": [
+              0.13719817147976365,
+              0.14317251172871837,
+              0.13842191734063813,
+              0.13560322161001326,
+              0.1420256323711674,
+              0.13838404502214108,
+              0.13395479122879062,
+              0.14287353191769336,
+              0.13227099282445542,
+              0.14213474161585715
+            ]
+          },
+          "CGMacros-034": {
+            "diag_group": "normal",
+            "n_origins": 2830,
+            "mean_rmse": 18.288473803977073,
+            "mean_mae": 14.68797587520487,
+            "mean_skill": -0.11668367987792674,
+            "rmse_per_repeat": [
+              18.463163150907324,
+              17.74131088978341,
+              18.22898077479926,
+              18.2153870121721,
+              18.166785252065495,
+              18.78041453412815,
+              18.954759282702017,
+              17.976757931630978,
+              18.382176917555654,
+              17.97500229402633
+            ],
+            "mae_per_repeat": [
+              14.99098963724605,
+              14.247524404910354,
+              14.624130618111012,
+              14.603123249444897,
+              14.511775046333078,
+              15.115919363477488,
+              15.441261034553705,
+              14.349615728610399,
+              14.728757250859378,
+              14.266662418502344
+            ],
+            "skill_per_repeat": [
+              -0.1273501108145052,
+              -0.08327422739635137,
+              -0.11305106977270762,
+              -0.1122210424540484,
+              -0.10925344696707073,
+              -0.14672129759906638,
+              -0.15736668755842542,
+              -0.09765048820000244,
+              -0.12240513803832265,
+              -0.09754328997876716
+            ]
+          },
+          "CGMacros-035": {
+            "diag_group": "diabetes",
+            "n_origins": 2816,
+            "mean_rmse": 44.69264565715023,
+            "mean_mae": 31.328767676130177,
+            "mean_skill": -0.03741172770429213,
+            "rmse_per_repeat": [
+              46.19628503479591,
+              44.50699810313284,
+              45.02177007611158,
+              44.199784031942734,
+              45.52196759905983,
+              44.20117789033692,
+              44.27685365778823,
+              44.28842381587179,
+              44.511258576122856,
+              44.2019377863396
+            ],
+            "mae_per_repeat": [
+              32.95176625987613,
+              31.114169392789655,
+              31.678518245654814,
+              30.8128260490544,
+              32.19989468944521,
+              30.745612092659577,
+              30.907796606804865,
+              30.91091736187556,
+              31.15342440728572,
+              30.812751655855838
+            ],
+            "skill_per_repeat": [
+              -0.0723144080372935,
+              -0.033102451604714256,
+              -0.045051408172609664,
+              -0.025971357088330427,
+              -0.05666206063780188,
+              -0.02600371151764702,
+              -0.027760307653379446,
+              -0.028028875725615743,
+              -0.03320134627922777,
+              -0.026021350326301596
+            ]
+          },
+          "CGMacros-036": {
+            "diag_group": "diabetes",
+            "n_origins": 2830,
+            "mean_rmse": 33.37926324633274,
+            "mean_mae": 23.35802647949815,
+            "mean_skill": 0.107638670266159,
+            "rmse_per_repeat": [
+              33.39082722294034,
+              33.45495566838545,
+              33.421459716617996,
+              33.312293088352604,
+              33.342526774358916,
+              33.414420066355255,
+              33.38904433695696,
+              33.39543335256903,
+              33.32963514803815,
+              33.342037088752676
+            ],
+            "mae_per_repeat": [
+              23.331004048202725,
+              23.441925281214715,
+              23.450790614679867,
+              23.343848558781513,
+              23.277234668420228,
+              23.21076635054241,
+              23.37114718017137,
+              23.42832457241903,
+              23.43228723742562,
+              23.29293628312403
+            ],
+            "skill_per_repeat": [
+              0.10732951887877173,
+              0.10561510881438985,
+              0.10651058969541827,
+              0.10942905068248543,
+              0.10862078322468549,
+              0.10669878772792007,
+              0.10737718255831885,
+              0.10720637859463622,
+              0.10896542800372488,
+              0.10863387448123929
+            ]
+          },
+          "CGMacros-038": {
+            "diag_group": "diabetes",
+            "n_origins": 2816,
+            "mean_rmse": 27.93176332794211,
+            "mean_mae": 18.476222574282353,
+            "mean_skill": 0.11810715184605942,
+            "rmse_per_repeat": [
+              27.93963576166984,
+              27.940852212302392,
+              27.979016851832,
+              28.133108582354414,
+              27.70147148383448,
+              27.79576974636161,
+              28.096429067830247,
+              27.853496919433006,
+              27.87111970892149,
+              28.00673294488158
+            ],
+            "mae_per_repeat": [
+              18.48229548350912,
+              18.4572928835113,
+              18.470395379706243,
+              18.56427227059439,
+              18.442248295760663,
+              18.383676462060407,
+              18.565003276091353,
+              18.450188398581304,
+              18.431779605231274,
+              18.515073687777473
+            ],
+            "skill_per_repeat": [
+              0.11785859457022463,
+              0.11782018743135614,
+              0.11661521077956472,
+              0.11175005445155595,
+              0.1253781833209512,
+              0.12240089318929581,
+              0.11290814107690916,
+              0.1205782663655578,
+              0.12002185996070791,
+              0.11574012731447092
+            ]
+          },
+          "CGMacros-039": {
+            "diag_group": "diabetes",
+            "n_origins": 2830,
+            "mean_rmse": 46.507941793194824,
+            "mean_mae": 30.266382330890707,
+            "mean_skill": 0.024209709416107273,
+            "rmse_per_repeat": [
+              47.56338704750925,
+              46.81221215023514,
+              45.893760336897564,
+              47.25058869896306,
+              47.14151957788816,
+              45.85676385851338,
+              45.878963520000994,
+              46.4558658396351,
+              45.77151749704494,
+              46.45483940526061
+            ],
+            "mae_per_repeat": [
+              31.052598200477586,
+              30.48546569661779,
+              29.82792904043402,
+              30.807098722855905,
+              30.727425064361388,
+              29.806528153669618,
+              29.79496257768754,
+              30.204109769675004,
+              29.716815052268892,
+              30.240891030859352
+            ],
+            "skill_per_repeat": [
+              0.0020652499605059438,
+              0.01782576618695575,
+              0.03709594515572523,
+              0.008628120293045938,
+              0.010916516322710068,
+              0.037872173967432476,
+              0.03740639945025026,
+              0.025302323019229744,
+              0.03966074100827022,
+              0.025323858796947096
+            ]
+          },
+          "CGMacros-041": {
+            "diag_group": "prediabetes",
+            "n_origins": 2823,
+            "mean_rmse": 35.564579929408,
+            "mean_mae": 23.46348387450162,
+            "mean_skill": 0.11624404916259042,
+            "rmse_per_repeat": [
+              35.59722516622032,
+              35.82800876728473,
+              35.50360488723453,
+              35.714057770615604,
+              35.39052149941437,
+              35.85084220811308,
+              35.592235414517376,
+              35.460967145428164,
+              35.37951601056619,
+              35.32882042468562
+            ],
+            "mae_per_repeat": [
+              23.525316776090435,
+              23.564233633334062,
+              23.342110336013857,
+              23.668438243179526,
+              23.425540293759763,
+              23.62877811785077,
+              23.548912733444975,
+              23.365368062471035,
+              23.28599401552456,
+              23.280146533347217
+            ],
+            "skill_per_repeat": [
+              0.11543283692961448,
+              0.1096980192767365,
+              0.11775923805221944,
+              0.11252962509381859,
+              0.12056928437148684,
+              0.10913062359119208,
+              0.11555682891178976,
+              0.1188187573302888,
+              0.12084276338574085,
+              0.1221025146830168
+            ]
+          },
+          "CGMacros-042": {
+            "diag_group": "diabetes",
+            "n_origins": 2830,
+            "mean_rmse": 30.34598392331327,
+            "mean_mae": 20.85948697912125,
+            "mean_skill": 0.11380007334192377,
+            "rmse_per_repeat": [
+              30.170538992815356,
+              30.402868538726857,
+              30.25105622136357,
+              30.46102574003882,
+              30.37329799595233,
+              30.330533783660144,
+              30.207682861667127,
+              30.330873260732876,
+              30.520105396395675,
+              30.411856441779925
+            ],
+            "mae_per_repeat": [
+              20.626861752630372,
+              20.918459395261447,
+              20.815591161473805,
+              20.970789655985836,
+              20.911564809738373,
+              20.878799320033636,
+              20.75577185780776,
+              20.79819768411736,
+              20.985911767330922,
+              20.932922386832995
+            ],
+            "skill_per_repeat": [
+              0.11892362725049666,
+              0.11213886037434007,
+              0.11657226628574902,
+              0.11044048382251881,
+              0.1130024149357689,
+              0.11425126690552867,
+              0.11783890731077018,
+              0.11424135308768313,
+              0.10871516862882669,
+              0.1118763848175558
+            ]
+          },
+          "CGMacros-043": {
+            "diag_group": "prediabetes",
+            "n_origins": 2800,
+            "mean_rmse": 21.06363850228493,
+            "mean_mae": 15.764429823764772,
+            "mean_skill": 0.10324407694662789,
+            "rmse_per_repeat": [
+              20.788804220009556,
+              21.192711087759783,
+              21.220381363645256,
+              20.831994902235007,
+              21.167565105103442,
+              21.107618461987173,
+              21.017554198629615,
+              21.24716319276317,
+              20.986988894363677,
+              21.075603596352618
+            ],
+            "mae_per_repeat": [
+              15.549769710573676,
+              15.827434366285145,
+              15.88757987336452,
+              15.60917171360155,
+              15.85895897173049,
+              15.866068274176975,
+              15.738534719883843,
+              15.898791473331698,
+              15.72217602168334,
+              15.685813113016485
+            ],
+            "skill_per_repeat": [
+              0.11494477483231502,
+              0.09774898617606465,
+              0.09657096160114953,
+              0.11310598994706422,
+              0.09881954238056956,
+              0.10137168964021093,
+              0.10520605385096049,
+              0.09543076144583984,
+              0.10650733034397641,
+              0.1027346792481284
+            ]
+          },
+          "CGMacros-044": {
+            "diag_group": "prediabetes",
+            "n_origins": 2797,
+            "mean_rmse": 23.85786038138705,
+            "mean_mae": 17.469486154992925,
+            "mean_skill": 0.1311408597658121,
+            "rmse_per_repeat": [
+              24.00349125443411,
+              23.689157309893258,
+              23.908624140279873,
+              23.99584685603593,
+              23.4976790504659,
+              23.96702165642571,
+              23.852875027645915,
+              24.005254840372654,
+              23.85740963450625,
+              23.801244043810893
+            ],
+            "mae_per_repeat": [
+              17.616194466233264,
+              17.329143974790387,
+              17.418014745977278,
+              17.538248549775606,
+              17.232631166188085,
+              17.653987494384506,
+              17.448431250990694,
+              17.626693739679958,
+              17.482157817318466,
+              17.349358344590993
+            ],
+            "skill_per_repeat": [
+              0.12583725277321112,
+              0.13728471354438976,
+              0.1292921375752386,
+              0.12611564762143623,
+              0.14425799753549673,
+              0.12716540806726195,
+              0.13132241712661652,
+              0.12577302623580178,
+              0.1311572751333704,
+              0.13320272204529826
+            ]
+          },
+          "CGMacros-045": {
+            "diag_group": "prediabetes",
+            "n_origins": 2696,
+            "mean_rmse": 40.771641571053216,
+            "mean_mae": 27.02238020767973,
+            "mean_skill": 0.1265716756415704,
+            "rmse_per_repeat": [
+              40.8382494236317,
+              40.78406967491724,
+              40.751201455536446,
+              40.36614770776712,
+              40.886507093872694,
+              40.925385688368706,
+              40.90401860522453,
+              40.755708190640995,
+              40.94380409544689,
+              40.561323775125835
+            ],
+            "mae_per_repeat": [
+              27.130180393240146,
+              27.098577333555408,
+              27.023267928833377,
+              26.637022949670833,
+              27.130275798292132,
+              27.049706267674846,
+              27.09936789333973,
+              27.068309732868325,
+              27.117037602685688,
+              26.87005617663684
+            ],
+            "skill_per_repeat": [
+              0.12514477246021694,
+              0.12630543524715332,
+              0.1270095529297437,
+              0.13525834637398093,
+              0.12411097508459301,
+              0.12327810046057563,
+              0.12373583566347457,
+              0.12691300763651991,
+              0.12288353311396494,
+              0.13107719744548108
+            ]
+          },
+          "CGMacros-046": {
+            "diag_group": "diabetes",
+            "n_origins": 2770,
+            "mean_rmse": 38.164704488712026,
+            "mean_mae": 26.335093908570364,
+            "mean_skill": 0.032421280102755114,
+            "rmse_per_repeat": [
+              37.74402761262832,
+              38.572431212317035,
+              38.50438929354841,
+              38.90892977897439,
+              38.0541110944623,
+              37.75879076472378,
+              38.07811289603675,
+              38.05870462133046,
+              37.64203950014132,
+              38.32550811295756
+            ],
+            "mae_per_repeat": [
+              26.02436486274782,
+              26.616832419593646,
+              26.595587658145615,
+              26.893313090744012,
+              26.243988198082093,
+              26.056246807753592,
+              26.287712436000543,
+              26.24871162301048,
+              25.93100348274366,
+              26.453178506882185
+            ],
+            "skill_per_repeat": [
+              0.04308657932895077,
+              0.02208430234860248,
+              0.023809349444957495,
+              0.013553151466250357,
+              0.03522512245580933,
+              0.042712293401742984,
+              0.034616611719154644,
+              0.03510866409705993,
+              0.04567225446116874,
+              0.028344472303854396
+            ]
+          },
+          "CGMacros-047": {
+            "diag_group": "diabetes",
+            "n_origins": 2772,
+            "mean_rmse": 36.688282574514304,
+            "mean_mae": 25.597947368984528,
+            "mean_skill": 0.04058206421897652,
+            "rmse_per_repeat": [
+              36.55215679682972,
+              36.53205629644079,
+              36.671125788803785,
+              36.60394314247592,
+              36.87832886594941,
+              36.84666961267838,
+              36.552768433695555,
+              36.915697378500965,
+              36.846707962012054,
+              36.48337146775653
+            ],
+            "mae_per_repeat": [
+              25.482091396335395,
+              25.449751404150433,
+              25.580093988799312,
+              25.519098751708484,
+              25.76776308117102,
+              25.739775921178563,
+              25.496436170290046,
+              25.806624944588723,
+              25.726703734182784,
+              25.41113429744051
+            ],
+            "skill_per_repeat": [
+              0.04414182508724518,
+              0.04466746377180719,
+              0.04103072321241941,
+              0.042787584840632054,
+              0.03561225348277808,
+              0.03644015965036629,
+              0.04412583046067531,
+              0.0346350471743988,
+              0.036439156795068484,
+              0.04594059771437442
+            ]
+          },
+          "CGMacros-048": {
+            "diag_group": "normal",
+            "n_origins": 2800,
+            "mean_rmse": 22.696436952153363,
+            "mean_mae": 16.927510323776573,
+            "mean_skill": 0.002302412136330911,
+            "rmse_per_repeat": [
+              22.72026097540463,
+              22.841914441965393,
+              22.57994813320912,
+              22.717086784954564,
+              22.671321392340445,
+              23.142295552358757,
+              22.228586384218573,
+              22.727552488076057,
+              22.71159592555637,
+              22.62380744344971
+            ],
+            "mae_per_repeat": [
+              16.891488900502463,
+              17.080143184233783,
+              16.862767260489584,
+              17.038751455625327,
+              16.892153168754547,
+              17.373155578185564,
+              16.328295120540147,
+              16.887300739989445,
+              17.018915950461142,
+              16.902131878983724
+            ],
+            "skill_per_repeat": [
+              0.0012551477317414017,
+              -0.004092536153565973,
+              0.007423066709503101,
+              0.001394679860160064,
+              0.0034064503382750244,
+              -0.01729678975121418,
+              0.022868344317368727,
+              0.0009346249721781108,
+              0.0016360488992045452,
+              0.005495084439658293
+            ]
+          },
+          "CGMacros-049": {
+            "diag_group": "diabetes",
+            "n_origins": 2830,
+            "mean_rmse": 41.46065823513307,
+            "mean_mae": 28.908137111419485,
+            "mean_skill": 0.12890136148528608,
+            "rmse_per_repeat": [
+              41.21133160999977,
+              41.57406235103038,
+              41.14212799212869,
+              41.76331551958451,
+              41.558985076110524,
+              41.4527503679837,
+              41.37150124910586,
+              41.434493145287405,
+              41.51313994533051,
+              41.584875094769316
+            ],
+            "mae_per_repeat": [
+              28.7068253732505,
+              29.007286755678482,
+              28.665590803146443,
+              29.114272988425242,
+              28.930387151332983,
+              28.92393365201418,
+              28.82569953732062,
+              28.89301721552998,
+              28.983125196093155,
+              29.03123244140325
+            ],
+            "skill_per_repeat": [
+              0.1341397752718536,
+              0.12651871308641416,
+              0.13559376032355985,
+              0.1225424574146603,
+              0.1268354903450074,
+              0.1290675077212745,
+              0.1307745717151363,
+              0.12945109646565978,
+              0.12779870783129332,
+              0.12629153467800158
             ]
           }
         }

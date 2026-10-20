@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import glob
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 import numpy as np
@@ -25,6 +25,7 @@ class ParticipantOrigins:
     roc: np.ndarray  # (y(t - 5) - y(t - 20)) / 15.0
     target: np.ndarray  # y(t + h)
     elapsed_minutes: np.ndarray  # m(t)
+    history_lags: np.ndarray = field(default_factory=lambda: np.empty((0, 13), dtype=np.float64))
 
     @property
     def n_origins(self) -> int:
@@ -67,6 +68,7 @@ def extract_participant_guard_band_origins(
     roc_list: list[float] = []
     target_list: list[float] = []
     elapsed_list: list[int] = []
+    history_lags_list: list[np.ndarray] = []
 
     h = horizon_minutes
     max_lag = 65  # 13 lags at 5m steps
@@ -96,6 +98,13 @@ def extract_participant_guard_band_origins(
                         roc_list.append(roc_val)
                         target_list.append(float(target_val))
                         elapsed_list.append(int(r_elapsed[t]))
+                        history_lags_list.append(guard_hist_vals.copy())
+
+    history_lags_arr = (
+        np.array(history_lags_list, dtype=np.float64)
+        if len(history_lags_list) > 0
+        else np.empty((0, 13), dtype=np.float64)
+    )
 
     return ParticipantOrigins(
         participant_id=pid,
@@ -106,6 +115,7 @@ def extract_participant_guard_band_origins(
         roc=np.array(roc_list, dtype=np.float64),
         target=np.array(target_list, dtype=np.float64),
         elapsed_minutes=np.array(elapsed_list, dtype=np.int64),
+        history_lags=history_lags_arr,
     )
 
 

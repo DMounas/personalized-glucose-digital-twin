@@ -92,6 +92,14 @@ def build_experiment_manifest(
                     "damping_range": [0.0, 1.0],
                     "selection_method": "Inner 4-fold participant-grouped cross-validation on training participants",
                 },
+                {
+                    "rung": 2,
+                    "name": "Guarded Ridge Regression (13 Autoregressive Lags)",
+                    "formula": "y_hat(t+h) = w_0 + sum_{k=1}^13 w_k * StandardScaler(y(t - 5k))",
+                    "features": "13 guard-banded glucose history lags: [y(t-5), y(t-10), ..., y(t-65)]",
+                    "preprocessing": "StandardScaler fitted strictly on training fold",
+                    "regularization": "L2 Ridge penalty (alpha selected via inner 4-fold participant-grouped CV)",
+                },
             ],
             "validation_design": {
                 "scheme": "Repeated Participant-Disjoint Stratified Cross-Validation",

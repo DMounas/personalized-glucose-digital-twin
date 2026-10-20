@@ -3,10 +3,10 @@
     "title": "Stage 2 Predictive Modeling Baseline Experiment Manifest",
     "experiment_id": "STAGE2-EXP-001-BASELINES",
     "protocol_version": "1.0.0",
-    "created_at_utc": "2026-10-20T15:03:53.105654+00:00"
+    "created_at_utc": "2026-10-20T15:25:43.024897+00:00"
   },
   "artifact_integrity": {
-    "git_commit": "1f8382a6ffe2a5fbbfab239b0bd0030203bc3f14",
+    "git_commit": "a06e42f55e8a7e15600eeb3ffc84709df0fb20a8",
     "protocol": {
       "path": "docs/STAGE2_PROTOCOL_DRAFT.md",
       "sha256": "d2af976a8163205d0cec9fbc6907f47d7bb2c6d7688df72e01692b3fb0d3435b"
@@ -61,6 +61,14 @@
           1.0
         ],
         "selection_method": "Inner 4-fold participant-grouped cross-validation on training participants"
+      },
+      {
+        "rung": 2,
+        "name": "Guarded Ridge Regression (13 Autoregressive Lags)",
+        "formula": "y_hat(t+h) = w_0 + sum_{k=1}^13 w_k * StandardScaler(y(t - 5k))",
+        "features": "13 guard-banded glucose history lags: [y(t-5), y(t-10), ..., y(t-65)]",
+        "preprocessing": "StandardScaler fitted strictly on training fold",
+        "regularization": "L2 Ridge penalty (alpha selected via inner 4-fold participant-grouped CV)"
       }
     ],
     "validation_design": {
