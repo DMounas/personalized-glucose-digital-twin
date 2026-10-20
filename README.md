@@ -41,7 +41,7 @@ This repository provides an open-source research-engineering digital twin framew
 | :--- | :---: | :---: | :--- |
 | **Best Global RMSE** | **18.85 mg/dL** | **25.45 mg/dL** | Population Rung 5 Ridge (45 unseen participants) |
 | **Global Forecasting Skill** | **+11.82%** vs Persistence | **+11.85%** vs Persistence | Participant-level skill score $1 - \frac{\text{RMSE}}{\text{RMSE}_{\text{pers}}}$ |
-| **6-Day Personalization $\Delta\text{RMSE}$** | **-0.83 mg/dL** ($p = \text{n.s.}$) | **-1.81 mg/dL** ($p < 0.05$) | Paired bootstrap difference vs matched global baseline |
+| **6-Day Personalization $\Delta\text{RMSE}$** | **-0.83 mg/dL** [95% CI: -1.72, +0.59] (n.s.) | **-1.81 mg/dL** [95% CI: -2.43, -1.09] | Paired bootstrap difference vs matched global baseline |
 | **Personalization Improvement Rate** | **41 / 45 Subjects (91.1%)** | **40 / 45 Subjects (88.9%)** | Fraction of participants experiencing lower error |
 | **Data Leakage Countermeasures** | 5-min Guard Band | 120-min Temporal Purge | Zero intra-subject cross-validation contamination |
 
@@ -83,16 +83,16 @@ To establish a defensible baseline:
 
 Evaluated across **123,599 origins (+30m)** and **123,164 origins (+60m)** on 45 independent participants:
 
-| Model Rung | Description | +30m RMSE | +30m Skill | +60m RMSE | +60m Skill | Improved Subjects |
-| :---: | :--- | :---: | :---: | :---: | :---: | :---: |
-| **Rung 0** | Guarded Persistence ($y(t-5)$) | 21.55 mg/dL | 0.00% | 29.32 mg/dL | 0.00% | 0 / 45 (0.0%) |
-| **Rung 1** | Damped Trend Extrapolation | 21.39 mg/dL | +0.32% | 29.33 mg/dL | -0.15% | 28 / 45 (62.2%) |
-| **Rung 2** | Guarded Ridge (13 Autoregressive Lags) | 19.87 mg/dL | +7.17% | 26.97 mg/dL | +7.02% | 41 / 45 (91.1%) |
-| **Rung 3** | + Physiological Activity (HR & METs) | 19.85 mg/dL | +7.30% | 26.97 mg/dL | +6.94% | 40 / 45 (88.9%) |
-| **Rung 4** | + Meal Context (Full Macronutrients) | 19.19 mg/dL | +10.26% | 27.03 mg/dL | +7.02% | 41 / 45 (91.1%) |
-| **Rung 4b** | + Meal Context (Timing Only Ablation) | 19.18 mg/dL | +10.32% | 26.26 mg/dL | +9.06% | 41 / 45 (91.1%) |
-| **Rung 5** | **+ Baseline Covariates (Age, Sex, BMI, HbA1c)** | **18.85 mg/dL** | **+11.82%** | **25.45 mg/dL** | **+11.85%** | **42 / 45 (93.3%)** |
-| **Rung 6** | Fixed Gradient Boosting (`HistGradientBoosting`) | 19.15 mg/dL | +11.06% | 25.64 mg/dL | +12.30% | 40 / 45 (88.9%) |
+| Model Rung | Description | +30m RMSE | +30m Skill | +30m Imp. | +60m RMSE | +60m Skill | +60m Imp. |
+| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Rung 0** | Guarded Persistence ($y(t-5)$) | 21.55 mg/dL | 0.00% | 0 / 45 (0.0%) | 29.32 mg/dL | 0.00% | 0 / 45 (0.0%) |
+| **Rung 1** | Damped Trend Extrapolation | 21.39 mg/dL | +0.32% | 28 / 45 (62.2%) | 29.33 mg/dL | -0.15% | 22 / 45 (48.9%) |
+| **Rung 2** | Guarded Ridge (13 Autoregressive Lags) | 19.87 mg/dL | +7.17% | 41 / 45 (91.1%) | 26.97 mg/dL | +7.02% | 39 / 45 (86.7%) |
+| **Rung 3** | + Physiological Activity (HR & METs) | 19.85 mg/dL | +7.30% | 40 / 45 (88.9%) | 26.97 mg/dL | +6.94% | 38 / 45 (84.4%) |
+| **Rung 4** | + Meal Context (Full Macronutrients) | 19.19 mg/dL | +10.26% | 41 / 45 (91.1%) | 27.03 mg/dL | +7.02% | 36 / 45 (80.0%) |
+| **Rung 4b** | + Meal Context (Timing Only Ablation) | 19.18 mg/dL | +10.32% | 41 / 45 (91.1%) | 26.26 mg/dL | +9.06% | 39 / 45 (86.7%) |
+| **Rung 5** | **+ Baseline Covariates (Age, Sex, BMI, HbA1c)** | **18.85 mg/dL** | **+11.82%** | **42 / 45 (93.3%)** | **25.45 mg/dL** | **+11.85%** | **43 / 45 (95.6%)** |
+| **Rung 6** | Fixed Gradient Boosting (`HistGradientBoosting`) | 19.15 mg/dL | +11.06% | 40 / 45 (88.9%) | 25.64 mg/dL | +12.30% | 41 / 45 (91.1%) |
 
 ### Key Benchmark Takeaways
 - **Clinical Covariates Matter**: Augmenting meal-timing Ridge with 4 static baseline covariates (Age, Sex, BMI, HbA1c) yields the highest performing linear model (Rung 5), reducing RMSE to 18.85 mg/dL (+30m) and 25.45 mg/dL (+60m).
@@ -117,7 +117,7 @@ Personalization tests whether adapting the global Rung 5 model to an individual'
 
 ### Critical Scientific Insights
 - **The Dose-Response Relationship**: A clear monotonic improvement emerges as calibration expands from 2 to 6 days. At 2 days, residual correction overfits sparse telemetry. By 6 days, personalized models reduce +60m RMSE by **$1.811\text{ mg/dL}$ (8.00%)** with **40 of 45 participants improving**.
-- **Transparent Uncertainty Reporting**: At $+60$ minutes, the 4-day and 6-day paired confidence intervals **strictly exclude zero**, confirming statistically significant calibration. At $+30$ minutes, despite 91.1% of participants improving with 6 days of data, the confidence interval spans zero due to strong baseline autoregression.
+- **Transparent Uncertainty & Significance Reporting**: At $+30$ minutes, the paired bootstrap 95% confidence intervals across all three windows (2-day $[-0.666, +1.687]$, 4-day $[-1.346, +1.009]$, and 6-day $[-1.724, +0.587]$) **all cross zero**; therefore, short-horizon residual adaptation does not reach statistical significance despite high participant improvement fractions (up to $91.1\%$). In contrast, at $+60$ minutes, both the 4-day ($[-1.804, -0.405]$) and 6-day ($[-2.431, -1.087]$) paired confidence intervals **strictly exclude zero**, establishing statistically robust, clinically meaningful error reductions.
 - **Clinical Phenotype Impact**: At +60m under 6-day adaptation, Type 2 Diabetic subjects experience an average error reduction of **$-2.34\text{ mg/dL}$ ($7.63\%$)**, dropping from $30.58$ to $28.24\text{ mg/dL}$ ($12/14$ improved).
 
 ---

@@ -53,7 +53,7 @@ Evaluated against a matched global Rung 5 Ridge baseline evaluated on strictly i
 | **+60m** | 4 Days | 47,738 | 73,921 | 24.529 | 23.383 | **-1.146** | **[-1.804, -0.405]** | **+4.76%** | **35 / 45 (77.8%)** |
 | **+60m** | 6 Days | 72,073 | 49,621 | 24.073 | 22.262 | **-1.811** | **[-2.431, -1.087]** | **+8.00%** | **40 / 45 (88.9%)** |
 
-*Note on Statistical Significance*: Negative $\Delta\text{RMSE}$ denotes performance improvement from personalization. At the $+60$-minute horizon, the paired bootstrap confidence intervals for both the 4-day and 6-day adaptation windows strictly exclude zero, confirming a statistically robust, reproducible benefit. At $+30$ minutes, though 91.1% of subjects improve at 6 days, the cohort confidence interval includes zero due to high baseline predictability.
+*Note on Statistical Significance*: Negative $\Delta\text{RMSE}$ denotes performance improvement from personalization. At the $+60$-minute horizon, the paired bootstrap confidence intervals for both the 4-day (95% CI: $[-1.804, -0.405]$) and 6-day (95% CI: $[-2.431, -1.087]$) adaptation windows strictly exclude zero, confirming a statistically robust, reproducible benefit. At $+30$ minutes, the paired bootstrap 95% confidence intervals across all three windows (2-day $[-0.666, +1.687]$, 4-day $[-1.346, +1.009]$, and 6-day $[-1.724, +0.587]$) all cross zero; thus, short-horizon residual adaptation does not reach statistical significance despite high participant improvement proportions (up to 91.1%).
 
 ---
 

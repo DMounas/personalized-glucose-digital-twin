@@ -25,7 +25,7 @@
 
   <!-- Background -->
   <rect width="1200" height="360" rx="16" fill="url(#bgGrad)"/>
-  
+
   <!-- Subtle Grid Pattern -->
   <g stroke="#1E293B" stroke-width="1" stroke-opacity="0.6">
     <line x1="80" y1="80" x2="1120" y2="80"/>
@@ -47,7 +47,7 @@
 
   <!-- Historical Glucose Trace (Cyan) -->
   <path d="M 120 220 Q 220 160 340 190 T 520 140 T 700 170 T 850 130" fill="none" stroke="url(#cyanGrad)" stroke-width="3.5" filter="url(#glow)"/>
-  
+
   <!-- Forecast Glucose Trace (Emerald Green - Dashed) -->
   <path d="M 850 130 T 980 110 T 1100 135" fill="none" stroke="url(#forecastGrad)" stroke-width="3.5" stroke-dasharray="6,4" filter="url(#glow)"/>
 
@@ -65,7 +65,7 @@
   <g transform="translate(80, 75)">
     <rect x="0" y="0" width="165" height="26" rx="13" fill="#38BDF8" fill-opacity="0.15" stroke="#38BDF8" stroke-opacity="0.4"/>
     <text x="82" y="17" fill="#38BDF8" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="800" text-anchor="middle" letter-spacing="1.5">RESEARCH REPOSITORY</text>
-    
+
     <text x="0" y="65" fill="#F8FAFC" font-family="Segoe UI, Inter, sans-serif" font-size="34" font-weight="900" letter-spacing="-0.5">GLUCOSE DIGITAL TWIN</text>
     <text x="0" y="98" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="16" font-weight="500">Guarded Physiological Forecasting &amp; Residual Personalization</text>
 

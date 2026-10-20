@@ -6,7 +6,7 @@
     </linearGradient>
   </defs>
   <rect width="1000" height="320" rx="12" fill="url(#bg)"/>
-  
+
   <text x="50" y="42" fill="#F8FAFC" font-family="Segoe UI, Inter, sans-serif" font-size="18" font-weight="800">Temporal Guard-Band Architecture (Stage 2 v1.0.0)</text>
   <text x="50" y="65" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="12">Prevents interpolation leakage and boundary bleed across 1-minute to 5-minute sampling intervals</text>
 

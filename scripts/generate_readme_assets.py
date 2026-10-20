@@ -46,18 +46,117 @@ def set_dark_theme() -> None:
     )
 
 
-def generate_global_benchmark_chart(metrics_path: Path, output_path: Path) -> None:
-    """Generate high-resolution comparison chart of Stage 2 model ladder."""
-    with open(metrics_path, encoding="utf-8") as f:
-        data = json.load(f)
+def validate_metrics(stage2_data: dict, stage3_data: dict) -> None:
+    """Validate that canonical metrics adhere to protocol invariants and expected values.
 
+    Fails clearly if required fields are missing, out of range, or violate statistical properties.
+    """
+    # 1. Stage 2 presence
+    if "horizons" not in stage2_data:
+        raise ValueError("Stage 2 metrics missing 'horizons' key")
+    for h in ["h30", "h60"]:
+        if h not in stage2_data["horizons"]:
+            raise ValueError(f"Stage 2 metrics missing horizon '{h}'")
+        h_data = stage2_data["horizons"][h]
+        for r in [
+            "rung0_guarded_persistence",
+            "rung1_damped_trend",
+            "rung2_ridge_regression",
+            "rung3_activity_ridge",
+            "rung4_meal_ridge",
+            "rung4_nomacros_ablation",
+            "rung5_baseline_covariates",
+            "rung6_hist_gradient_boosting",
+        ]:
+            if r not in h_data or "summary" not in h_data[r]:
+                raise ValueError(f"Stage 2 horizon '{h}' missing rung '{r}' summary")
+
+    # 2. Key invariant Stage 2 checks
+    r0_30 = stage2_data["horizons"]["h30"]["rung0_guarded_persistence"]["summary"]["headline_rmse"][
+        "mean"
+    ]
+    r0_60 = stage2_data["horizons"]["h60"]["rung0_guarded_persistence"]["summary"]["headline_rmse"][
+        "mean"
+    ]
+    r2_30 = stage2_data["horizons"]["h30"]["rung2_ridge_regression"]["summary"]["headline_rmse"][
+        "mean"
+    ]
+    r2_60 = stage2_data["horizons"]["h60"]["rung2_ridge_regression"]["summary"]["headline_rmse"][
+        "mean"
+    ]
+    r5_30 = stage2_data["horizons"]["h30"]["rung5_baseline_covariates"]["summary"]["headline_rmse"][
+        "mean"
+    ]
+    r5_60 = stage2_data["horizons"]["h60"]["rung5_baseline_covariates"]["summary"]["headline_rmse"][
+        "mean"
+    ]
+    r6_30 = stage2_data["horizons"]["h30"]["rung6_hist_gradient_boosting"]["summary"][
+        "headline_rmse"
+    ]["mean"]
+    r6_60 = stage2_data["horizons"]["h60"]["rung6_hist_gradient_boosting"]["summary"][
+        "headline_rmse"
+    ]["mean"]
+
+    expected_checks = [
+        ("Rung 0 Persistence h30", r0_30, 21.554),
+        ("Rung 0 Persistence h60", r0_60, 29.321),
+        ("Rung 2 Ridge h30", r2_30, 19.866),
+        ("Rung 2 Ridge h60", r2_60, 26.966),
+        ("Rung 5 Covariates h30", r5_30, 18.853),
+        ("Rung 5 Covariates h60", r5_60, 25.452),
+        ("Rung 6 HistGradientBoosting h30", r6_30, 19.146),
+        ("Rung 6 HistGradientBoosting h60", r6_60, 25.642),
+    ]
+    for name, actual, exp in expected_checks:
+        if abs(actual - exp) > 0.05:
+            raise ValueError(
+                f"Validation failure for {name}: actual={actual:.4f}, expected={exp:.4f}"
+            )
+
+    # 3. Stage 3 presence & invariants
+    if "horizons" not in stage3_data:
+        raise ValueError("Stage 3 metrics missing 'horizons' key")
+    for h in ["h30", "h60"]:
+        if h not in stage3_data["horizons"] or "windows" not in stage3_data["horizons"][h]:
+            raise ValueError(f"Stage 3 metrics missing windows for horizon '{h}'")
+        windows = stage3_data["horizons"][h]["windows"]
+        for w in ["window_2d", "window_4d", "window_6d"]:
+            if w not in windows or "summary" not in windows[w]:
+                raise ValueError(f"Stage 3 horizon '{h}' missing window '{w}' summary")
+
+    # 4. Significance assertions:
+    # All three +30m windows must cross zero (not statistically significant)
+    for w in ["window_2d", "window_4d", "window_6d"]:
+        ci = stage3_data["horizons"]["h30"]["windows"][w]["summary"]["paired_difference"][
+            "ci_95_mean_delta_rmse"
+        ]
+        if not (ci[0] < 0 < ci[1]):
+            raise ValueError(
+                f"Stage 3 +30m {w} CI [{ci[0]}, {ci[1]}] does not cross zero as required"
+            )
+
+    # +60m 4d and 6d must strictly exclude zero (statistically significant benefit)
+    for w in ["window_4d", "window_6d"]:
+        ci = stage3_data["horizons"]["h60"]["windows"][w]["summary"]["paired_difference"][
+            "ci_95_mean_delta_rmse"
+        ]
+        if ci[1] >= 0:
+            raise ValueError(
+                f"Stage 3 +60m {w} CI [{ci[0]}, {ci[1]}] does not strictly exclude zero as required"
+            )
+
+    print("Canonical metrics validation passed successfully.")
+
+
+def generate_global_benchmark_chart(stage2_data: dict, output_path: Path) -> None:
+    """Generate high-resolution comparison chart of Stage 2 model ladder."""
     models = [
         ("Rung 0: Persistence", "rung0_guarded_persistence", "#94A3B8"),
         ("Rung 1: Trend Extrap.", "rung1_damped_trend", "#64748B"),
         ("Rung 2: Guarded Ridge", "rung2_ridge_regression", "#38BDF8"),
         ("Rung 3: +Activity", "rung3_activity_ridge", "#0284C7"),
         ("Rung 4: +Meals (Full)", "rung4_meal_ridge", "#818CF8"),
-        ("Rung 4: +Meals (Timing)", "rung4_nomacros_ablation", "#6366F1"),
+        ("Rung 4b: +Meals (Timing)", "rung4_nomacros_ablation", "#6366F1"),
         ("Rung 5: +Covariates", "rung5_baseline_covariates", "#10B981"),
         ("Rung 6: Fixed GBDT", "rung6_hist_gradient_boosting", "#F59E0B"),
     ]
@@ -68,7 +167,7 @@ def generate_global_benchmark_chart(metrics_path: Path, output_path: Path) -> No
         (ax1, "h30", "+30-Minute Forecast Horizon"),
         (ax2, "h60", "+60-Minute Forecast Horizon"),
     ]:
-        h_data = data["horizons"][h_key]
+        h_data = stage2_data["horizons"][h_key]
         names = [m[0] for m in models]
         rmses = [h_data[m[1]]["summary"]["headline_rmse"]["mean"] for m in models]
         ci_low = [h_data[m[1]]["summary"]["headline_rmse"]["ci_95_mean"][0] for m in models]
@@ -115,6 +214,7 @@ def generate_global_benchmark_chart(metrics_path: Path, output_path: Path) -> No
             val = rmses[i]
             sk = h_data[models[i][1]]["summary"]["headline_skill"]["mean"] * 100
             txt = f"{val:.2f}" if i == 0 else f"{val:.2f} ({sk:+.1f}%)"
+            # Place label slightly to the right of the bar point estimate
             ax.text(
                 val + 0.35,
                 bar.get_y() + bar.get_height() / 2,
@@ -127,28 +227,25 @@ def generate_global_benchmark_chart(metrics_path: Path, output_path: Path) -> No
             )
 
         x_min = 16 if h_key == "h30" else 22
-        x_max = 24 if h_key == "h30" else 33
+        x_max = 24.5 if h_key == "h30" else 35.0
         ax.set_xlim(x_min, x_max)
 
     fig.suptitle(
-        "Stage 2 Global Model Ladder Benchmark (CGMacros Cohort, N=45)",
+        "Stage 2 Global Model Ladder Benchmark (CGMacros Cohort, N=45 Participants, 50 Folds)",
         fontsize=15,
         fontweight="bold",
         y=0.98,
         color="#F8FAFC",
     )
-    plt.tight_layout(rect=[0, 0, 1, 0.95])
+    plt.tight_layout(rect=(0.0, 0.0, 1.0, 0.95))
     output_path.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(output_path, dpi=300)
     plt.close()
     print(f"Generated {output_path}")
 
 
-def generate_personalization_dashboard(metrics_path: Path, output_path: Path) -> None:
+def generate_personalization_dashboard(stage3_data: dict, output_path: Path) -> None:
     """Generate high-resolution personalization performance and uncertainty dashboard."""
-    with open(metrics_path, encoding="utf-8") as f:
-        data = json.load(f)
-
     windows = ["window_2d", "window_4d", "window_6d"]
     win_labels = ["2 Study Days", "4 Study Days", "6 Study Days"]
 
@@ -158,11 +255,11 @@ def generate_personalization_dashboard(metrics_path: Path, output_path: Path) ->
     x = np.arange(len(windows))
     width = 0.32
     g_30 = [
-        data["horizons"]["h30"]["windows"][w]["summary"]["matched_global"]["mean_rmse"]
+        stage3_data["horizons"]["h30"]["windows"][w]["summary"]["matched_global"]["mean_rmse"]
         for w in windows
     ]
     p_30 = [
-        data["horizons"]["h30"]["windows"][w]["summary"]["personalized"]["mean_rmse"]
+        stage3_data["horizons"]["h30"]["windows"][w]["summary"]["personalized"]["mean_rmse"]
         for w in windows
     ]
 
@@ -173,7 +270,7 @@ def generate_personalization_dashboard(metrics_path: Path, output_path: Path) ->
     ax1.set_xticks(x)
     ax1.set_xticklabels(win_labels, fontweight="semibold")
     ax1.set_ylabel("Mean RMSE (mg/dL)", fontweight="semibold")
-    ax1.set_ylim(14, 20)
+    ax1.set_ylim(14, 20.5)
     ax1.set_title(
         "+30-Minute Horizon: Matched Evaluation", fontweight="bold", fontsize=12, color="#38BDF8"
     )
@@ -191,11 +288,11 @@ def generate_personalization_dashboard(metrics_path: Path, output_path: Path) ->
 
     # 2. Horizon +60m RMSE Comparison
     g_60 = [
-        data["horizons"]["h60"]["windows"][w]["summary"]["matched_global"]["mean_rmse"]
+        stage3_data["horizons"]["h60"]["windows"][w]["summary"]["matched_global"]["mean_rmse"]
         for w in windows
     ]
     p_60 = [
-        data["horizons"]["h60"]["windows"][w]["summary"]["personalized"]["mean_rmse"]
+        stage3_data["horizons"]["h60"]["windows"][w]["summary"]["personalized"]["mean_rmse"]
         for w in windows
     ]
 
@@ -206,7 +303,7 @@ def generate_personalization_dashboard(metrics_path: Path, output_path: Path) ->
     ax2.set_xticks(x)
     ax2.set_xticklabels(win_labels, fontweight="semibold")
     ax2.set_ylabel("Mean RMSE (mg/dL)", fontweight="semibold")
-    ax2.set_ylim(20, 27)
+    ax2.set_ylim(20, 27.5)
     ax2.set_title(
         "+60-Minute Horizon: Matched Evaluation", fontweight="bold", fontsize=12, color="#10B981"
     )
@@ -224,17 +321,19 @@ def generate_personalization_dashboard(metrics_path: Path, output_path: Path) ->
 
     # 3. Paired Delta RMSE with 95% Bootstrap CIs
     d_30 = [
-        data["horizons"]["h30"]["windows"][w]["summary"]["paired_difference"]["mean_delta_rmse"]
+        stage3_data["horizons"]["h30"]["windows"][w]["summary"]["paired_difference"][
+            "mean_delta_rmse"
+        ]
         for w in windows
     ]
     ci_30_low = [
-        data["horizons"]["h30"]["windows"][w]["summary"]["paired_difference"][
+        stage3_data["horizons"]["h30"]["windows"][w]["summary"]["paired_difference"][
             "ci_95_mean_delta_rmse"
         ][0]
         for w in windows
     ]
     ci_30_high = [
-        data["horizons"]["h30"]["windows"][w]["summary"]["paired_difference"][
+        stage3_data["horizons"]["h30"]["windows"][w]["summary"]["paired_difference"][
             "ci_95_mean_delta_rmse"
         ][1]
         for w in windows
@@ -242,24 +341,33 @@ def generate_personalization_dashboard(metrics_path: Path, output_path: Path) ->
     err_30 = [np.array(d_30) - np.array(ci_30_low), np.array(ci_30_high) - np.array(d_30)]
 
     d_60 = [
-        data["horizons"]["h60"]["windows"][w]["summary"]["paired_difference"]["mean_delta_rmse"]
+        stage3_data["horizons"]["h60"]["windows"][w]["summary"]["paired_difference"][
+            "mean_delta_rmse"
+        ]
         for w in windows
     ]
     ci_60_low = [
-        data["horizons"]["h60"]["windows"][w]["summary"]["paired_difference"][
+        stage3_data["horizons"]["h60"]["windows"][w]["summary"]["paired_difference"][
             "ci_95_mean_delta_rmse"
         ][0]
         for w in windows
     ]
     ci_60_high = [
-        data["horizons"]["h60"]["windows"][w]["summary"]["paired_difference"][
+        stage3_data["horizons"]["h60"]["windows"][w]["summary"]["paired_difference"][
             "ci_95_mean_delta_rmse"
         ][1]
         for w in windows
     ]
     err_60 = [np.array(d_60) - np.array(ci_60_low), np.array(ci_60_high) - np.array(d_60)]
 
-    ax3.axhline(0, color="#EF4444", linestyle="--", linewidth=1.5, alpha=0.8, label="Zero Effect")
+    ax3.axhline(
+        0,
+        color="#EF4444",
+        linestyle="--",
+        linewidth=1.5,
+        alpha=0.8,
+        label="Zero Effect (No Change)",
+    )
     ax3.errorbar(
         x - 0.08,
         d_30,
@@ -269,7 +377,7 @@ def generate_personalization_dashboard(metrics_path: Path, output_path: Path) ->
         linewidth=2,
         markersize=8,
         capsize=5,
-        label="+30m Delta RMSE (95% CI)",
+        label="+30m Delta RMSE (95% CI, spans 0)",
     )
     ax3.errorbar(
         x + 0.08,
@@ -286,19 +394,38 @@ def generate_personalization_dashboard(metrics_path: Path, output_path: Path) ->
     ax3.set_xticklabels(win_labels, fontweight="semibold")
     ax3.set_ylabel("Paired RMSE Change (mg/dL)", fontweight="semibold")
     ax3.set_title(
-        "Paired RMSE Change & 95% Participant Bootstrap CIs", fontweight="bold", fontsize=12
+        "Paired RMSE Change & 95% Bootstrap CIs (Negative = Improvement)",
+        fontweight="bold",
+        fontsize=12,
     )
-    ax3.legend(loc="upper right", framealpha=0.4)
-    ax3.set_ylim(-2.8, 2.0)
+    ax3.legend(loc="upper right", framealpha=0.5)
+    ax3.set_ylim(-3.0, 2.2)
+
+    # Informative callout about significance
+    ax3.text(
+        0.04,
+        0.18,
+        "• +30m: All CIs cross zero (not statistically significant)\n• +60m: 4-day & 6-day CIs strictly exclude zero (p < 0.05)",
+        transform=ax3.transAxes,
+        fontsize=9,
+        va="bottom",
+        ha="left",
+        bbox=dict(boxstyle="round,pad=0.5", facecolor="#1E293B", edgecolor="#334155", alpha=0.85),
+        color="#F8FAFC",
+    )
 
     # 4. Proportion of Participants Improved
     imp_30 = [
-        data["horizons"]["h30"]["windows"][w]["summary"]["paired_difference"]["fraction_improved"]
+        stage3_data["horizons"]["h30"]["windows"][w]["summary"]["paired_difference"][
+            "fraction_improved"
+        ]
         * 100
         for w in windows
     ]
     imp_60 = [
-        data["horizons"]["h60"]["windows"][w]["summary"]["paired_difference"]["fraction_improved"]
+        stage3_data["horizons"]["h60"]["windows"][w]["summary"]["paired_difference"][
+            "fraction_improved"
+        ]
         * 100
         for w in windows
     ]
@@ -330,7 +457,7 @@ def generate_personalization_dashboard(metrics_path: Path, output_path: Path) ->
     ax4.legend(loc="lower right", framealpha=0.4)
 
     for i, txt in enumerate(imp_30):
-        n_p = data["horizons"]["h30"]["windows"][windows[i]]["summary"]["paired_difference"][
+        n_p = stage3_data["horizons"]["h30"]["windows"][windows[i]]["summary"]["paired_difference"][
             "n_improved"
         ]
         ax4.annotate(
@@ -342,7 +469,7 @@ def generate_personalization_dashboard(metrics_path: Path, output_path: Path) ->
             color="#38BDF8",
         )
     for i, txt in enumerate(imp_60):
-        n_p = data["horizons"]["h60"]["windows"][windows[i]]["summary"]["paired_difference"][
+        n_p = stage3_data["horizons"]["h60"]["windows"][windows[i]]["summary"]["paired_difference"][
             "n_improved"
         ]
         ax4.annotate(
@@ -361,16 +488,32 @@ def generate_personalization_dashboard(metrics_path: Path, output_path: Path) ->
         y=0.98,
         color="#F8FAFC",
     )
-    plt.tight_layout(rect=[0, 0, 1, 0.96])
+    plt.tight_layout(rect=(0.0, 0.0, 1.0, 0.96))
     output_path.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(output_path, dpi=300)
     plt.close()
     print(f"Generated {output_path}")
 
 
-def generate_hero_banner_svg(output_path: Path) -> None:
-    """Create hero SVG banner."""
-    svg_code = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360" width="100%" height="100%">
+def generate_hero_banner_svg(output_path: Path, stage2_data: dict, stage3_data: dict) -> None:
+    """Create hero SVG banner with data-driven metric callouts."""
+    s2_skill = (
+        stage2_data["horizons"]["h60"]["rung5_baseline_covariates"]["summary"]["headline_skill"][
+            "mean"
+        ]
+        * 100
+    )
+    s3_delta = stage3_data["horizons"]["h60"]["windows"]["window_6d"]["summary"][
+        "paired_difference"
+    ]["mean_delta_rmse"]
+    s3_pct = stage3_data["horizons"]["h60"]["windows"]["window_6d"]["summary"]["paired_difference"][
+        "mean_pct_reduction"
+    ]
+
+    skill_str = f"{s2_skill:+.2f}% vs Pers"
+    delta_str = f"{s3_delta:.2f} mg/dL ({s3_pct:.1f}%)"
+
+    svg_code = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360" width="100%" height="100%">
   <defs>
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#070D1A"/>
@@ -449,11 +592,11 @@ def generate_hero_banner_svg(output_path: Path) -> None:
 
       <rect x="145" y="0" width="150" height="52" rx="8" fill="#1E293B" fill-opacity="0.8" stroke="#334155"/>
       <text x="160" y="22" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10" font-weight="600">GLOBAL SKILL (+60m)</text>
-      <text x="160" y="42" fill="#38BDF8" font-family="Segoe UI, Inter, sans-serif" font-size="16" font-weight="800">+11.85% vs Pers</text>
+      <text x="160" y="42" fill="#38BDF8" font-family="Segoe UI, Inter, sans-serif" font-size="16" font-weight="800">{skill_str}</text>
 
       <rect x="310" y="0" width="170" height="52" rx="8" fill="#1E293B" fill-opacity="0.8" stroke="#334155"/>
       <text x="325" y="22" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10" font-weight="600">6-DAY ADAPTATION (+60m)</text>
-      <text x="325" y="42" fill="#10B981" font-family="Segoe UI, Inter, sans-serif" font-size="16" font-weight="800">-1.81 mg/dL (8.0%)</text>
+      <text x="325" y="42" fill="#10B981" font-family="Segoe UI, Inter, sans-serif" font-size="16" font-weight="800">{delta_str}</text>
     </g>
   </g>
 </svg>"""
@@ -520,9 +663,27 @@ def generate_guard_band_timeline_svg(output_path: Path) -> None:
     print(f"Generated {output_path}")
 
 
-def generate_system_architecture_svg(output_path: Path) -> None:
-    """Create system architecture diagram SVG."""
-    svg_code = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 420" width="100%" height="100%">
+def generate_system_architecture_svg(
+    output_path: Path, stage2_data: dict, stage3_data: dict
+) -> None:
+    """Create system architecture diagram SVG with dynamic metrics."""
+    s2_skill = (
+        stage2_data["horizons"]["h60"]["rung5_baseline_covariates"]["summary"]["headline_skill"][
+            "mean"
+        ]
+        * 100
+    )
+    s3_delta = stage3_data["horizons"]["h60"]["windows"]["window_6d"]["summary"][
+        "paired_difference"
+    ]["mean_delta_rmse"]
+    s3_pct = stage3_data["horizons"]["h60"]["windows"]["window_6d"]["summary"]["paired_difference"][
+        "mean_pct_reduction"
+    ]
+
+    callout_s2 = f"Rung 5 Ridge ({s2_skill:+.1f}% Skill)"
+    callout_s3 = f"6-Day: {s3_delta:.2f} mg/dL ({s3_pct:.1f}%)"
+
+    svg_code = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 420" width="100%" height="100%">
   <defs>
     <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#080E1A"/>
@@ -611,7 +772,7 @@ def generate_system_architecture_svg(output_path: Path) -> None:
     <line x1="15" y1="210" x2="225" y2="210" stroke="#334155"/>
 
     <text x="15" y="230" fill="#10B981" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="800">Best Population Model</text>
-    <text x="15" y="248" fill="#F8FAFC" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700">Rung 5 Ridge (+11.8% Skill)</text>
+    <text x="15" y="248" fill="#F8FAFC" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700">{callout_s2}</text>
   </g>
 
   <!-- Arrow 3 -> 4 -->
@@ -640,7 +801,7 @@ def generate_system_architecture_svg(output_path: Path) -> None:
     <text x="15" y="233" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10">B=2,000 paired bootstrap</text>
 
     <line x1="15" y1="245" x2="235" y2="245" stroke="#334155"/>
-    <text x="15" y="265" fill="#10B981" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="800">6-Day: -1.81 mg/dL (8.0%)</text>
+    <text x="15" y="265" fill="#10B981" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="800">{callout_s3}</text>
   </g>
 </svg>"""
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -705,28 +866,33 @@ def main() -> None:
     assets_dir = repo_root / "assets"
     docs_reports = repo_root / "docs" / "reports"
 
-    stage2_metrics = docs_reports / "stage2_baseline_metrics.json"
-    stage3_metrics = docs_reports / "stage3_personalization_metrics.json"
+    stage2_metrics_file = docs_reports / "stage2_baseline_metrics.json"
+    stage3_metrics_file = docs_reports / "stage3_personalization_metrics.json"
+
+    if not stage2_metrics_file.exists():
+        raise FileNotFoundError(f"Missing Stage 2 metrics: {stage2_metrics_file}")
+    if not stage3_metrics_file.exists():
+        raise FileNotFoundError(f"Missing Stage 3 metrics: {stage3_metrics_file}")
+
+    with open(stage2_metrics_file, encoding="utf-8") as f:
+        stage2_data = json.load(f)
+    with open(stage3_metrics_file, encoding="utf-8") as f:
+        stage3_data = json.load(f)
+
+    # 1. Automated validation check
+    validate_metrics(stage2_data, stage3_data)
 
     print("Generating README visual assets...")
-    generate_hero_banner_svg(assets_dir / "hero_banner.svg")
+    generate_hero_banner_svg(assets_dir / "hero_banner.svg", stage2_data, stage3_data)
     generate_guard_band_timeline_svg(assets_dir / "guard_band_timeline.svg")
-    generate_system_architecture_svg(assets_dir / "system_architecture.svg")
+    generate_system_architecture_svg(
+        assets_dir / "system_architecture.svg", stage2_data, stage3_data
+    )
     generate_pipeline_workflow_svg(assets_dir / "pipeline_workflow.svg")
+    generate_global_benchmark_chart(stage2_data, assets_dir / "global_benchmark.png")
+    generate_personalization_dashboard(stage3_data, assets_dir / "personalization_dashboard.png")
 
-    if stage2_metrics.exists():
-        generate_global_benchmark_chart(stage2_metrics, assets_dir / "global_benchmark.png")
-    else:
-        print(f"Warning: {stage2_metrics} not found; skipping global benchmark chart.")
-
-    if stage3_metrics.exists():
-        generate_personalization_dashboard(
-            stage3_metrics, assets_dir / "personalization_dashboard.png"
-        )
-    else:
-        print(f"Warning: {stage3_metrics} not found; skipping personalization dashboard.")
-
-    print("All README visual assets generated successfully!")
+    print("All README visual assets generated and verified successfully!")
 
 
 if __name__ == "__main__":
