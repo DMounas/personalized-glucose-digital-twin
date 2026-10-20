@@ -9,27 +9,48 @@ Protocol: Protocol v1.0.0 & Stage 3 Addendum v1.0.0 (PhysioNet CGMacros)
 
 from __future__ import annotations
 
+import logging
+import sys
 from pathlib import Path
 
-import pandas as pd
-import plotly.graph_objects as go
-import streamlit as st
+# Ensure src/ is on sys.path for direct repository execution (e.g. Streamlit Community Cloud)
+REPO_ROOT = Path(__file__).resolve().parent
+SRC_DIR = REPO_ROOT / "src"
+if str(SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(SRC_DIR))
 
-from dtwin.dashboard_data import DashboardDataLoader
+import pandas as pd  # noqa: E402
+import plotly.graph_objects as go  # noqa: E402
+import streamlit as st  # noqa: E402
+
+from dtwin.dashboard_data import DashboardDataLoader  # noqa: E402
+
+# Configure diagnostic logging for deployment observability
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+)
+logger = logging.getLogger("dtwin.app")
 
 # Application metadata & filepaths
-REPO_ROOT = Path(__file__).resolve().parent
 ASSETS_DIR = REPO_ROOT / "assets"
 HERO_BANNER_PATH = ASSETS_DIR / "hero_banner.svg"
 ARCHITECTURE_PATH = ASSETS_DIR / "system_architecture.svg"
 GUARD_BAND_PATH = ASSETS_DIR / "guard_band_timeline.svg"
+
+STAGE2_METRICS_PATH = REPO_ROOT / "docs" / "reports" / "stage2_baseline_metrics.json"
+STAGE3_METRICS_PATH = REPO_ROOT / "docs" / "reports" / "stage3_personalization_metrics.json"
 
 
 # Initialize Data Loader
 @st.cache_resource
 def get_loader() -> DashboardDataLoader:
     """Cached loader instance for canonical aggregate metrics."""
-    return DashboardDataLoader()
+    logger.info("Initializing DashboardDataLoader from canonical JSON artifacts...")
+    return DashboardDataLoader(
+        stage2_path=STAGE2_METRICS_PATH,
+        stage3_path=STAGE3_METRICS_PATH,
+    )
 
 
 def configure_page() -> None:
@@ -855,10 +876,12 @@ def render_methodology_and_guard_band() -> None:
 
 def main() -> None:
     """Main dashboard entry point."""
+    logger.info("Starting Glucose Digital Twin dashboard...")
     configure_page()
     loader = get_loader()
     nav_selection = render_sidebar()
 
+    logger.info("Rendering section: %s", nav_selection)
     if nav_selection == "📌 Project Overview":
         render_project_overview(loader)
     elif nav_selection == "📈 Global Forecasting Explorer":

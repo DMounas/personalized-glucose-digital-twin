@@ -456,12 +456,12 @@ def execute_stage1b_analysis(
         "total_timestamp_gaps_gt_60s": len(cohort_gap_durations_sec),
         "total_runs_resulting": len(cohort_gap_durations_sec) + len(participant_files),
         "gap_duration_stats_minutes": {
-            "min": round(float(gap_arr.min()), 2) if len(gap_arr) > 0 else 0.0,
+            "min": round(float(np.min(gap_arr)), 2) if len(gap_arr) > 0 else 0.0,
             "p25": round(float(np.percentile(gap_arr, 25)), 2) if len(gap_arr) > 0 else 0.0,
             "median": round(float(np.median(gap_arr)), 2) if len(gap_arr) > 0 else 0.0,
             "p75": round(float(np.percentile(gap_arr, 75)), 2) if len(gap_arr) > 0 else 0.0,
-            "max": round(float(gap_arr.max()), 2) if len(gap_arr) > 0 else 0.0,
-            "max_hours": round(float(gap_arr.max() / 60.0), 2) if len(gap_arr) > 0 else 0.0,
+            "max": round(float(np.max(gap_arr)), 2) if len(gap_arr) > 0 else 0.0,
+            "max_hours": round(float(np.max(gap_arr) / 60.0), 2) if len(gap_arr) > 0 else 0.0,
         },
         "duration_distribution_bins": {
             "le_5min": int((gap_arr <= 5).sum()),
