@@ -4,7 +4,9 @@
 
 # Personalized Glucose Digital Twin for Type 2 Diabetes
 
-[![Tests: 118 passed](https://img.shields.io/badge/tests-118%20passed-brightgreen.svg)](#-reproducibility--experiment-execution)
+[![CI](https://github.com/DMounas/personalized-glucose-digital-twin/actions/workflows/ci.yml/badge.svg)](https://github.com/DMounas/personalized-glucose-digital-twin/actions/workflows/ci.yml)
+[![Interactive Demo](https://img.shields.io/badge/Streamlit-Interactive%20Dashboard-FF4B4B.svg?logo=streamlit&logoColor=white)](#-interactive-research-dashboard)
+[![Tests: 135 passed](https://img.shields.io/badge/tests-135%20passed-brightgreen.svg)](#-reproducibility--experiment-execution)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](LICENSE)
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
@@ -13,7 +15,7 @@
 
 **A leak-free, physiological continuous glucose forecasting framework and participant-specific calibration engine.**
 
-[Overview](#-overview) • [Key Results](#-key-results) • [Architecture](#-architecture) • [Temporal Guard Band](#-temporal-guard-band-architecture) • [Benchmarks](#-global-forecasting-benchmarks) • [Personalization](#-stage-3-personalization-dynamics) • [Quick Start](#-quick-start) • [Reproducibility](#-reproducibility--experiment-execution) • [Limitations](#-limitations--responsible-use) • [Citation](#-citation--references)
+[Overview](#-overview) • [Interactive Dashboard](#-interactive-research-dashboard) • [Key Results](#-key-results) • [Architecture](#-architecture) • [Temporal Guard Band](#-temporal-guard-band-architecture) • [Benchmarks](#-global-forecasting-benchmarks) • [Personalization](#-stage-3-personalization-dynamics) • [Quick Start](#-quick-start) • [Reproducibility](#-reproducibility--experiment-execution) • [Limitations](#-limitations--responsible-use) • [Citation](#-citation--references)
 
 </div>
 
@@ -46,6 +48,32 @@ This repository provides an open-source research-engineering digital twin framew
 | **Data Leakage Countermeasures** | 5-min Guard Band | 120-min Temporal Purge | Zero intra-subject cross-validation contamination |
 
 </div>
+
+---
+
+## 🖥️ Interactive Research Dashboard
+
+The project includes an interactive **Streamlit Research Dashboard** allowing researchers and clinicians to explore empirical benchmark metrics, population model comparisons, and chronological personalization trajectories dynamically.
+
+![Interactive Dashboard Preview](assets/dashboard_preview.svg)
+
+### Quick Launch
+```bash
+# Install dashboard dependencies
+pip install -r requirements.txt
+
+# Launch local dashboard
+streamlit run app.py
+```
+*The app starts immediately at `http://localhost:8501` without requiring raw dataset downloads or model retraining.*
+
+### Analytical Modules
+- **📌 Project Overview**: Executive cohort statistics across 45 participants, failure modes of standard CGM ML, and system architecture.
+- **📈 Global Forecasting Explorer**: Interactive horizon selector (+30m, +60m), 8-rung population benchmark ladder with 95% bootstrap CIs, and Ridge vs. GBDT comparative analysis.
+- **🎯 Personalization Lab**: Dynamic controls for horizons (+30m, +60m) and adaptation windows (2, 4, 6 days) with matched-baseline comparisons, dose-response curves, and transparent statistical significance disclosures.
+- **🔬 Methodology & Guard Band**: Guard-band timeline visualization, 5 architectural leakage safeguards, and protocol documentation.
+
+👉 *See [`docs/DEMO.md`](docs/DEMO.md) for the complete dashboard user guide and Streamlit Community Cloud deployment instructions.*
 
 ---
 
@@ -140,7 +168,7 @@ pip install -e ".[dev]"
 
 ### 2. Run Test Suite & Quality Gates
 ```bash
-# Run 118 unit and regression tests
+# Run 135 unit, regression, and dashboard smoke tests
 pytest tests/ -v
 
 # Run linting and static type checking
@@ -149,7 +177,13 @@ ruff format --check src tests
 mypy src tests
 ```
 
-### 3. Regenerate Visual Assets
+### 3. Launch Interactive Dashboard
+```bash
+# Launch Streamlit research dashboard
+streamlit run app.py
+```
+
+### 4. Regenerate Visual Assets
 Regenerate all figures and charts directly from the canonical aggregate benchmark JSONs without downloading raw data:
 ```bash
 python scripts/generate_readme_assets.py
