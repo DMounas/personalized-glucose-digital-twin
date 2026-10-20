@@ -1,11 +1,11 @@
-# Stage 2 Predictive Modeling Protocol (Draft v1.0.0)
+# Stage 2 Predictive Modeling Protocol (v1.0.0)
 
-**Protocol Version:** 1.0.0-draft  
-**Status:** FROZEN WORKING DRAFT READY FOR STAGE 2 TRANSITION  
+**Protocol Version:** 1.0.0  
+**Status:** FROZEN STAGE 2 PREDICTIVE MODELING PROTOCOL  
 **Dependencies:** `configs/stage1b.yaml`, `docs/reports/stage1b_r3_results.json`, `docs/reports/canonical_metrics.json`, `docs/reports/stage2_aggregate_feasibility.json`  
 
 > [!NOTE]
-> This protocol is a **strictly bounded working draft** ready to be frozen upon final review. It incorporates the primary 5-minute history guard-band forecasting architecture, specifies exact eligible origin counts on the primary $\phi=0$ grid, formalizes the fixed model ladder using dependencies already installed in the environment (`scikit-learn` `HistGradientBoostingRegressor`), mandates repeated 10-seed participant-disjoint cross-validation, decouples personalization into an independent study, removes individual participant row/provenance details in favor of privacy-preserving diagnostic group counts, and enforces rigorous scientific and clinical claims boundaries. No Stage 2 predictive model training or fitting will commence until this protocol is accepted.
+> This protocol is **formally FROZEN as v1.0.0**. It incorporates the primary 5-minute history guard-band forecasting architecture, specifies exact eligible origin counts on the primary $\phi=0$ deterministic grid, formalizes the fixed model ladder using dependencies already installed in the environment (`scikit-learn` `HistGradientBoostingRegressor`), enforces an invariant evaluation origin set across all model rungs, mandates repeated 10-seed participant-disjoint cross-validation with participant-level aggregation and 45-participant bootstrap confidence intervals, decouples personalization into an independent study, removes individual participant row/provenance details in favor of privacy-preserving diagnostic group counts, and enforces rigorous scientific and clinical claims boundaries. Stage 2 baseline modeling will proceed in strict accordance with this frozen specification.
 
 ---
 
@@ -69,12 +69,36 @@ Therefore, the latest native vertex incorporated into any predictor occurred str
 - Because the 5-minute guard band eliminates predictor look-ahead by construction, there is no technical justification for altering model classes post-hoc based on test-set phase variation.
 - Sensitivity results across secondary phase suites will be reported transparently rather than triggering automated model switches.
 
-### 2.5 Primary Grid Designation & Secondary Sensitivity Suites
-1. **Primary Evaluation Grid ($\phi = 0$):**  
-   The fixed five-minute phase $\phi = 0$, defined on a deterministic minute coordinate derived from canonical timestamps ($m(t) \equiv 0 \pmod 5$), is designated as the **primary evaluation grid**. No phase is claimed to represent verified hardware timing.
-2. **Fixed Phase Offsets ($\phi \in \{1, 2, 3, 4\}$):**  
-   Evaluated as prespecified sensitivity analyses across all other four candidate lattices using identical participant-level folds. Per-participant skill and phase-to-phase variability will be documented; phase-specific models are recognized as evaluating distinct lattice targets and do not share identical target timestamps.
-3. **Unguarded History Ending at $t$ ($[y_t, y_{t-5}, \dots, y_{t-60}]$):**  
+### 2.5 Deterministic Minute Coordinate Formula & Primary Grid Designation
+To establish a completely deterministic, reproducible time coordinate independent of calendar date representations or sensor-hardware clock phases:
+
+1. **Deterministic Minute Coordinate Formula $m(t)$:**  
+   For each participant time series with initial recorded timestamp $t_0 = \text{Timestamp}[0]$, the elapsed integer minute coordinate of any subsequent timestamp $t$ is defined as:
+   $$m(t) = \text{round}\left( \frac{t - t_0}{60\text{ seconds}} \right)$$
+   Because the dataset is structured on a 1-minute discrete lattice, $(t - t_0)$ is an exact integer multiple of 60 seconds (verified in unit tests with tolerance $10^{-4}$).
+
+2. **Phase Partitioning:**  
+   Candidate 5-minute sampling phases $\phi \in \{0, 1, 2, 3, 4\}$ partition the participant timeline according to:
+   $$\text{Phase}(t) = m(t) \pmod 5$$
+
+3. **Primary Evaluation Grid ($\phi = 0$):**  
+   The primary evaluation grid is fixed strictly at:
+   $$m(t) \equiv 0 \pmod 5$$
+   This corresponds to exact integer multiples of 5 minutes elapsed from the participant's initial recorded timestamp ($m(t) \in \{0, 5, 10, 15, \dots\}$). No phase is claimed to represent verified hardware timing.
+
+4. **Lineage Confirmation of Candidate Origin Counts:**  
+   The candidate origin counts in Section 7.2 (123,599 at +30 min and 123,164 at +60 min) were directly computed in `src/dtwin/analysis/aggregate_feasibility.py` using this exact formula:
+   ```python
+   elapsed_m = compute_elapsed_minutes(df["Timestamp"])  # m(t) = round((t - t0) / 60s)
+   if int(r_elapsed[t]) % 5 == 0:  # Primary phase phi = 0
+       # 13 guard-band lags [t-5, t-10, ..., t-65] and target [t+h]
+   ```
+   No recalculation is required because the existing implementation implements this exact mathematical coordinate definition without ambiguity.
+
+5. **Fixed Phase Offsets ($\phi \in \{1, 2, 3, 4\}$):**  
+   Evaluated as prespecified sensitivity analyses across all other four candidate lattices ($m(t) \equiv \phi \pmod 5$) using identical participant-level folds. Per-participant skill and phase-to-phase variability will be documented; phase-specific models evaluate distinct lattice targets and do not share identical target timestamps.
+
+6. **Unguarded History Ending at $t$ ($[y_t, y_{t-5}, \dots, y_{t-60}]$):**  
    Retained strictly as a secondary sensitivity comparison to quantify the empirical magnitude of interpolation look-ahead leakage against the primary guard-banded baseline.
 
 ---
@@ -93,6 +117,27 @@ To maintain experimental rigor and prevent data leakage, the following features 
 - **Status:** **EXCLUDED from the primary benchmark model; retained strictly as a prespecified secondary ablation.**
 - **Provenance & Unconfirmed Date-Shifting:** While the dataset archive filename references date shifting (`CGMacros_dateshifted365.zip`) and meal timestamps visually follow diurnal human living patterns, the precise mathematical date-shifting mechanism (e.g., whether it was a strict integer-day shift preserving local clock time HH:MM, or involved unrecorded timezone offsets or timestamp transformations) remains **unconfirmed by dataset-author primary documentation**.
 - **Modeling Precaution:** Because primary-source documentation is inconclusive, time-of-day features are excluded from the primary model ladder to prevent any risk of circadian leakage, daylight savings discrepancies, or timezone confounding. Circadian harmonics ($[\sin(2\pi \cdot \text{TOD}/1440), \cos(2\pi \cdot \text{TOD}/1440)]$) will be evaluated strictly as an isolated ablation rung.
+
+### 3.3 Invariant Evaluation Origin Set Across All Model Rungs
+To ensure rigorous, fair, and directly comparable benchmark evaluation across the entire model ladder:
+
+1. **Origin Set Invariance Rule:**  
+   The set of eligible evaluation forecast origin timestamps $\mathcal{Y}_{\phi, \text{test}}$ within each evaluation phase is **strictly and exclusively determined by glucose availability** (the 13 non-null history lags $y(t-5) \dots y(t-65)$, non-null target $y(t+h)$, and contiguous Dexcom run membership).
+   $$\mathcal{Y}_{\phi, \text{test}}(\text{Rung } 0) \equiv \mathcal{Y}_{\phi, \text{test}}(\text{Rung } 1) \equiv \dots \equiv \mathcal{Y}_{\phi, \text{test}}(\text{Rung } 6)$$
+   Under **NO circumstances** may any model drop, filter, or skip an evaluation origin timestamp due to missing secondary features (such as absent heart rate/METs recordings, unlogged meals, or unrecorded demographics). Silent dropping of origin rows between model rungs is strictly prohibited.
+
+2. **Standardized Missingness Handling for Secondary Features:**  
+   - **Physical Activity Features (HR, METs):**  
+     If heart rate or METs values are absent or null within the $[t-30, t]$ lookback window, they must be imputed using the **median of the corresponding feature computed strictly on the training fold** (participant training median, falling back to cohort training median if the participant has zero valid training activity rows). Crucially, an explicit binary missingness indicator flag ($I_{\text{missing\_activity}} \in \{0, 1\}$) must be appended to the feature vector.
+   - **Meal Context & Macronutrients:**  
+     If no meal is logged in the prior 24 hours ($1,440\text{ minutes}$), the elapsed time since last meal is clamped to a fixed sentinel value ($1,440\text{ minutes}$), the recent meal occurrence indicator is set to $0$, all macronutrient quantities (carbs, protein, fat, fiber) are set to $0.0\text{ g}$, and an explicit indicator flag ($I_{\text{no\_recent\_meal}} = 1$) is provided.
+   - **Static Biometrics & Demographic Covariates:**  
+     Any missing demographic or laboratory covariates must be imputed strictly using training-fold medians/modes.
+   - **Zero Target or Glucose Imputation:**  
+     While secondary features use training-fold imputation with missingness indicators, **target glucose values and predictor glucose lags are NEVER imputed**.
+
+3. **Guaranteed Evaluation Equivalence:**  
+   Every model rung (from Guarded Persistence up to HistGradientBoostingRegressor) must generate an explicit prediction for every single one of the primary 123,599 ($h=+30\text{ min}$) and 123,164 ($h=+60\text{ min}$) origins. All performance comparisons, skill scores, and paired significance tests are thus evaluated on identical sample origin sets.
 
 ---
 
@@ -132,23 +177,26 @@ $$\mathbf{x}_{\text{autoreg}} = [y(t-5), y(t-10), \dots, y(t-65)]^T$$
 
 ### 4.4 Rung 3 — Physiological Activity Integration
 Appends past-30-minute physical activity summaries:
-$$\mathbf{x}_{\text{activity}} = [\text{mean\_HR}_{[t-30, t]}, \, \Delta\text{HR}_{[t-30, t]}, \, \text{mean\_METs/10}_{[t-30, t]}]^T$$
-Missing activity values are imputed using participant training-fold medians with explicit missingness indicator flags.
+$$\mathbf{x}_{\text{activity}} = [\text{mean\_HR}_{[t-30, t]}, \, \Delta\text{HR}_{[t-30, t]}, \, \text{mean\_METs/10}_{[t-30, t]}, \, I_{\text{missing\_activity}}]^T$$
+Missing activity values are imputed using participant training-fold medians with an explicit missingness indicator flag ($I_{\text{missing\_activity}} \in \{0, 1\}$). As mandated in Section 3.3, origins with missing activity features are NEVER dropped.
 
 ### 4.5 Rung 4 — Meal Context & Macronutrients (Meal-Start Only)
 Integrates nutritional information available at meal start:
-- Time elapsed since last recorded meal start ($t - t_{\text{meal\_start}}$).
+- Time elapsed since last recorded meal start ($t - t_{\text{meal\_start}}$, clamped to $1,440\text{ min}$ if no prior meal).
 - Indicator variable for meal start occurring within $[t-60, t]$.
-- Macronutrient contents: Total Carbs (g), Protein (g), Fat (g), Fiber (g).
+- Macronutrient contents: Total Carbs (g), Protein (g), Fat (g), Fiber (g) (set to $0.0\text{ g}$ if no prior meal).
+- Explicit binary indicator $I_{\text{no\_recent\_meal}}$ indicating absent dietary logging.
 - **Mandatory Ablation:** An explicit **no-macros ablation** (evaluating binary meal occurrence indicators without nutrient gram values) is evaluated alongside full macronutrients to isolate the specific value of self-reported dietary logs.
+- As mandated in Section 3.3, unlogged meals never drop evaluation origins.
 
 ### 4.6 Rung 5 — Demographic & Baseline Covariates
 Appends static participant covariates from `bio.csv`:
 $$\mathbf{x}_{\text{static}} = [\text{Age}, \, \text{Gender}, \, \text{BMI}, \, \text{Baseline\_HbA1c}]^T$$
-Evaluated as a separate rung to measure the incremental benefit of static biometric features over dynamic physiological signals.
+Evaluated as a separate rung to measure the incremental benefit of static biometric features over dynamic physiological signals. Evaluated on the identical origin set; any missing covariate is imputed strictly via training-fold medians/modes.
 
 ### 4.7 Rung 6 — Native HistGradientBoostingRegressor (Fixed Hyperparameters)
 A compact non-linear model using the gradient-boosting implementation already available in project dependencies: `sklearn.ensemble.HistGradientBoostingRegressor` (from `scikit-learn` 1.8.0).
+- Operates on the identical invariant evaluation origin set, utilizing native handling of missing values or training-fold imputed features.
 - **Exact Fixed Settings (No External Dependencies):**
   - `loss = 'squared_error'`
   - `learning_rate = 0.05`
@@ -172,32 +220,56 @@ A compact non-linear model using the gradient-boosting implementation already av
 - **Fold Freezing:** The identical 10-repeat participant-to-fold assignments are frozen and reused across all model rungs and all phase sensitivity suites.
 - **Hyperparameter Tuning:** Hyperparameters (e.g., Ridge $\alpha$, trend damping $\gamma_h$) are tuned strictly within training-fold participants using an inner 4-fold participant-grouped split.
 
-### 5.2 Evaluation Metrics & Aggregation Hierarchy
-Evaluation is structured hierarchically, prioritizing participant-level distribution over pooled aggregates:
-1. **Per-Participant Error Metrics:**
-   Compute RMSE and MAE separately for each participant $i$ in the test fold:
-   $$\text{RMSE}_i(h) = \sqrt{\frac{1}{|\mathcal{Y}_{i}|} \sum_{t \in \mathcal{Y}_i} (y_{t+h} - \hat{y}_{i, t+h})^2}, \quad \text{MAE}_i(h) = \frac{1}{|\mathcal{Y}_{i}|} \sum_{t \in \mathcal{Y}_i} |y_{t+h} - \hat{y}_{i, t+h}|$$
-2. **Per-Participant Skill Score Against Guarded Persistence:**
-   $$\text{Skill}_i(h) = 1 - \frac{\text{RMSE}_i(\text{model}, h)}{\text{RMSE}_i(\text{persistence}, h)}$$
-3. **Cohort Headline Reporting:**
-   - **Median Participant Skill Score** and **Mean Participant Skill Score**.
-   - **95% Confidence Intervals:** Derived from participant-level bootstrap ($B = 2,000$ iterations resampling participant error summaries).
-   - **Fraction of Participants Improved:** Proportion of the 45 participants with $\text{Skill}_i(h) > 0$.
-4. **Secondary Pooled Reporting:**
-   Pooled cohort RMSE and MAE are reported strictly as secondary metrics to avoid overweighting participants with longer recording durations.
+### 5.2 Aggregation Hierarchy Across Cross-Validation Repetitions & Bootstrap Protocol
+Evaluation is structured hierarchically, prioritizing participant-level distribution over pooled aggregates, and rigorously defining the aggregation of out-of-fold predictions across repetitions:
+
+1. **Step 1: Repetition-Specific Out-of-Fold Participant Metrics:**  
+   In each repetition $r \in \{1, \dots, 10\}$ (governed by seed $s_r \in \{42, \dots, 51\}$), every participant $i \in \{1, \dots, 45\}$ appears in exactly one test fold, producing out-of-fold predictions $\hat{y}_{i, t+h}^{(r)}$ for all eligible origins $t \in \mathcal{Y}_i$.  
+   For each participant $i$, horizon $h \in \{30, 60\}$, and repetition $r$:
+   $$\text{RMSE}_i^{(r)}(h) = \sqrt{\frac{1}{|\mathcal{Y}_{i}|} \sum_{t \in \mathcal{Y}_i} (y_{t+h} - \hat{y}_{i, t+h}^{(r)})^2}, \quad \text{MAE}_i^{(r)}(h) = \frac{1}{|\mathcal{Y}_{i}|} \sum_{t \in \mathcal{Y}_i} |y_{t+h} - \hat{y}_{i, t+h}^{(r)}|$$
+   $$\text{Skill}_i^{(r)}(h) = 1 - \frac{\text{RMSE}_i^{(r)}(\text{model}, h)}{\text{RMSE}_i^{(r)}(\text{guarded\_persistence}, h)}$$
+
+2. **Step 2: Participant-Level Consolidation Across Repetitions:**  
+   To eliminate fold-partition noise while preserving the true statistical unit of analysis (the participant), participant-level summaries are averaged across the 10 cross-validation repetitions:
+   $$\overline{\text{Skill}}_i(h) = \frac{1}{10} \sum_{r=1}^{10} \text{Skill}_i^{(r)}(h)$$
+   $$\overline{\text{RMSE}}_i(h) = \frac{1}{10} \sum_{r=1}^{10} \text{RMSE}_i^{(r)}(h), \quad \overline{\text{MAE}}_i(h) = \frac{1}{10} \sum_{r=1}^{10} \text{MAE}_i^{(r)}(h)$$
+   This produces exactly **45 consolidated participant-level metrics** $\{\overline{\text{Skill}}_1(h), \dots, \overline{\text{Skill}}_{45}(h)\}$.
+
+3. **Step 3: Cohort Headline Reporting:**  
+   From the 45 consolidated participant summaries, compute:
+   - **Median Participant Skill Score:**
+     $$\text{Median Skill}(h) = \text{median}\left(\{\overline{\text{Skill}}_1(h), \dots, \overline{\text{Skill}}_{45}(h)\}\right)$$
+   - **Mean Participant Skill Score:**
+     $$\overline{\text{Skill}}_{\text{cohort}}(h) = \frac{1}{45} \sum_{i=1}^{45} \overline{\text{Skill}}_i(h)$$
+   - **Fraction of Participants Improved:**
+     $$\text{Fraction Improved}(h) = \frac{1}{45} \sum_{i=1}^{45} \mathbb{I}\left(\overline{\text{Skill}}_i(h) > 0\right)$$
+
+4. **Step 4: Non-Parametric Bootstrap Over the 45 Participants (Resampling Unit):**  
+   - 95% confidence intervals are obtained via non-parametric bootstrap resampling with $B = 2,000$ iterations.
+   - In each bootstrap draw $b \in \{1, \dots, B\}$, resample **45 participant indices with replacement** from the set of participants $\{1, \dots, 45\}$:
+     $$\mathcal{I}^{*(b)} = \{i_1^{*(b)}, i_2^{*(b)}, \dots, i_{45}^{*(b)}\}$$
+   - Compute the resampled cohort mean or median from the selected participants:
+     $$\overline{\text{Skill}}^{*(b)} = \frac{1}{45} \sum_{k=1}^{45} \overline{\text{Skill}}_{i_k^{*(b)}}(h)$$
+   - The 95% bootstrap confidence interval is defined by the empirical 2.5th and 97.5th percentiles across the $B$ resamples:
+     $$\text{CI}_{95\%} = \left[ q_{0.025}\left(\left\{\overline{\text{Skill}}^{*(b)}\right\}_{b=1}^B\right), \; q_{0.975}\left(\left\{\overline{\text{Skill}}^{*(b)}\right\}_{b=1}^B\right) \right]$$
+   - **Strict Methodological Prohibition:**  
+     Pooling all $45 \times 10 = 450$ participant-repeat records into a single bootstrap pool is **strictly prohibited**. Resampling from 450 repeated records artificially inflates nominal degrees of freedom tenfold, violates the assumption of independent observations, and produces falsely narrow confidence intervals.
+
+5. **Secondary Pooled Reporting:**  
+   Pooled cohort RMSE and MAE across all origins are reported strictly as secondary metrics to document aggregate trace deviation without overweighting participants with longer recording durations.
 
 ### 5.3 Predefined Criteria for Useful Forecasting Improvement
-A candidate model rung is judged to deliver a scientifically useful improvement over persistence if and only if it satisfies all of the following prespecified criteria across the 10 repeated cross-validation runs:
+A candidate model rung is judged to deliver a scientifically useful improvement over persistence if and only if it satisfies all of the following prespecified criteria derived from the consolidated 45-participant metrics:
 - **Horizon $h = 30\text{ min}$:**
   1. Median participant skill score $\ge +5.0\%$ over guarded persistence.
-  2. Fraction of improved participants $\ge 60.0\%$ (at least 27 of 45 participants).
-  3. Lower bound of the 95% participant-bootstrap confidence interval for mean participant skill is strictly positive:
-     $$\text{CI}_{95\%}^{\text{lower}}(\overline{\text{Skill}}(h=30)) > 0.0\%$$
+  2. Fraction of improved participants $\ge 60.0\%$ (at least 27 of 45 participants with $\overline{\text{Skill}}_i(h=30) > 0$).
+  3. Lower bound of the 95% 45-participant-bootstrap confidence interval for mean participant skill is strictly positive:
+     $$\text{CI}_{95\%}^{\text{lower}}(\overline{\text{Skill}}_{\text{cohort}}(h=30)) > 0.0\%$$
 - **Horizon $h = 60\text{ min}$:**
   1. Median participant skill score $\ge +10.0\%$ over guarded persistence.
-  2. Fraction of improved participants $\ge 65.0\%$ (at least 30 of 45 participants).
-  3. Lower bound of the 95% participant-bootstrap confidence interval for mean participant skill is strictly positive:
-     $$\text{CI}_{95\%}^{\text{lower}}(\overline{\text{Skill}}(h=60)) > 0.0\%$$
+  2. Fraction of improved participants $\ge 65.0\%$ (at least 30 of 45 participants with $\overline{\text{Skill}}_i(h=60) > 0$).
+  3. Lower bound of the 95% 45-participant-bootstrap confidence interval for mean participant skill is strictly positive:
+     $$\text{CI}_{95\%}^{\text{lower}}(\overline{\text{Skill}}_{\text{cohort}}(h=60)) > 0.0\%$$
 
 ---
 
@@ -227,7 +299,7 @@ In accordance with strict privacy-preserving data governance, all per-participan
 | **Cohort Total** | **45** | **Independent grouping units across 10 repeated 5-fold cross-validation runs** |
 
 ### 7.2 Primary Guard-Band Eligible Origin Counts ($\phi = 0$)
-The primary evaluation grid is fixed at $\phi = 0$ on the deterministic minute coordinate ($m(t) \equiv 0 \pmod 5$). Eligible origins require all 13 glucose history lags at $t-5$ through $t-65$ and the target at $t+h$ to be non-null and within the same contiguous Dexcom run:
+The primary evaluation grid is fixed at $\phi = 0$ on the deterministic minute coordinate ($m(t) \equiv 0 \pmod 5$, where $m(t) = \text{round}((t - t_0) / 60\text{s})$ as defined in Section 2.5). Eligible origins require all 13 glucose history lags at $t-5$ through $t-65$ and the target at $t+h$ to be non-null and within the same contiguous Dexcom run. In accordance with Section 3.3, this origin set is strictly invariant across all model rungs (Rungs 0–6):
 
 - **Horizon $h = 30\text{ min}$ (Issuance $t$, Target $t+30$):**
   - **Cohort Total:** **123,599 eligible origins**
