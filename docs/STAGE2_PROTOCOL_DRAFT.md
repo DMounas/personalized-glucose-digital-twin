@@ -1,214 +1,261 @@
-# Stage 2 Predictive Modeling Protocol (Draft v0.2.0)
+# Stage 2 Predictive Modeling Protocol (Draft v0.3.0)
 
-**Protocol Version:** 0.2.0-draft  
-**Status:** WORKING DRAFT FOR CLAUDE'S FOCUSED STRATEGIC REVIEW (UNFROZEN)  
+**Protocol Version:** 0.3.0-draft  
+**Status:** REVISED WORKING DRAFT POST-CLAUDE STRATEGIC REVIEW (UNFROZEN)  
 **Dependencies:** `configs/stage1b.yaml`, `docs/reports/stage1b_r3_results.json`, `docs/reports/canonical_metrics.json`, `docs/reports/stage2_aggregate_feasibility.json`  
 
 > [!NOTE]
-> This protocol is an **unfrozen working draft** prepared for Claude's focused strategic review. It incorporates the Stage 1B data-provenance freeze, native-grid diagnostics, run-bounded origin arithmetic, and empirical sample feasibility bounds. No Stage 2 predictive model training, fitting, or benchmark execution will commence until independent review accepts this protocol.
+> This protocol is an **unfrozen working draft** revised in direct alignment with Claude's focused strategic review. It incorporates the primary 5-minute guard-band forecasting architecture, formalizes the fixed model ladder, mandates participant-disjoint repeated cross-validation, decouples personalization into a separate study, replaces individual participant listings with privacy-preserving aggregates, and defines explicit clinical and population claims boundaries. No Stage 2 predictive model training or benchmark execution will commence until independent review accepts this document.
 
 ---
 
 ## 1. Scientific Objective & Primary Sensor Selection
 
 ### 1.1 Objective
-The primary objective of Stage 2 is to develop, evaluate, and benchmark multi-horizon continuous sequential glucose forecasting models on the CGMacros v1.0.0 dataset. The initial focus is strictly placed on **continuous interstitial glucose regression** at forecast horizons $h = 30\text{ minutes}$ and $h = 60\text{ minutes}$.
+The primary objective of Stage 2 is to develop, evaluate, and benchmark multi-horizon continuous sequential glucose forecasting models on the CGMacros v1.0.0 dataset. Modeling is strictly formulated as **continuous interstitial glucose regression** evaluated at forecast horizons $h = 30\text{ minutes}$ and $h = 60\text{ minutes}$ from forecast issuance time $t$.
 
 ### 1.2 Primary Sensor Target: Dexcom G6 Pro
-**Dexcom G6 Pro** is designated as the primary modeling target primarily due to its **finer native measurement interval** (5-minute native lattice, ~288 points/day) compared to FreeStyle Libre Pro (15-minute native lattice, ~96 points/day). 
-- Finer temporal resolution provides direct capture of postprandial glucose rates of change without relying on coarse multi-step linear interpolation.
+**Dexcom G6 Pro** is designated as the primary modeling target primarily due to its **finer native measurement interval** (5-minute native lattice, ~288 points/day) compared to FreeStyle Libre Pro (15-minute native lattice, ~96 points/day).
+- Finer temporal resolution enables direct capture of postprandial glucose rates of change without reliance on multi-step linear interpolation.
 - Sensor selection is justified solely by hardware sampling interval, **not** by unverified sensor-quality assertions, apparent lag differences, or threshold excursion count disparities.
 
 ### 1.3 FreeStyle Libre Pro Cross-Device Transfer (Deferred Sensitivity)
-Cross-device transfer to FreeStyle Libre Pro is **not** a prerequisite for accepting the first Stage 2 model results. Because the two devices exhibit an observed systematic trace disagreement ($\mu_{\text{pool}} = -31.95\text{ mg/dL}$ with wide repeated-measures limits of agreement $[-79.89, +16.00]\text{ mg/dL}$), cross-device transfer is classified as an **optional secondary sensitivity analysis** to be conducted only after the primary Dexcom forecasting benchmark is frozen.
+Cross-device transfer to FreeStyle Libre Pro is **not** a prerequisite for accepting Stage 2 model results. Because the two devices exhibit an observed systematic trace disagreement ($\mu_{\text{pool}} = -31.95\text{ mg/dL}$ with wide repeated-measures limits of agreement $[-79.89, +16.00]\text{ mg/dL}$), cross-device transfer is classified as an **optional secondary sensitivity analysis** to be conducted only after the primary Dexcom forecasting benchmark ladder is frozen.
 
 ---
 
-## 2. Feature Governance & Model Input Architecture
+## 2. Primary Phase / Interpolation Design & 5-Minute Guard-Band Architecture
 
-### 2.1 Input History & Native Vertex Anchoring
-To avoid interpolation leakage, models are evaluated at candidate native sampling vertices:
-- **Autoregressive Input History ($L = 60\text{ minutes}$):** 13 points sampled at 5-minute intervals: $[y_t, y_{t-5}, y_{t-10}, \dots, y_{t-60}]$.
-- **Rate-of-Change Feature:** First-order difference $(y_t - y_{t-15}) / 15$.
-- **Demographic & Baseline Covariates:** Age, Gender, BMI, baseline HbA1c (from `bio.csv`).
+### 2.1 Primary Forecasting Setup: 5-Minute History Guard-Band
+To eliminate linear interpolation forward look-ahead by construction, the primary forecasting setup implements an explicit **5-minute history guard-band**:
+- **Forecast Issuance Time:** Timestamp $t$.
+- **Predictor Glucose History ($L = 60\text{ min}$ duration, 13 points):**
+  $$[y(t-5), y(t-10), y(t-15), \dots, y(t-65)]$$
+- **Target Outcomes:**
+  $$y(t+30) \quad \text{and} \quad y(t+60)$$
+- **Explicit Horizon Definitions:**
+  - Horizons are strictly **30 minutes and 60 minutes from forecast issuance time $t$**.
+  - Horizons are **35 minutes and 65 minutes from the latest permissible glucose input ($y_{t-5}$)**.
+- **Rate-of-Change Feature:** First-order backward difference: $(y_{t-5} - y_{t-20}) / 15$.
 
-### 2.2 Time-of-Day / Circadian Features: EXCLUDED from Initial Model
-- **Status:** **EXCLUDED from initial baseline model.**
-- **Rationale:** While empirical meal timings follow diurnal human living patterns and the dataset filename references date shifting, the dataset documentation (`DataDictionary_CGMacros-00X.csv`) states only that timestamps are *"Randomly shifted time stamps for days in the study"* without explicitly confirming that the shift was an integer number of days or that local clock time (HH:MM) was strictly preserved. Because definitive primary-source documentation is inconclusive, diurnal circadian features ($[\sin(2\pi \cdot \text{TOD}/1440), \cos(2\pi \cdot \text{TOD}/1440)]$) are excluded from the initial model. They may only be evaluated as an exploratory sensitivity feature set in secondary experiments.
-- **Calendar Features:** Day of week, month, and season remain **strictly prohibited**.
+### 2.2 Mathematical Proof of Guard-Band Look-Ahead Prevention
+Under linear interpolation between native sampling vertices spaced at period $p = 5\text{ minutes}$ with native phase $\phi_s \in \{0, 1, 2, 3, 4\}$:
+Let the elapsed minute coordinate be $m(t)$, and define $\delta = (m(t) - \phi_s) \pmod 5$.
+The forward look-ahead of an interpolated point at time $t$ is:
+$$\text{LookAhead}(\delta) = \begin{cases} 0 & \text{if } \delta = 0 \\ 5 - \delta & \text{if } \delta \in \{1, 2, 3, 4\} \end{cases}$$
+- For $\delta = 0$: $t$ is on a native vertex; 0 minutes of forward look-ahead.
+- For $\delta = 1$: $t = k + 1$; interpolation uses upcoming native vertex at $k+5 = t + 4$ (4-minute look-ahead).
+- For $\delta = 2$: $t = k + 2$; interpolation uses upcoming native vertex at $k+5 = t + 3$ (3-minute look-ahead).
+- For $\delta = 3$: $t = k + 3$; interpolation uses upcoming native vertex at $k+5 = t + 2$ (2-minute look-ahead).
+- For $\delta = 4$: $t = k + 4$; interpolation uses upcoming native vertex at $k+5 = t + 1$ (1-minute look-ahead).
 
----
+**Guard-Band Invariance:**  
+In the primary guard-band setup, the latest glucose input is sampled at $t_{\text{input}} = t - 5$.  
+Let $\delta_{-5} = (m(t - 5) - \phi_s) \pmod 5$.  
+The forward native vertex required to construct $y(t - 5)$ occurs at:
+$$t_{\text{vertex}} = (t - 5) + \text{LookAhead}(\delta_{-5})$$
+Since $\text{LookAhead}(\delta_{-5}) \le 4$ for all $\delta_{-5}$, we have:
+$$t_{\text{vertex}} \le (t - 5) + 4 = t - 1 < t$$
+Therefore, the latest native vertex incorporated into any predictor occurred strictly before forecast issuance time $t$. The primary guard-band design completely prevents linear-interpolation look-ahead by construction across all possible underlying phases $\phi_s \in \{0, 1, 2, 3, 4\}$.
 
-## 3. Native Grid & Phase Sensitivity Preregistration
+### 2.3 Diagnostic-Only Status of Time Semantics T6
+- Session-specific T6 inferred phase $\phi_s$ is **strictly removed from primary test sample selection**.
+- T6 inference relies on whole-run curvature statistics and must **never** determine test origins using future or test-set observations.
+- T6 is retained exclusively as a post-hoc diagnostic to quantify trace characteristics and segment-level curvature alignment.
 
-### 3.1 Diagnostic Treatment of Native Grid Inferences
-Stage 1B demonstrated that eligible contiguous runs contained 625,728 of 629,825 valid one-minute-grid Dexcom rows (99.35% of valid rows in the released representation). This percentage represents row coverage in the released 1-minute interpolated representation and must not be equated with coverage of independent physical sensor observations. Because raw device ADC telemetry and transmission logs were not published, inferred native vertices are treated strictly as a **mathematical diagnostic** of the released linear interpolation rather than proven physical sensor transmissions.
+### 2.4 Removal of Architecture-Switching Rule
+- The previously proposed post-hoc phase-sensitivity model-switching rule and its 2.0 mg/dL noise threshold rationale are **permanently removed**.
+- Because the 5-minute guard band eliminates predictor look-ahead by construction, there is no technical justification for altering model classes post-hoc based on test-set phase variation.
+- Sensitivity results across secondary phase suites will be reported transparently rather than triggering automated model switches.
 
-### 3.2 Preregistered Phase Sensitivity Evaluation & Operationalized Stopping Rule
-Candidate-origin counts exhibit remarkable balance across fixed phases (123,647 to 123,683 origins at +30m, $<0.03\%$ variation). However, this balance reflects candidate-origin sample counts across the five candidate sampling lattices only; it is **not** an empirical forecasting accuracy or model performance result.
-
-To guarantee that model performance is not an artifact of native phase selection, the evaluation protocol establishes the following:
-1. **Primary Evaluation:** Evaluated on session-specific inferred phase $\phi_s$ (Time Semantics T6). T6 inference remains diagnostic and must **never** select the primary test phase using future or test-set observations.
-2. **Phase Sensitivity Suite:** Evaluated across all five possible fixed phase offsets $\phi \in \{0, 1, 2, 3, 4\}$.
-3. **Operationalized Stopping Rule (>10% RMSE Delta & Absolute 2 mg/dL Threshold):**
-   - **Target Metric:** Group-stratified 5-fold cross-validation test-set Root Mean Squared Error (RMSE) in mg/dL evaluated separately at forecast horizons $h = 30\text{ min}$ and $h = 60\text{ min}$.
-   - **Reference Comparison Models:** 5 separate fixed-phase candidate models trained and evaluated on each fixed candidate lattice offset $\phi \in \{0, 1, 2, 3, 4\}$.
-   - **Computational Formula:**
-     $$\Delta_{\text{rel}} = \frac{\max_{\phi} \text{RMSE}(\phi) - \min_{\phi} \text{RMSE}(\phi)}{\min_{\phi} \text{RMSE}(\phi)} \times 100\%$$
-     $$\Delta_{\text{abs}} = \max_{\phi} \text{RMSE}(\phi) - \min_{\phi} \text{RMSE}(\phi)$$
-   - **Dual-Trigger Conditions:** An architecture triggers the phase-sensitivity stopping rule if **both** relative and absolute conditions are met (or if relative variation is marked high):
-     1. Relative variation exceeds 10.0%: $\Delta_{\text{rel}} > 10.0\%$, **AND**
-     2. Absolute variation exceeds 2.0 mg/dL: $\Delta_{\text{abs}} > 2.0\text{ mg/dL}$.
-   - **Rationale for Absolute Threshold ($2.0\text{ mg/dL}$):**
-     At low baseline forecasting errors (e.g., an RMSE difference of $12.0\text{ mg/dL}$ vs $13.2\text{ mg/dL}$), $\Delta_{\text{rel}} = 10\%$ represents an absolute delta of only $1.2\text{ mg/dL}$. In continuous glucose monitoring, hardware sensor noise and standard Mean Absolute Relative Difference (MARD ~9–10%) routinely introduce point noise of $3$–$5\text{ mg/dL}$. Enforcing an absolute threshold floor of $2.0\text{ mg/dL}$ prevents false-alarm stopping triggers on clinically indistinguishable sensor noise jitter.
-   - **Flag for Claude's Strategic Decision:**
-     *Flagged for Claude's Review:* Whether the absolute threshold floor remains fixed at $2.0\text{ mg/dL}$ or should be formulated as an 'either/or' disjunction ($\Delta_{\text{rel}} > 10.0\% \lor \Delta_{\text{abs}} > 2.0\text{ mg/dL}$) or scaled relative to clinical Clarke Error Grid Zone boundaries is explicitly submitted for Claude's strategic decision.
-   - **Protocol Action Upon Trigger:**
-     - The architecture is formally classified as **phase-sensitive and dependent on linear-interpolation lattice alignment**.
-     - All claims of hardware-lattice invariance are rejected.
-     - Modeling must halt or transition to either a continuous-time formulation (e.g., Neural ODEs / Continuous-Time State Space Models) or an explicit marginalization across all phase offsets $\frac{1}{5} \sum_{\phi=0}^4 \hat{y}(t; \phi)$.
-
----
-
-## 4. Cross-Validation Architecture & Sample Size Hierarchies
-
-### 4.1 Nested Sample Size Hierarchy & Run-Bounded Origin Arithmetic
-Statistical power and evaluation counts are defined strictly across nested hierarchical levels:
-- **Level 1 (Independent Units):** $K = 45$ participants (15 Normal, 16 Prediabetes, 14 Type 2 Diabetes).
-- **Level 2 (Contiguous Runs within Participants):**
-  - **Timestamp Runs:** 1,200 runs of contiguous timestamps ($\Delta t = 60\text{ s}$, 687,580 recorded rows across all 45 participant files, containing the canonical cohort total of 629,825 valid Dexcom observations).
-- **Level 3 (Candidate Forecast Origins Across Architectures):**
-  - **Candidate 5-Minute Native Lattice Vertices (13-point history, $L=60\text{ min}$):**
-    - +30 min horizon ($h=30$): **123,709 candidate origins** cohort-wide (Normal: 41,806; Prediabetes: 42,410; Diabetes: 39,493).
-    - +60 min horizon ($h=60$): **123,266 candidate origins** cohort-wide (Normal: 41,665; Prediabetes: 42,218; Diabetes: 39,383).
-    - Fixed phases sensitivity (+30m / +60m): $\phi=0$ (123,682 / 123,233), $\phi=1$ (123,683 / 123,243), $\phi=2$ (123,653 / 123,216), $\phi=3$ (123,647 / 123,207), $\phi=4$ (123,650 / 123,210).
-  - **1-Minute Grid with 60-Minute Autoregressive History ($L=60\text{ min}$, 61 points):**
-    - +30 min horizon ($h=30$): **618,236 candidate origins** cohort-wide (Normal: 209,006; Prediabetes: 211,800; Diabetes: 197,430).
-    - +60 min horizon ($h=60$): **616,029 candidate origins** cohort-wide (Normal: 208,297; Prediabetes: 210,862; Diabetes: 196,870).
-  - **Descriptive Baseline Offset Pairs ($L=0$, no input history requirement):**
-    - **Canonical Derivation on 1,200 Timestamp Runs:**
-      - Total timestamp-contiguous runs: 1,200 (687,580 recorded rows).
-      - At $h=30\text{ min}$:
-        - 1,079 runs have length $\le 30\text{ min}$ (accounting for 1,079 rows total; isolated 1-minute rows).
-        - 121 runs have length $> 30\text{ min}$ (accounting for 686,501 rows total).
-        - Candidate slots: $\sum_r \max(0, \text{len}(r) - 30) = 686,501 - (121 \times 30) = \mathbf{682,871}$.
-        - Endpoint null pairs: 57,773.
-        - Valid pairs: $682,871 - 57,773 = \mathbf{625,098}$.
-      - At $h=60\text{ min}$:
-        - 1,103 runs have length $\le 60\text{ min}$ (accounting for 1,987 rows total).
-        - 97 runs have length $> 60\text{ min}$ (accounting for 685,593 rows total).
-        - Candidate slots: $\sum_r \max(0, \text{len}(r) - 60) = 685,593 - (97 \times 60) = \mathbf{679,773}$.
-        - Endpoint null pairs: 57,695.
-        - Valid pairs: $679,773 - 57,695 = \mathbf{622,078}$.
-    - **Historical Run Count Reconciliation:**
-      An earlier draft report cited 94 runs of length $\le 30\text{ min}$ and 124 runs of length $\le 60\text{ min}$. These historical figures cannot be reproduced from canonical data under any uniform filtering threshold and are formally classified as **unresolved and non-reproducible**. The canonical distribution is strictly established as 1,079 runs $\le 30\text{ min}$ (1,079 single-minute rows, leaving 121 runs $> 30\text{ min}$ spanning 686,501 rows) and 1,103 runs $\le 60\text{ min}$ (1,987 rows, leaving 97 runs $> 60\text{ min}$ spanning 685,593 rows).
-    - **Removal & Noncanonical Classification of Historical Case 2:**
-      The exploratory 'Case 2' calculation (which cited 633,803 non-null Dexcom rows across 1,202 sensor runs) exceeded the canonical cohort total of 629,825 valid Dexcom rows and exhibited inconsistent trailing-slot arithmetic. Because Stage 2 predictive modeling evaluates candidate native vertices (123,709 / 123,266 origins) and 1-minute autoregressive sequences (618,236 / 616,029 origins) rather than Case 2, Case 2 has been removed from the canonical aggregate feasibility report, and any retained historical references to 633,803 rows are formally labeled **noncanonical and unresolved**.
-- **Runs and windows are nested units within participants**, not independent subjects.
-
-### 4.2 Grouped Cross-Validation Scheme & Cross-Phase Target Handling
-- **Participant-Disjoint Partitioning:** 5-fold cross-validation with strictly participant-disjoint train/test splits (`StratifiedGroupKFold`). Zero intra-participant leakage between training and testing partitions; all observations from any individual participant belong exclusively to either the training set or test set within any fold.
-- **Stratification Target:** Clinical baseline HbA1c diagnostic stratum (Normal: 15, Prediabetes: 16, Type 2 Diabetes: 14 participants). Folds are balanced to ensure each fold contains 3 Normal, 3–4 Prediabetes, and 2–3 Type 2 Diabetes participants.
-- **Identical Fold Assignment Across Phases:** The exact same participant-to-fold assignments MUST be frozen and identically reused across all phase experiments $\phi \in \{0, 1, 2, 3, 4\}$. No re-shuffling or re-splitting across phase variants is permitted.
-- **Cross-Phase Target Alignment & Evaluation Definition:**
-  Because each candidate phase $\phi \in \{0, 1, 2, 3, 4\}$ defines a distinct candidate 5-minute sampling lattice $\mathcal{L}_\phi = \{ t \mid m(t) \equiv \phi \pmod 5 \}$, forecast origins $t$ and targets $t+h$ are phase-specific and do not share identical timestamps across different phases (e.g., Phase 0 evaluates targets at minutes $0, 5, 10, \dots$, whereas Phase 1 evaluates targets at minutes $1, 6, 11, \dots$).
-  To ensure rigorous, unbiased phase comparisons:
-  1. **Primary Protocol Comparison (Full Phase-Specific Test-Set RMSE):**
-     Each model $M_\phi$ is evaluated on all valid target points within its own candidate lattice $\mathcal{L}_\phi$ across the participant-disjoint test partition $\mathcal{D}_{\text{test}}$. Root Mean Squared Error (RMSE) is computed on the full evaluated target set for each fold and averaged across folds:
-     $$\text{RMSE}(\phi) = \sqrt{\frac{1}{|\mathcal{Y}_{\phi, \text{test}}|} \sum_{(t, y) \in \mathcal{Y}_{\phi, \text{test}}} (y_{t+h} - \hat{y}_{t+h}^{(\phi)})^2}$$
-     This measures the true operational performance of each candidate phase model across the test participants.
-  2. **Sensitivity Matched Comparison (Shared Target Window Aggregation):**
-     As an exploratory sensitivity analysis to guard against horizon-target compositional differences, fold-level performance is additionally verified on common 15-minute coarse grid vertices $\mathcal{L}_{15} \subset \mathcal{L}_\phi$ (where phases $\phi$ and $\phi'$ coincide on 15-minute multiples) or by grouping predictions into matched non-overlapping 15-minute evaluation bins. The primary stopping rule trigger, however, remains bound to the full test-set $\text{RMSE}(\phi)$.
-- **Session Purging:** Multi-minute timestamp gaps serve as natural segment boundaries; no input history window ($L=60\text{ min}$) or target sequence bridges across a gap.
-
-### 4.3 Cohort Breakdown & Modulo-15 Provenance Audit
-The CGMacros v1.0.0 cohort comprises 45 unique participant files. A systematic audit of row counts demonstrates that **44 of 45 participant files have row counts exactly divisible by 15** ($N_i \pmod{15} = 0$). Exactly **one participant file** (`CGMacros-004`, 14,275 rows) has a non-zero remainder ($14,275 \pmod{15} = 10$).
-
-| Participant ID | Diagnostic Group | Baseline HbA1c | Row Count | Rows mod 15 |
-|:---|:---|:---:|---:|:---:|
-| `CGMacros-001` | Normal | 5.4% | 14,730 | 0 |
-| `CGMacros-002` | Normal | 5.5% | 17,025 | 0 |
-| `CGMacros-003` | Diabetes | 6.5% | 14,565 | 0 |
-| `CGMacros-004` | Normal | 5.5% | 14,275 | 10 |
-| `CGMacros-005` | Diabetes | 6.6% | 14,460 | 0 |
-| `CGMacros-006` | Normal | 5.2% | 14,460 | 0 |
-| `CGMacros-007` | Prediabetes | 5.9% | 5,655 | 0 |
-| `CGMacros-008` | Prediabetes | 5.8% | 14,760 | 0 |
-| `CGMacros-009` | Prediabetes | 5.7% | 14,370 | 0 |
-| `CGMacros-010` | Prediabetes | 5.7% | 16,155 | 0 |
-| `CGMacros-011` | Prediabetes | 5.7% | 14,805 | 0 |
-| `CGMacros-012` | Diabetes | 7.1% | 14,655 | 0 |
-| `CGMacros-013` | Prediabetes | 6.2% | 15,840 | 0 |
-| `CGMacros-014` | Diabetes | 7.1% | 17,250 | 0 |
-| `CGMacros-015` | Normal | 5.4% | 16,875 | 0 |
-| `CGMacros-016` | Prediabetes | 5.8% | 16,290 | 0 |
-| `CGMacros-017` | Normal | 5.0% | 16,185 | 0 |
-| `CGMacros-018` | Normal | 5.4% | 14,085 | 0 |
-| `CGMacros-019` | Normal | 5.6% | 14,430 | 0 |
-| `CGMacros-020` | Prediabetes | 6.4% | 16,260 | 0 |
-| `CGMacros-021` | Normal | 5.3% | 16,125 | 0 |
-| `CGMacros-022` | Prediabetes | 5.9% | 17,625 | 0 |
-| `CGMacros-023` | Prediabetes | 6.2% | 16,185 | 0 |
-| `CGMacros-026` | Prediabetes | 5.9% | 16,320 | 0 |
-| `CGMacros-027` | Normal | 4.7% | 14,535 | 0 |
-| `CGMacros-028` | Diabetes | 7.0% | 18,735 | 0 |
-| `CGMacros-029` | Prediabetes | 6.1% | 17,730 | 0 |
-| `CGMacros-030` | Diabetes | 7.6% | 15,465 | 0 |
-| `CGMacros-031` | Normal | 5.1% | 13,725 | 0 |
-| `CGMacros-032` | Normal | 5.3% | 13,785 | 0 |
-| `CGMacros-033` | Normal | 5.6% | 15,840 | 0 |
-| `CGMacros-034` | Normal | 4.6% | 14,700 | 0 |
-| `CGMacros-035` | Diabetes | 8.5% | 14,400 | 0 |
-| `CGMacros-036` | Diabetes | 6.9% | 17,115 | 0 |
-| `CGMacros-038` | Diabetes | 7.2% | 14,505 | 0 |
-| `CGMacros-039` | Diabetes | 8.3% | 17,205 | 0 |
-| `CGMacros-041` | Prediabetes | 6.3% | 14,310 | 0 |
-| `CGMacros-042` | Diabetes | 7.1% | 14,520 | 0 |
-| `CGMacros-043` | Prediabetes | 6.0% | 14,520 | 0 |
-| `CGMacros-044` | Prediabetes | 6.0% | 14,535 | 0 |
-| `CGMacros-045` | Prediabetes | 6.1% | 15,570 | 0 |
-| `CGMacros-046` | Diabetes | 7.4% | 14,655 | 0 |
-| `CGMacros-047` | Diabetes | 6.9% | 15,690 | 0 |
-| `CGMacros-048` | Normal | 4.8% | 17,340 | 0 |
-| `CGMacros-049` | Diabetes | 7.2% | 15,315 | 0 |
-
-#### Diagnostic Group Sums & Modulo-15 Invariance
-- **Normal (15 participants):** $228,115\text{ rows} \pmod{15} = \mathbf{10}$ (due entirely to `CGMacros-004`).
-- **Prediabetes (16 participants):** $240,930\text{ rows} \pmod{15} = \mathbf{0}$.
-- **Diabetes (14 participants):** $218,535\text{ rows} \pmod{15} = \mathbf{0}$.
-- **Cohort Total (45 participants):** $687,580\text{ rows} \pmod{15} = \mathbf{10}$.
-
-> [!IMPORTANT]
-> **Reconciliation of Conflicting Historical Scratch Counts:**
-> In earlier exploratory scratch scripts, unverified figures of Prediabetes = 247,025 and Diabetes = 213,415 were reported. Because $247,025 \pmod{15} = 5$ and $213,415 \pmod{15} = 10$, and because every Prediabetes and Diabetes CSV file in the repository has $N_i \pmod{15} = 0$, it is mathematically impossible for any combination of whole participant CSV files to sum to those values. Those historical counts are formally recorded as an **unresolved, non-reproducible artifact** arising from partial-run processing or ad-hoc filtering. The canonical group totals are strictly established as 228,115 (Normal), 240,930 (Prediabetes), and 218,535 (Diabetes).
+### 2.5 Secondary Sensitivity Suites
+1. **Unguarded History Ending at $t$ ($[y_t, y_{t-5}, \dots, y_{t-60}]$):**  
+   Retained strictly as a secondary sensitivity comparison to quantify the empirical magnitude of interpolation look-ahead leakage against the primary guard-banded baseline.
+2. **Fixed Phase Offsets ($\phi \in \{0, 1, 2, 3, 4\}$):**  
+   Evaluated as prespecified sensitivity analyses across all five candidate lattices using identical participant-level folds. Per-participant skill and phase-to-phase variability will be documented; phase-specific models are recognized as evaluating distinct lattice targets and do not share identical target timestamps.
 
 ---
 
-## 5. Secondary Candidate Tasks & Feasibility Bounds
+## 3. Feature Governance & Exclusions
 
-### 5.1 Hyperglycemia Excursion Feasibility Check (>180 mg/dL)
-- **Status:** **EXPLORATORY FEASIBILITY CHECK ONLY** (secondary to continuous regression).
-- **Exploratory Event Nature:** These excursion episodes are exploratory computational events derived from the released interpolated representation, not directly observed physical sensor recordings or clinical episodes.
-- **Formal Persistence Semantics & Conventions:**
-  - **Primary Computational Interval-Bin Convention (Convention B):**
-    Discrete points represent contiguous measurement epochs of $\Delta t$ duration. Total elevation exposure equals $N \cdot \Delta t \ge 15\text{ minutes}$, and release duration equals $M \cdot \Delta t \ge 10\text{ minutes}$.
-    - On 1-minute interpolated representation ($\Delta t = 1\text{m}$): $N = 15\text{ consecutive points}$ ($15\text{ min}$ exposure), $M = 10\text{ consecutive points} \le 175\text{ mg/dL}$ ($10\text{ min}$ release).
-    - On Candidate 5-Minute Lattice ($\Delta t = 5\text{m}$): $N = 3\text{ consecutive points}$ ($15\text{ min}$ exposure), $M = 2\text{ consecutive points} \le 175\text{ mg/dL}$ ($10\text{ min}$ release).
-    - *Observed Cohort Distribution (Convention B):*
-      - 1-minute representation: **678 total episodes (17 boundary-censored)**.
-        - Normal: 105 (2 censored); Prediabetes: 236 (2 censored); Diabetes: 337 (13 censored).
-      - Candidate 5-minute lattice: **714 total episodes (14 boundary-censored)**.
-        - Normal: 112 (2 censored); Prediabetes: 251 (3 censored); Diabetes: 351 (9 censored).
-  - **Sensitivity Convention (Convention A — Point-to-Point Elapsed Duration):**
-    Requires strict timestamp elapsed difference $t_{\text{end}} - t_{\text{start}} \ge 15\text{ minutes}$ and $t_{\text{rel\_end}} - t_{\text{rel\_start}} \ge 10\text{ minutes}$.
-    - On 1-minute representation: $N = 16\text{ consecutive points}$ ($t_{15} - t_0 = 15\text{m}$ elapsed), $M = 11\text{ consecutive points} \le 175\text{ mg/dL}$ ($10\text{m}$ elapsed). Yields **667 total episodes (17 boundary-censored)** (Normal: 101, Prediabetes: 234, Diabetes: 332).
-    - On Candidate 5-minute lattice: $N = 4\text{ consecutive points}$ ($t_3 - t_0 = 15\text{m}$ elapsed), $M = 3\text{ consecutive points} \le 175\text{ mg/dL}$ ($10\text{m}$ elapsed). Yields **642 total episodes (13 boundary-censored)** (Normal: 94, Prediabetes: 227, Diabetes: 321).
-- **Subject Coverage & Diagnostic Imbalance:**
-  - Participant coverage: 42/45 participants have $\ge 1$ episode; 40/45 have $\ge 3$ episodes; 33/45 have $\ge 5$ episodes; 27/45 have $\ge 10$ episodes.
-  - In Type 2 Diabetes, 14/14 participants (100%) have $\ge 10$ episodes.
-  - In Normal, only 4/15 participants (26.7%) have $\ge 10$ episodes (extreme event scarcity in normoglycemic subjects).
-- **Missingness & Censoring Semantics:** Missing sensor values reset entry persistence. Boundary-censored episodes (active at run termination or truncated by $>5\text{ min}$ of missing sensor values) are explicitly tracked for censored likelihood/survival evaluation.
+### 3.1 Primary Model Input Exclusions
+To maintain experimental rigor and prevent data leakage, the following features are **strictly excluded from the primary model**:
+- **Amount Consumed:** Excluded due to uncalibrated self-report logging and widespread recording omissions.
+- **Meal-End Information:** Excluded because meal-end timestamps are unknown at forecast issuance time $t$; only meal start context is permissible.
+- **Microbiome Features:** Excluded due to sparse, cross-sectional unaligned sampling.
+- **Calendar Fields:** Day of week, month, and season remain **strictly prohibited**.
+- **1-Minute Interpolated Grid Models:** Deferred from the initial benchmark ladder.
 
-### 5.2 Hypoglycemia Classification (<70 mg/dL): DEFERRED
-- **Status:** **DEFERRED.**
-- **Rationale:** Only 43 total hypoglycemia episodes occur on Dexcom cohort-wide across 45 participants (with 0 in most participants). Event scarcity is too extreme to support a standalone supervised classification task in Stage 2 without severe synthetic oversampling or clinical pooling.
+### 3.2 Time-of-Day / Circadian Features: Prespecified Ablation Only
+- **Status:** **EXCLUDED from the primary benchmark model; retained strictly as a prespecified secondary ablation.**
+- **Registry Alignment & Provenance:** Official dataset documentation (`CGMacros_dateshifted365.zip`) confirms that recording and meal photo dates were shifted by a constant integer number of days, thereby preserving intra-day local clock time (HH:MM). This is supported by the 1,706 logged meal timing distributions in the Stage 1B canonical registry (breakfast median 8.4h, lunch 12.8h, dinner 19.1h).
+- **Modeling Precaution:** Despite documented whole-day date shifting, time-of-day features are excluded from the primary model ladder to prevent any risk of circadian leakage, daylight savings discrepancies, or timezone confounding. Circadian harmonics ($[\sin(2\pi \cdot \text{TOD}/1440), \cos(2\pi \cdot \text{TOD}/1440)]$) will be evaluated strictly as an isolated ablation rung.
+
+---
+
+## 4. Stage 2 Model Progression Ladder
+
+Modeling follows a disciplined, prespecified ladder where each rung introduces a single controlled architectural or feature component:
+
+```
+[Rung 0: Guarded Persistence]
+       │
+[Rung 1: Damped-Trend Baseline]
+       │
+[Rung 2: Guarded Ridge Regression (13 Lags)]
+       │
+[Rung 3: + Activity Summaries (HR, METs/10)]
+       │
+[Rung 4: + Meal Context & Macronutrients (with No-Macros Ablation)]
+       │
+[Rung 5: + Demographic & Baseline Covariates]
+       │
+[Rung 6: Small Gradient-Boosted Decision Tree (Fixed Hyperparameters)]
+```
+
+### 4.1 Rung 0 — Guarded Persistence Baseline
+The reference benchmark for all subsequent rungs. Predicts no change from the latest available guard-banded glucose observation:
+$$\hat{y}(t+h) = y(t-5) \quad \text{for } h \in \{30, 60\}$$
+
+### 4.2 Rung 1 — Damped-Trend Baseline
+Extrapolates recent rate of change with an estimated empirical damping factor:
+$$\hat{y}(t+h) = y(t-5) + \gamma_h \cdot \left(\frac{y(t-5) - y(t-20)}{15}\right) \cdot h$$
+where $\gamma_h \in [0, 1]$ is estimated strictly on training-fold participants via inner cross-validation.
+
+### 4.3 Rung 2 — Guarded Ridge Regression (Autoregressive Lags)
+Linear regularized regression on the 13 guard-banded glucose lags:
+$$\mathbf{x}_{\text{autoreg}} = [y(t-5), y(t-10), \dots, y(t-65)]^T$$
+- Regularization parameter $\alpha$ is selected via inner nested participant-grouped cross-validation.
+
+### 4.4 Rung 3 — Physiological Activity Integration
+Appends past-30-minute physical activity summaries:
+$$\mathbf{x}_{\text{activity}} = [\text{mean\_HR}_{[t-30, t]}, \, \Delta\text{HR}_{[t-30, t]}, \, \text{mean\_METs/10}_{[t-30, t]}]^T$$
+Missing activity values are imputed using participant training-fold medians with explicit missingness indicator flags.
+
+### 4.5 Rung 4 — Meal Context & Macronutrients (Meal-Start Only)
+Integrates nutritional information available at meal start:
+- Time elapsed since last recorded meal start ($t - t_{\text{meal\_start}}$).
+- Indicator variable for meal start occurring within $[t-60, t]$.
+- Macronutrient contents: Total Carbs (g), Protein (g), Fat (g), Fiber (g).
+- **Mandatory Ablation:** An explicit **no-macros ablation** (evaluating binary meal occurrence indicators without nutrient gram values) is evaluated alongside full macronutrients to isolate the specific value of self-reported dietary logs.
+
+### 4.6 Rung 5 — Demographic & Baseline Covariates
+Appends static participant covariates from `bio.csv`:
+$$\mathbf{x}_{\text{static}} = [\text{Age}, \, \text{Gender}, \, \text{BMI}, \, \text{Baseline\_HbA1c}]^T$$
+Evaluated as a separate rung to measure the incremental benefit of static biometric features over dynamic physiological signals.
+
+### 4.7 Rung 6 — Small Gradient-Boosted Decision Tree (GBDT)
+A compact non-linear model (LightGBM or XGBoost) trained with fixed, prespecified hyperparameters:
+- `max_depth = 4`
+- `n_estimators = 100`
+- `learning_rate = 0.05`
+- `min_child_samples = 50`
+- `subsample = 0.8`
+- `colsample_bytree = 0.8`
+- **Audit Mandate:** Every model iteration and tuning experiment attempted must be logged in a machine-readable run log. Unconstrained hyperparameter searches and post-hoc tuning are strictly prohibited.
+
+---
+
+## 5. Cross-Validation Architecture & Evaluation Criteria
+
+### 5.1 Participant-Disjoint Grouped Cross-Validation Scheme
+- **Cross-Validation Scheme:** 5-fold `StratifiedGroupKFold`.
+- **Grouping Unit:** Participant ID ($K = 45$). Zero intra-participant data leakage: all recording sessions from any individual participant reside strictly in either the training set or the test set within any fold.
+- **Stratification Target:** Clinical baseline HbA1c diagnostic group (15 Normal, 16 Prediabetes, 14 Type 2 Diabetes). Each fold contains 3 Normal, 3–4 Prediabetes, and 2–3 Diabetes participants.
+- **Fold Freezing:** The identical participant-to-fold assignments are frozen and reused across all model rungs and all phase sensitivity suites.
+- **Hyperparameter Tuning:** Hyperparameters (e.g., Ridge $\alpha$, trend damping $\gamma_h$) are tuned strictly within training-fold participants using an inner 4-fold participant-grouped split.
+
+### 5.2 Evaluation Metrics & Aggregation Hierarchy
+Evaluation is structured hierarchically, prioritizing participant-level distribution over pooled aggregates:
+1. **Per-Participant Error Metrics:**
+   Compute RMSE and MAE separately for each participant $i$ in the test fold:
+   $$\text{RMSE}_i(h) = \sqrt{\frac{1}{|\mathcal{Y}_{i}|} \sum_{t \in \mathcal{Y}_i} (y_{t+h} - \hat{y}_{i, t+h})^2}, \quad \text{MAE}_i(h) = \frac{1}{|\mathcal{Y}_{i}|} \sum_{t \in \mathcal{Y}_i} |y_{t+h} - \hat{y}_{i, t+h}|$$
+2. **Per-Participant Skill Score Against Guarded Persistence:**
+   $$\text{Skill}_i(h) = 1 - \frac{\text{RMSE}_i(\text{model}, h)}{\text{RMSE}_i(\text{persistence}, h)}$$
+3. **Cohort Headline Reporting:**
+   - **Median Participant Skill Score** and **Mean Participant Skill Score**.
+   - **95% Confidence Intervals:** Derived from participant-level bootstrap ($B = 2,000$ iterations resampling participant error summaries).
+   - **Fraction of Participants Improved:** Proportion of the 45 participants with $\text{Skill}_i(h) > 0$.
+4. **Secondary Pooled Reporting:**
+   Pooled cohort RMSE and MAE are reported strictly as secondary metrics to avoid overweighting participants with longer recording durations.
+
+### 5.3 Predefined Criteria for Useful Forecasting Improvement
+A candidate model rung is judged to deliver a scientifically useful improvement over persistence if and only if it satisfies the following prespecified criteria:
+- **Horizon $h = 30\text{ min}$:**
+  - Median participant skill score $\ge +5.0\%$ over guarded persistence.
+  - Fraction of improved participants $\ge 60.0\%$ (at least 27 of 45 participants).
+- **Horizon $h = 60\text{ min}$:**
+  - Median participant skill score $\ge +10.0\%$ over guarded persistence.
+  - Fraction of improved participants $\ge 65.0\%$ (at least 30 of 45 participants).
+
+---
+
+## 6. Personalization Experiment (Separate Prespecified Study)
+
+Participant-specific adaptation is formulated as an independent downstream investigation, decoupled from general population evaluation:
+- **Objective:** Quantify the incremental benefit of adapting a pretrained global model to an individual participant's early calibration data.
+- **Protocol:**
+  1. **Global Model:** Train the Rung 2 or Rung 6 architecture on $K - 1$ participants.
+  2. **Target Adaptation Period:** Fit a lightweight adaptation layer (e.g., fine-tuning the Ridge bias/weights or calibration intercept) using the target participant's first **2, 4, or 6 recorded days**.
+  3. **Purge Boundary:** Enforce a mandatory **$\ge 120\text{-minute}$ purge gap** immediately following the adaptation period. No samples from this gap may be used for adaptation or testing.
+  4. **Evaluation:** Evaluate adapted predictions against frozen global-only predictions on **strictly identical test timestamps** during the remaining days.
+- **Reporting Boundary:** Personalization results must **never** be combined or conflated with unseen-participant generalization claims. They will be reported in a dedicated standalone section.
+
+---
+
+## 7. Sample Size Hierarchy & Aggregate Cohort Provenance
+
+### 7.1 Aggregate Cohort Characteristics (Privacy-Preserving)
+In accordance with data governance standards, individual participant listings with unblinded clinical parameters are replaced with aggregate group statistics:
+
+| Diagnostic Stratum | Participant Count ($N$) | Total Recorded Rows | Mean Rows/Participant (Range) | Baseline HbA1c Mean (Range) | Row Count Modulo 15 |
+|:---|:---:|---:|:---:|:---:|:---:|
+| **Normal** | 15 | 228,115 | 15,208 (13,725 – 17,340) | 5.2% (4.6% – 5.6%) | $\mathbf{10}$ (due solely to Participant 4) |
+| **Prediabetes** | 16 | 240,930 | 15,058 (5,655 – 17,730) | 5.9% (5.7% – 6.4%) | $\mathbf{0}$ |
+| **Type 2 Diabetes** | 14 | 218,535 | 15,610 (14,400 – 18,735) | 7.3% (6.5% – 8.5%) | $\mathbf{0}$ |
+| **Cohort Total** | **45** | **687,580** | **15,280 (5,655 – 18,735)** | **6.1% (4.6% – 8.5%)** | $\mathbf{10}$ |
+
+- **Modulo-15 Invariance:** 44 of 45 participant files have row counts exactly divisible by 15. Exactly one file (Participant 4, 14,275 rows) has $14,275 \pmod{15} = 10$.
+- **Historical Scratch Counts Reconciliation:** The earlier unverified scratch figures of Prediabetes = 247,025 ($247,025 \pmod{15} = 5$) and Diabetes = 213,415 ($213,415 \pmod{15} = 10$) are mathematically impossible from whole files and are recorded as an **unresolved, non-reproducible artifact**.
+
+### 7.2 Run-Bounded Origin Arithmetic (1,200 Contiguous Runs)
+Candidate forecast origin slots across the 1,200 timestamp-contiguous runs (687,580 recorded rows) are strictly established:
+- **Horizon $h = 30\text{ min}$:**
+  - 1,079 runs have length $\le 30\text{ min}$ (accounting for 1,079 single-minute rows).
+  - 121 runs have length $> 30\text{ min}$ (accounting for 686,501 rows).
+  - Candidate slots: $\sum_r \max(0, \text{len}(r) - 30) = 686,501 - (121 \times 30) = \mathbf{682,871}$.
+  - Subtracting 57,773 endpoint null pairs yields **625,098 valid evaluated pairs**.
+- **Horizon $h = 60\text{ min}$:**
+  - 1,103 runs have length $\le 60\text{ min}$ (accounting for 1,987 rows).
+  - 97 runs have length $> 60\text{ min}$ (accounting for 685,593 rows).
+  - Candidate slots: $\sum_r \max(0, \text{len}(r) - 60) = 685,593 - (97 \times 60) = \mathbf{679,773}$.
+  - Subtracting 57,695 endpoint null pairs yields **622,078 valid evaluated pairs**.
+- **Historical Run Count Reconciliation:** An earlier draft cited 94 runs $\le 30\text{ min}$ and 124 runs $\le 60\text{ min}$. These figures cannot be reproduced from canonical data and are formally marked **unresolved and non-reproducible**.
+- **Removal of Case 2:** The exploratory 'Case 2' calculation (which cited 633,803 non-null Dexcom rows across 1,202 sensor runs) exceeded the canonical cohort total of 629,825 valid Dexcom rows and exhibited inconsistent trailing-slot arithmetic. Case 2 has been removed from the canonical feasibility report, and any retained historical references are labeled **noncanonical and unresolved**.
+
+---
+
+## 8. Secondary Tasks, Implementation Reporting & Claims Boundaries
+
+### 8.1 Exploratory Nature of Threshold Excursions
+Hyperglycemia (>180 mg/dL) and hypoglycemia (<70 mg/dL) excursion counts are evaluated strictly as **exploratory computational checks** derived from the released interpolated representation:
+- Discrete points represent contiguous measurement epochs under the primary computational interval-bin convention (Convention B: 678 cohort episodes on 1-minute grid, 714 on candidate 5-minute lattice).
+- These events are not physical clinical episodes and will not serve as standalone supervised classification targets in Stage 2.
+
+### 8.2 Synthetic Benchmark Reporting & Neutral Terminology
+- **Reporting Convention:** The synthetic validation suite is reported as **`2,500/2,500 implementation-consistency cases passed`**.
+- Population confidence intervals (such as Wilson score intervals) are explicitly avoided for synthetic benchmarks because synthetic traces represent deterministic unit/integration test cases rather than random clinical samples.
+- The former "compliance rate" terminology is replaced with neutral descriptive wording: **Percentage of evaluated contiguous runs satisfying 5-minute piecewise-linear lattice criteria**.
+- Grouping units are consistently referred to as **participants** rather than "participant clusters".
+
+### 8.3 Deferred Advanced Modeling
+The following methodologies are deferred until the primary baseline ladder is completed and verified:
+- Conformal prediction intervals and distribution-free uncertainty calibration.
+- Complex recurrent or attention-based deep neural networks (e.g., LSTMs, Transformers).
+- Neural ODEs and continuous-time state-space models.
+
+### 8.4 Explicit Scientific & Clinical Claims Limitations
+All dissemination, reports, and benchmark publications derived from this work are bound by the following explicit constraints:
+1. **No Clinical Diagnosis or Treatment Claims:** The digital twin models developed under this protocol are mathematical forecasting benchmarks, not medical devices. They cannot be used to diagnose impaired glucose tolerance, calculate clinical insulin dosing, or guide real-time therapeutic decisions.
+2. **No Causal Counterfactual Claims:** Observed statistical associations between logged nutritional macronutrients, physical activity, and postprandial glucose trajectories are purely correlational. They do not constitute counterfactual causal evidence for dietary or behavioral interventions.
+3. **No Assertion of Population Transfer to Indian Populations:** The CGMacros v1.0.0 dataset was acquired from a US-based study cohort. Due to known differences in visceral adiposity, insulin resistance phenotypes, dietary composition, and metabolic kinetics, zero claims of transferability or validity to Indian or South Asian populations are asserted.

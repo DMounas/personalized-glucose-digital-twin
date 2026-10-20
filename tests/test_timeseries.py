@@ -122,3 +122,45 @@ def test_candidate_detection():
     assert "DateOfBirth" in candidates
     assert "Insulin" not in candidates
     assert "Dexcom GL" not in candidates
+
+
+def test_interpolation_lookahead_and_guard_band_safety():
+    """Verify deterministic forward look-ahead calculation and guard-band safety (Claude Review Item A.5).
+
+    Given delta = (t - phi_s) mod 5:
+    - delta = 0 -> 0 min look-ahead (exact native vertex)
+    - delta = 1 -> 4 min look-ahead (interpolates towards vertex at t + 4)
+    - delta = 2 -> 3 min look-ahead (interpolates towards vertex at t + 3)
+    - delta = 3 -> 2 min look-ahead (interpolates towards vertex at t + 2)
+    - delta = 4 -> 1 min look-ahead (interpolates towards vertex at t + 1)
+    """
+    from dtwin.timeaxis import compute_interpolation_lookahead, verify_guard_band_safety
+
+    # 1. Exact synthetic cases requested: delta=1 -> 4 min, delta=4 -> 1 min, delta=0 -> 0 min
+    assert compute_interpolation_lookahead(t_minutes=6, phi_s=1, period=5) == 0  # (6-1)%5 = 0
+    assert (
+        compute_interpolation_lookahead(t_minutes=7, phi_s=1, period=5) == 4
+    )  # (7-1)%5 = 1 -> 4 min
+    assert (
+        compute_interpolation_lookahead(t_minutes=8, phi_s=1, period=5) == 3
+    )  # (8-1)%5 = 2 -> 3 min
+    assert (
+        compute_interpolation_lookahead(t_minutes=9, phi_s=1, period=5) == 2
+    )  # (9-1)%5 = 3 -> 2 min
+    assert (
+        compute_interpolation_lookahead(t_minutes=10, phi_s=1, period=5) == 1
+    )  # (10-1)%5 = 4 -> 1 min
+
+    # Verify across all possible phases phi_s in {0, 1, 2, 3, 4}
+    for phi in range(5):
+        for delta in range(5):
+            t = 100 + phi + delta
+            expected_lookahead = 0 if delta == 0 else 5 - delta
+            assert compute_interpolation_lookahead(t, phi, period=5) == expected_lookahead
+
+    # 2. Guard-band safety verification:
+    # Under a 5-minute guard band [t-5, t-10, ...], the latest native vertex used
+    # never exceeds issuance time t across all issuance times and phases.
+    for issuance_t in range(50, 150):
+        for phi in range(5):
+            assert verify_guard_band_safety(issuance_t, phi, guard_band_min=5, period=5) is True

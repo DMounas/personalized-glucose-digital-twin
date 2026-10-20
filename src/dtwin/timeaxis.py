@@ -442,3 +442,48 @@ def detect_excursion_episodes_run_bounded(
         left_censored=left_censored,
         right_censored=boundary_censored,
     )
+
+
+def compute_interpolation_lookahead(
+    t_minutes: int,
+    phi_s: int,
+    period: int = 5,
+) -> int:
+    """Compute deterministic forward look-ahead (in minutes) for linear interpolation.
+
+    Under linear interpolation between native sampling vertices at period p and phase phi_s:
+    Let delta = (t_minutes - phi_s) % p.
+    - If delta == 0: t is exactly at a native vertex; zero forward look-ahead.
+    - If delta > 0: linear interpolation at t incorporates the upcoming native vertex at
+      t + (p - delta), introducing exactly (p - delta) minutes of future look-ahead into
+      the interpolated value at t.
+
+    Examples (p = 5):
+    - delta = 0 -> 0 min look-ahead (on-grid native vertex, uses only data at t)
+    - delta = 1 -> 4 min look-ahead (interpolates towards vertex at t + 4)
+    - delta = 2 -> 3 min look-ahead (interpolates towards vertex at t + 3)
+    - delta = 3 -> 2 min look-ahead (interpolates towards vertex at t + 2)
+    - delta = 4 -> 1 min look-ahead (interpolates towards vertex at t + 1)
+    """
+    delta = (t_minutes - phi_s) % period
+    return 0 if delta == 0 else period - delta
+
+
+def verify_guard_band_safety(
+    issuance_time_min: int,
+    phi_s: int,
+    guard_band_min: int = 5,
+    period: int = 5,
+) -> bool:
+    """Verify that the latest native vertex used by guard-banded input does not exceed issuance time.
+
+    For forecast issuance time t and guard band g >= period:
+    The latest glucose input is sampled at t - g.
+    Its look-ahead is at most (period - 1) minutes.
+    The forward vertex used is at timestamp (t - g) + lookahead <= t - g + period - 1 <= t - 1 < t.
+    Thus, no future native vertices beyond issuance time t are ever leaked into the predictors.
+    """
+    latest_input_time = issuance_time_min - guard_band_min
+    lookahead = compute_interpolation_lookahead(latest_input_time, phi_s, period=period)
+    latest_vertex_time = latest_input_time + lookahead
+    return bool(latest_vertex_time <= issuance_time_min)
