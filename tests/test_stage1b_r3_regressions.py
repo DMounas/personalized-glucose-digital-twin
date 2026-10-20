@@ -749,3 +749,130 @@ def test_r3_4_timestamp_integrity_and_canonical_metrics():
         "This percentage represents row coverage in the released 1-minute interpolated representation and must not be equated with coverage of independent physical sensor observations."
         in dex_qual
     )
+
+
+def test_r3_4_final_aggregate_feasibility_reconciliation():
+    """Verify R3.4 final aggregate feasibility reconciliation:
+
+    1. Group mapping: Normal (15), Prediabetes (16), Diabetes (14) = 45 total.
+    2. Group recorded row sums: 228,115 + 240,930 + 218,535 = 687,580.
+    3. Group valid Dexcom sums: 211,700 + 218,495 + 199,630 = 629,825.
+    4. Group evaluable runs sums: 30 + 34 + 25 = 89.
+    5. Candidate forecast origins on 1m grid (60m history): 618,236 (+30m), 616,029 (+60m).
+    6. Candidate forecast origins on 5m native lattice: 123,709 (+30m), 123,266 (+60m).
+    7. Hyperglycemia excursion counts: 678 total (17 censored) on 1m grid;
+       105 (Normal) + 236 (Prediabetes) + 337 (Diabetes) = 678.
+    8. 5m native excursion counts: 714 total (14 censored) for 3-pt / 10m elapsed.
+    9. Strict privacy: Zero participant identifiers (CGMacros-XXX) in output artifact.
+    """
+    import json
+    import re
+
+    report_path = Path("docs/reports/stage2_aggregate_feasibility.json")
+    assert report_path.exists(), "stage2_aggregate_feasibility.json does not exist"
+
+    with open(report_path, encoding="utf-8") as f:
+        raw_text = f.read()
+        data = json.loads(raw_text)
+
+    # 9. Privacy verification
+    assert len(re.findall(r"CGMacros-\d{3}", raw_text)) == 0, (
+        "Participant IDs leaked in aggregate feasibility report!"
+    )
+
+    # 1. Diagnostic group participants
+    cov_grp = data["coverage_by_diagnostic_group"]
+    assert cov_grp["normal"]["participants"] == 15
+    assert cov_grp["prediabetes"]["participants"] == 16
+    assert cov_grp["diabetes"]["participants"] == 14
+    assert data["coverage_cohort_totals"]["participants"] == 45
+
+    # 2. Recorded rows
+    assert cov_grp["normal"]["total_recorded_rows"] == 228115
+    assert cov_grp["prediabetes"]["total_recorded_rows"] == 240930
+    assert cov_grp["diabetes"]["total_recorded_rows"] == 218535
+    assert data["coverage_cohort_totals"]["total_recorded_rows"] == 687580
+    assert 228115 + 240930 + 218535 == 687580
+
+    # 3. Valid Dexcom rows
+    assert cov_grp["normal"]["valid_dexcom_rows"] == 211700
+    assert cov_grp["prediabetes"]["valid_dexcom_rows"] == 218495
+    assert cov_grp["diabetes"]["valid_dexcom_rows"] == 199630
+    assert data["coverage_cohort_totals"]["valid_dexcom_rows"] == 629825
+    assert 211700 + 218495 + 199630 == 629825
+
+    # 4. Evaluable runs
+    assert cov_grp["normal"]["evaluable_dexcom_runs_t6"] == 30
+    assert cov_grp["prediabetes"]["evaluable_dexcom_runs_t6"] == 34
+    assert cov_grp["diabetes"]["evaluable_dexcom_runs_t6"] == 25
+    assert data["coverage_cohort_totals"]["evaluable_dexcom_runs_t6"] == 89
+    assert 30 + 34 + 25 == 89
+    assert data["coverage_cohort_totals"]["total_valid_dexcom_runs"] == 1202
+
+    # 5 & 6. Candidate forecast origins
+    cfo = data["candidate_forecast_origins"]
+    # 1m grid with 60m history
+    cfo_1m = cfo["one_minute_grid_60m_history"]
+    assert cfo_1m["horizon_30min"]["cohort_total"] == 618236
+    assert cfo_1m["horizon_30min"]["by_group"]["normal"] == 209006
+    assert cfo_1m["horizon_30min"]["by_group"]["prediabetes"] == 211800
+    assert cfo_1m["horizon_30min"]["by_group"]["diabetes"] == 197430
+    assert 209006 + 211800 + 197430 == 618236
+
+    assert cfo_1m["horizon_60min"]["cohort_total"] == 616029
+    assert cfo_1m["horizon_60min"]["by_group"]["normal"] == 208297
+    assert cfo_1m["horizon_60min"]["by_group"]["prediabetes"] == 210862
+    assert cfo_1m["horizon_60min"]["by_group"]["diabetes"] == 196870
+    assert 208297 + 210862 + 196870 == 616029
+
+    # 5m native lattice (T6 inferred phase)
+    cfo_5m = cfo["five_minute_native_lattice_t6_inferred_phase"]
+    assert cfo_5m["horizon_30min"]["cohort_total"] == 123709
+    assert cfo_5m["horizon_30min"]["by_group"]["normal"] == 41806
+    assert cfo_5m["horizon_30min"]["by_group"]["prediabetes"] == 42410
+    assert cfo_5m["horizon_30min"]["by_group"]["diabetes"] == 39493
+    assert 41806 + 42410 + 39493 == 123709
+
+    assert cfo_5m["horizon_60min"]["cohort_total"] == 123266
+    assert cfo_5m["horizon_60min"]["by_group"]["normal"] == 41665
+    assert cfo_5m["horizon_60min"]["by_group"]["prediabetes"] == 42218
+    assert cfo_5m["horizon_60min"]["by_group"]["diabetes"] == 39383
+    assert 41665 + 42218 + 39383 == 123266
+
+    # Descriptive offset pairs (historical no-history baseline)
+    cfo_desc = cfo["descriptive_offset_pairs_no_history_baseline"]
+    assert cfo_desc["horizon_30min"] == 625098
+    assert cfo_desc["horizon_60min"] == 622078
+
+    # 7. Hyperglycemia excursions (1-minute representation)
+    exc = data["hyperglycemia_excursion_feasibility"]
+    exc_1m = exc["one_minute_representation_15m_persistence"]
+    assert exc_1m["total_episodes_cohort"] == 678
+    assert exc_1m["total_censored_cohort"] == 17
+    assert exc_1m["participant_coverage_cohort"]["ge_1_episode"] == 42
+    assert exc_1m["participant_coverage_cohort"]["ge_3_episodes"] == 40
+    assert exc_1m["participant_coverage_cohort"]["ge_5_episodes"] == 33
+    assert exc_1m["participant_coverage_cohort"]["ge_10_episodes"] == 27
+    assert exc_1m["by_diagnostic_group"]["normal"]["episodes"] == 105
+    assert exc_1m["by_diagnostic_group"]["normal"]["censored"] == 2
+    assert exc_1m["by_diagnostic_group"]["prediabetes"]["episodes"] == 236
+    assert exc_1m["by_diagnostic_group"]["prediabetes"]["censored"] == 2
+    assert exc_1m["by_diagnostic_group"]["diabetes"]["episodes"] == 337
+    assert exc_1m["by_diagnostic_group"]["diabetes"]["censored"] == 13
+    assert 105 + 236 + 337 == 678
+    assert 2 + 2 + 13 == 17
+    # 100% of diabetes participants have >= 10 episodes
+    assert exc_1m["by_diagnostic_group"]["diabetes"]["ge_10_episodes"] == 14
+
+    # 8. Hyperglycemia excursions (5-minute native lattice 3-pt)
+    exc_5m = exc["five_minute_native_lattice_3pt_10m_elapsed"]
+    assert exc_5m["total_episodes_cohort"] == 714
+    assert exc_5m["total_censored_cohort"] == 14
+    assert exc_5m["by_diagnostic_group"]["normal"]["episodes"] == 112
+    assert exc_5m["by_diagnostic_group"]["normal"]["censored"] == 2
+    assert exc_5m["by_diagnostic_group"]["prediabetes"]["episodes"] == 251
+    assert exc_5m["by_diagnostic_group"]["prediabetes"]["censored"] == 3
+    assert exc_5m["by_diagnostic_group"]["diabetes"]["episodes"] == 351
+    assert exc_5m["by_diagnostic_group"]["diabetes"]["censored"] == 9
+    assert 112 + 251 + 351 == 714
+    assert 2 + 3 + 9 == 14
