@@ -22,13 +22,18 @@ data/
 *.tar*
 *.gz
 
-# Images (except under docs/)
+# Images (except under docs/ and assets/)
 *.jpg
 *.jpeg
 *.png
 !docs/**/*.jpg
 !docs/**/*.jpeg
 !docs/**/*.png
+!docs/**/*.svg
+!assets/**/*.png
+!assets/**/*.svg
+!assets/**/*.jpg
+!assets/**/*.jpeg
 
 # Safety net: never allow raw reports
 docs/reports/raw/

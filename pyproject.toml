@@ -8,17 +8,20 @@ version = "0.1.0"
 description = "Proof-of-concept healthcare Digital Twin for type 2 diabetes (glucose forecasting + what-if scenarios + clinician dashboard)"
 readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "CC-BY-NC-SA-4.0" }
+license = { text = "MIT" }
 dependencies = [
     "pandas>=2.0.0",
     "numpy>=1.24.0",
     "PyYAML>=6.0",
+    "scikit-learn>=1.3.0",
+    "matplotlib>=3.7.0",
 ]
 
 [project.optional-dependencies]
 dev = [
     "pytest>=7.0.0",
     "ruff>=0.1.0",
+    "mypy>=1.0.0",
 ]
 
 [project.scripts]

@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this software in your research or wish to reference the benchmarking methodology, please cite it as below."
+authors:
+  - family-names: "Mounas"
+    given-names: "Debangshu"
+    orcid: "https://orcid.org/0009-0004-9467-3312"
+title: "Personalized Glucose Digital Twin for Type 2 Diabetes"
+version: 1.0.0
+date-released: 2026-10-21
+url: "https://github.com/DMounas/personalized-glucose-digital-twin"
+repository-code: "https://github.com/DMounas/personalized-glucose-digital-twin"
+keywords:
+  - machine-learning
+  - continuous-glucose-monitoring
+  - digital-twin
+  - time-series-forecasting
+  - personalization
+  - healthcare-ai
+  - type-2-diabetes
+license: MIT
