@@ -125,12 +125,21 @@ def evaluate_participant_feasibility(
     origins_5m_phases_60 = {p: 0 for p in range(5)}
 
     # Excursions
-    episodes_1m = 0
-    censored_1m = 0
-    episodes_5m_3pt = 0
-    censored_5m_3pt = 0
-    episodes_5m_4pt = 0
-    censored_5m_4pt = 0
+    # Convention B: Interval-Bin Epoch Duration (Primary clinical convention: N * delta_t >= duration)
+    # 1m: 15 points (15 min), 10 points release (10 min)
+    # 5m: 3 points (15 min), 2 points release (10 min)
+    episodes_1m_conv_b = 0
+    censored_1m_conv_b = 0
+    episodes_5m_conv_b = 0
+    censored_5m_conv_b = 0
+
+    # Convention A: Point-to-Point Elapsed Duration (Sensitivity convention: t_end - t_start >= duration)
+    # 1m: 16 points (15 min elapsed), 11 points release (10 min elapsed)
+    # 5m: 4 points (15 min elapsed), 3 points release (10 min elapsed)
+    episodes_1m_conv_a = 0
+    censored_1m_conv_a = 0
+    episodes_5m_conv_a = 0
+    censored_5m_conv_a = 0
 
     for r in runs:
         r_slice = dex[r.start_index : r.end_index + 1]
@@ -184,7 +193,8 @@ def evaluate_participant_feasibility(
                         origins_5m_t6_60 += 1
 
         # Excursion episodes: 1-minute grid
-        ep1, cens1 = detect_excursion_episodes_run_bounded(
+        # Convention B: 15 points persistence (15m exposure), 10 points release (10m exposure)
+        ep1_b, cens1_b = detect_excursion_episodes_run_bounded(
             r_slice,
             threshold=180.0,
             kind="hyper",
@@ -193,15 +203,28 @@ def evaluate_participant_feasibility(
             hysteresis_margin=5.0,
             max_null_min=5,
         )
-        episodes_1m += ep1
-        censored_1m += cens1
+        episodes_1m_conv_b += ep1_b
+        censored_1m_conv_b += cens1_b
+
+        # Convention A: 16 points persistence (15m elapsed), 11 points release (10m elapsed)
+        ep1_a, cens1_a = detect_excursion_episodes_run_bounded(
+            r_slice,
+            threshold=180.0,
+            kind="hyper",
+            min_persistence=16,
+            min_release=11,
+            hysteresis_margin=5.0,
+            max_null_min=5,
+        )
+        episodes_1m_conv_a += ep1_a
+        censored_1m_conv_a += cens1_a
 
         # Excursion episodes: 5-minute native lattice
         grid_5m_idx = np.where(r_elapsed % 5 == best_p)[0]
         if len(grid_5m_idx) >= 3:
             r_slice_5m = r_slice[grid_5m_idx]
-            # 3 points = 10m elapsed persistence
-            ep5_3, cens5_3 = detect_excursion_episodes_run_bounded(
+            # Convention B: 3 points persistence (15m exposure), 2 points release (10m exposure)
+            ep5_b, cens5_b = detect_excursion_episodes_run_bounded(
                 r_slice_5m,
                 threshold=180.0,
                 kind="hyper",
@@ -210,12 +233,12 @@ def evaluate_participant_feasibility(
                 hysteresis_margin=5.0,
                 max_null_min=1,
             )
-            episodes_5m_3pt += ep5_3
-            censored_5m_3pt += cens5_3
+            episodes_5m_conv_b += ep5_b
+            censored_5m_conv_b += cens5_b
 
-            # 4 points = 15m elapsed persistence
+            # Convention A: 4 points persistence (15m elapsed), 3 points release (10m elapsed)
             if len(grid_5m_idx) >= 4:
-                ep5_4, cens5_4 = detect_excursion_episodes_run_bounded(
+                ep5_a, cens5_a = detect_excursion_episodes_run_bounded(
                     r_slice_5m,
                     threshold=180.0,
                     kind="hyper",
@@ -224,8 +247,8 @@ def evaluate_participant_feasibility(
                     hysteresis_margin=5.0,
                     max_null_min=1,
                 )
-                episodes_5m_4pt += ep5_4
-                censored_5m_4pt += cens5_4
+                episodes_5m_conv_a += ep5_a
+                censored_5m_conv_a += cens5_a
 
     return {
         "diag_group": diag_group,
@@ -239,12 +262,14 @@ def evaluate_participant_feasibility(
         "origins_5m_t6_60": origins_5m_t6_60,
         "origins_5m_phases_30": origins_5m_phases_30,
         "origins_5m_phases_60": origins_5m_phases_60,
-        "episodes_1m": episodes_1m,
-        "censored_1m": censored_1m,
-        "episodes_5m_3pt": episodes_5m_3pt,
-        "censored_5m_3pt": censored_5m_3pt,
-        "episodes_5m_4pt": episodes_5m_4pt,
-        "censored_5m_4pt": censored_5m_4pt,
+        "episodes_1m_conv_b": episodes_1m_conv_b,
+        "censored_1m_conv_b": censored_1m_conv_b,
+        "episodes_5m_conv_b": episodes_5m_conv_b,
+        "censored_5m_conv_b": censored_5m_conv_b,
+        "episodes_1m_conv_a": episodes_1m_conv_a,
+        "censored_1m_conv_a": censored_1m_conv_a,
+        "episodes_5m_conv_a": episodes_5m_conv_a,
+        "censored_5m_conv_a": censored_5m_conv_a,
     }
 
 
@@ -288,17 +313,27 @@ def run_aggregate_feasibility_analysis(
     grp_origins_5m_phases_60 = {g: {p: 0 for p in range(5)} for g in groups}
 
     # Excursion episode counts and participant distributions
-    grp_episodes_1m = {g: 0 for g in groups}
-    grp_censored_1m = {g: 0 for g in groups}
-    grp_ep_dist_1m: dict[str, list[int]] = {g: [] for g in groups}
+    # Convention B (Interval-Bin Epoch Duration, Primary):
+    # 1m: 15 pt (15 min exposure), 10 pt release (10 min exposure)
+    # 5m: 3 pt (15 min exposure), 2 pt release (10 min exposure)
+    grp_episodes_1m_conv_b = {g: 0 for g in groups}
+    grp_censored_1m_conv_b = {g: 0 for g in groups}
+    grp_ep_dist_1m_conv_b: dict[str, list[int]] = {g: [] for g in groups}
 
-    grp_episodes_5m_3pt = {g: 0 for g in groups}
-    grp_censored_5m_3pt = {g: 0 for g in groups}
-    grp_ep_dist_5m_3pt: dict[str, list[int]] = {g: [] for g in groups}
+    grp_episodes_5m_conv_b = {g: 0 for g in groups}
+    grp_censored_5m_conv_b = {g: 0 for g in groups}
+    grp_ep_dist_5m_conv_b: dict[str, list[int]] = {g: [] for g in groups}
 
-    grp_episodes_5m_4pt = {g: 0 for g in groups}
-    grp_censored_5m_4pt = {g: 0 for g in groups}
-    grp_ep_dist_5m_4pt: dict[str, list[int]] = {g: [] for g in groups}
+    # Convention A (Point-to-Point Elapsed Duration, Sensitivity):
+    # 1m: 16 pt (15 min elapsed), 11 pt release (10 min elapsed)
+    # 5m: 4 pt (15 min elapsed), 3 pt release (10 min elapsed)
+    grp_episodes_1m_conv_a = {g: 0 for g in groups}
+    grp_censored_1m_conv_a = {g: 0 for g in groups}
+    grp_ep_dist_1m_conv_a: dict[str, list[int]] = {g: [] for g in groups}
+
+    grp_episodes_5m_conv_a = {g: 0 for g in groups}
+    grp_censored_5m_conv_a = {g: 0 for g in groups}
+    grp_ep_dist_5m_conv_a: dict[str, list[int]] = {g: [] for g in groups}
 
     for f_path_str in files:
         file_p = Path(f_path_str)
@@ -324,28 +359,38 @@ def run_aggregate_feasibility_analysis(
             grp_origins_5m_phases_30[grp][p] += p_res["origins_5m_phases_30"][p]
             grp_origins_5m_phases_60[grp][p] += p_res["origins_5m_phases_60"][p]
 
-        grp_episodes_1m[grp] += p_res["episodes_1m"]
-        grp_censored_1m[grp] += p_res["censored_1m"]
-        grp_ep_dist_1m[grp].append(p_res["episodes_1m"])
+        # Accumulate Convention B
+        grp_episodes_1m_conv_b[grp] += p_res["episodes_1m_conv_b"]
+        grp_censored_1m_conv_b[grp] += p_res["censored_1m_conv_b"]
+        grp_ep_dist_1m_conv_b[grp].append(p_res["episodes_1m_conv_b"])
 
-        grp_episodes_5m_3pt[grp] += p_res["episodes_5m_3pt"]
-        grp_censored_5m_3pt[grp] += p_res["censored_5m_3pt"]
-        grp_ep_dist_5m_3pt[grp].append(p_res["episodes_5m_3pt"])
+        grp_episodes_5m_conv_b[grp] += p_res["episodes_5m_conv_b"]
+        grp_censored_5m_conv_b[grp] += p_res["censored_5m_conv_b"]
+        grp_ep_dist_5m_conv_b[grp].append(p_res["episodes_5m_conv_b"])
 
-        grp_episodes_5m_4pt[grp] += p_res["episodes_5m_4pt"]
-        grp_censored_5m_4pt[grp] += p_res["censored_5m_4pt"]
-        grp_ep_dist_5m_4pt[grp].append(p_res["episodes_5m_4pt"])
+        # Accumulate Convention A
+        grp_episodes_1m_conv_a[grp] += p_res["episodes_1m_conv_a"]
+        grp_censored_1m_conv_a[grp] += p_res["censored_1m_conv_a"]
+        grp_ep_dist_1m_conv_a[grp].append(p_res["episodes_1m_conv_a"])
+
+        grp_episodes_5m_conv_a[grp] += p_res["episodes_5m_conv_a"]
+        grp_censored_5m_conv_a[grp] += p_res["censored_5m_conv_a"]
+        grp_ep_dist_5m_conv_a[grp].append(p_res["episodes_5m_conv_a"])
 
     # Aggregate summaries by group and cohort
     def make_excursion_summary(
         episodes_dict: dict[str, int],
         censored_dict: dict[str, int],
         dist_dict: dict[str, list[int]],
+        entry_desc: str,
+        release_desc: str,
     ) -> dict[str, Any]:
         all_dists = [c for g in groups for c in dist_dict[g]]
         total_ep = sum(episodes_dict.values())
         total_cens = sum(censored_dict.values())
         return {
+            "entry_specification": entry_desc,
+            "release_specification": release_desc,
             "total_episodes_cohort": total_ep,
             "total_censored_cohort": total_cens,
             "participant_coverage_cohort": {
@@ -375,9 +420,15 @@ def run_aggregate_feasibility_analysis(
     results: dict[str, Any] = {
         "metadata": {
             "title": "Stage 2 Aggregate Feasibility and Cohort Readiness",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "dataset": "CGMacros v1.0.0",
             "privacy": "Aggregated only. Zero participant identifiers.",
+            "coverage_qualification": (
+                "Eligible runs contained 625,728 of 629,825 valid one-minute-grid Dexcom rows "
+                "(99.35% of valid rows in the released representation). This percentage represents "
+                "row coverage in the released 1-minute interpolated representation and must not be "
+                "equated with coverage of independent physical sensor observations."
+            ),
         },
         "coverage_by_diagnostic_group": {
             g: {
@@ -426,23 +477,71 @@ def run_aggregate_feasibility_analysis(
                     "cohort_by_phase": cohort_phases_60,
                     "by_group": grp_origins_5m_phases_60,
                 },
+                "phase_sensitivity_clarification": (
+                    "The <0.03% variation across phases (123,647 to 123,683 at +30m) reflects candidate-origin "
+                    "sample counts across the 5 candidate 5-minute sampling lattices only. It is not an empirical "
+                    "forecasting accuracy or model performance result. In accordance with preregistration, all 5 phases "
+                    "will be evaluated under the >10% RMSE delta stopping rule during Stage 2 predictive modeling."
+                ),
             },
             "descriptive_offset_pairs_no_history_baseline": {
                 "horizon_30min": 625098,
                 "horizon_60min": 622078,
-                "note": "Stage 1B Task T1 pairs_at_offset stepping across runs without 60m history window.",
+                "exact_arithmetic_derivation": {
+                    "horizon_30min": "682,871 candidate slots - 57,773 null endpoint pairs = 625,098 valid pairs",
+                    "horizon_60min": "679,773 candidate slots - 57,695 null endpoint pairs = 622,078 valid pairs",
+                    "boundary_truncation_rule": (
+                        "Candidate slots = sum_r max(0, len(r) - h) across all 1,200 timestamp runs "
+                        "(687,580 recorded rows). Truncates the trailing h minutes per run."
+                    ),
+                    "correction_note": (
+                        "Replaces erroneous back-of-the-envelope approximation "
+                        "629,825 - (30 * 1,202) = 593,765 != 625,098."
+                    ),
+                },
             },
         },
         "hyperglycemia_excursion_feasibility": {
-            "one_minute_representation_15m_persistence": make_excursion_summary(
-                grp_episodes_1m, grp_censored_1m, grp_ep_dist_1m
-            ),
-            "five_minute_native_lattice_3pt_10m_elapsed": make_excursion_summary(
-                grp_episodes_5m_3pt, grp_censored_5m_3pt, grp_ep_dist_5m_3pt
-            ),
-            "five_minute_native_lattice_4pt_15m_elapsed": make_excursion_summary(
-                grp_episodes_5m_4pt, grp_censored_5m_4pt, grp_ep_dist_5m_4pt
-            ),
+            "interval_bin_epoch_convention_primary": {
+                "description": (
+                    "Primary clinical convention: each sample represents a measurement epoch of delta_t duration. "
+                    "Total exposure duration = N * delta_t >= 15 min; release duration = M * delta_t >= 10 min."
+                ),
+                "one_minute_representation": make_excursion_summary(
+                    grp_episodes_1m_conv_b,
+                    grp_censored_1m_conv_b,
+                    grp_ep_dist_1m_conv_b,
+                    entry_desc="15 consecutive points (15 min exposure), reset on nulls",
+                    release_desc="10 consecutive points <= 175 mg/dL (10 min exposure)",
+                ),
+                "five_minute_native_lattice": make_excursion_summary(
+                    grp_episodes_5m_conv_b,
+                    grp_censored_5m_conv_b,
+                    grp_ep_dist_5m_conv_b,
+                    entry_desc="3 consecutive points (15 min exposure), reset on nulls",
+                    release_desc="2 consecutive points <= 175 mg/dL (10 min exposure)",
+                ),
+            },
+            "point_to_point_elapsed_duration_sensitivity": {
+                "description": (
+                    "Sensitivity convention: elapsed duration between timestamps t_end - t_start >= 15 min; "
+                    "release duration t_rel_end - t_rel_start >= 10 min."
+                ),
+                "one_minute_representation": make_excursion_summary(
+                    grp_episodes_1m_conv_a,
+                    grp_censored_1m_conv_a,
+                    grp_ep_dist_1m_conv_a,
+                    entry_desc="16 consecutive points (15 min elapsed), reset on nulls",
+                    release_desc="11 consecutive points <= 175 mg/dL (10 min elapsed)",
+                ),
+                "five_minute_native_lattice": make_excursion_summary(
+                    grp_episodes_5m_conv_a,
+                    grp_censored_5m_conv_a,
+                    grp_ep_dist_5m_conv_a,
+                    entry_desc="4 consecutive points (15 min elapsed), reset on nulls",
+                    release_desc="3 consecutive points <= 175 mg/dL (10 min elapsed)",
+                ),
+            },
         },
     }
 
@@ -499,8 +598,21 @@ def main() -> None:
     print(
         f"  5m native origins (+30m): {results['candidate_forecast_origins']['five_minute_native_lattice_t6_inferred_phase']['horizon_30min']['cohort_total']:,}"
     )
+    exc_b = results["hyperglycemia_excursion_feasibility"]["interval_bin_epoch_convention_primary"]
     print(
-        f"  1m excursion episodes: {results['hyperglycemia_excursion_feasibility']['one_minute_representation_15m_persistence']['total_episodes_cohort']} (censored: {results['hyperglycemia_excursion_feasibility']['one_minute_representation_15m_persistence']['total_censored_cohort']})"
+        f"  1m excursion episodes (Conv B): {exc_b['one_minute_representation']['total_episodes_cohort']} (censored: {exc_b['one_minute_representation']['total_censored_cohort']})"
+    )
+    print(
+        f"  5m excursion episodes (Conv B): {exc_b['five_minute_native_lattice']['total_episodes_cohort']} (censored: {exc_b['five_minute_native_lattice']['total_censored_cohort']})"
+    )
+    exc_a = results["hyperglycemia_excursion_feasibility"][
+        "point_to_point_elapsed_duration_sensitivity"
+    ]
+    print(
+        f"  1m excursion episodes (Conv A): {exc_a['one_minute_representation']['total_episodes_cohort']} (censored: {exc_a['one_minute_representation']['total_censored_cohort']})"
+    )
+    print(
+        f"  5m excursion episodes (Conv A): {exc_a['five_minute_native_lattice']['total_episodes_cohort']} (censored: {exc_a['five_minute_native_lattice']['total_censored_cohort']})"
     )
 
 

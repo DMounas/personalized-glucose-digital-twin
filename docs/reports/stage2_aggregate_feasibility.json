@@ -1,9 +1,10 @@
 {
   "metadata": {
     "title": "Stage 2 Aggregate Feasibility and Cohort Readiness",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "dataset": "CGMacros v1.0.0",
-    "privacy": "Aggregated only. Zero participant identifiers."
+    "privacy": "Aggregated only. Zero participant identifiers.",
+    "coverage_qualification": "Eligible runs contained 625,728 of 629,825 valid one-minute-grid Dexcom rows (99.35% of valid rows in the released representation). This percentage represents row coverage in the released 1-minute interpolated representation and must not be equated with coverage of independent physical sensor observations."
   },
   "coverage_by_diagnostic_group": {
     "normal": {
@@ -136,132 +137,192 @@
             "4": 39375
           }
         }
-      }
+      },
+      "phase_sensitivity_clarification": "The <0.03% variation across phases (123,647 to 123,683 at +30m) reflects candidate-origin sample counts across the 5 candidate 5-minute sampling lattices only. It is not an empirical forecasting accuracy or model performance result. In accordance with preregistration, all 5 phases will be evaluated under the >10% RMSE delta stopping rule during Stage 2 predictive modeling."
     },
     "descriptive_offset_pairs_no_history_baseline": {
       "horizon_30min": 625098,
       "horizon_60min": 622078,
-      "note": "Stage 1B Task T1 pairs_at_offset stepping across runs without 60m history window."
+      "exact_arithmetic_derivation": {
+        "horizon_30min": "682,871 candidate slots - 57,773 null endpoint pairs = 625,098 valid pairs",
+        "horizon_60min": "679,773 candidate slots - 57,695 null endpoint pairs = 622,078 valid pairs",
+        "boundary_truncation_rule": "Candidate slots = sum_r max(0, len(r) - h) across all 1,200 timestamp runs (687,580 recorded rows). Truncates the trailing h minutes per run.",
+        "correction_note": "Replaces erroneous back-of-the-envelope approximation 629,825 - (30 * 1,202) = 593,765 != 625,098."
+      }
     }
   },
   "hyperglycemia_excursion_feasibility": {
-    "one_minute_representation_15m_persistence": {
-      "total_episodes_cohort": 678,
-      "total_censored_cohort": 17,
-      "participant_coverage_cohort": {
-        "ge_1_episode": 42,
-        "ge_3_episodes": 40,
-        "ge_5_episodes": 33,
-        "ge_10_episodes": 27,
-        "total_participants": 45
+    "interval_bin_epoch_convention_primary": {
+      "description": "Primary clinical convention: each sample represents a measurement epoch of delta_t duration. Total exposure duration = N * delta_t >= 15 min; release duration = M * delta_t >= 10 min.",
+      "one_minute_representation": {
+        "entry_specification": "15 consecutive points (15 min exposure), reset on nulls",
+        "release_specification": "10 consecutive points <= 175 mg/dL (10 min exposure)",
+        "total_episodes_cohort": 678,
+        "total_censored_cohort": 17,
+        "participant_coverage_cohort": {
+          "ge_1_episode": 42,
+          "ge_3_episodes": 40,
+          "ge_5_episodes": 33,
+          "ge_10_episodes": 27,
+          "total_participants": 45
+        },
+        "by_diagnostic_group": {
+          "normal": {
+            "participants": 15,
+            "episodes": 105,
+            "censored": 2,
+            "ge_1_episode": 13,
+            "ge_3_episodes": 11,
+            "ge_5_episodes": 6,
+            "ge_10_episodes": 4
+          },
+          "prediabetes": {
+            "participants": 16,
+            "episodes": 236,
+            "censored": 2,
+            "ge_1_episode": 15,
+            "ge_3_episodes": 15,
+            "ge_5_episodes": 13,
+            "ge_10_episodes": 9
+          },
+          "diabetes": {
+            "participants": 14,
+            "episodes": 337,
+            "censored": 13,
+            "ge_1_episode": 14,
+            "ge_3_episodes": 14,
+            "ge_5_episodes": 14,
+            "ge_10_episodes": 14
+          }
+        }
       },
-      "by_diagnostic_group": {
-        "normal": {
-          "participants": 15,
-          "episodes": 105,
-          "censored": 2,
-          "ge_1_episode": 13,
-          "ge_3_episodes": 11,
-          "ge_5_episodes": 6,
-          "ge_10_episodes": 4
+      "five_minute_native_lattice": {
+        "entry_specification": "3 consecutive points (15 min exposure), reset on nulls",
+        "release_specification": "2 consecutive points <= 175 mg/dL (10 min exposure)",
+        "total_episodes_cohort": 714,
+        "total_censored_cohort": 14,
+        "participant_coverage_cohort": {
+          "ge_1_episode": 42,
+          "ge_3_episodes": 40,
+          "ge_5_episodes": 34,
+          "ge_10_episodes": 28,
+          "total_participants": 45
         },
-        "prediabetes": {
-          "participants": 16,
-          "episodes": 236,
-          "censored": 2,
-          "ge_1_episode": 15,
-          "ge_3_episodes": 15,
-          "ge_5_episodes": 13,
-          "ge_10_episodes": 9
-        },
-        "diabetes": {
-          "participants": 14,
-          "episodes": 337,
-          "censored": 13,
-          "ge_1_episode": 14,
-          "ge_3_episodes": 14,
-          "ge_5_episodes": 14,
-          "ge_10_episodes": 14
+        "by_diagnostic_group": {
+          "normal": {
+            "participants": 15,
+            "episodes": 112,
+            "censored": 2,
+            "ge_1_episode": 13,
+            "ge_3_episodes": 11,
+            "ge_5_episodes": 7,
+            "ge_10_episodes": 4
+          },
+          "prediabetes": {
+            "participants": 16,
+            "episodes": 251,
+            "censored": 3,
+            "ge_1_episode": 15,
+            "ge_3_episodes": 15,
+            "ge_5_episodes": 13,
+            "ge_10_episodes": 10
+          },
+          "diabetes": {
+            "participants": 14,
+            "episodes": 351,
+            "censored": 9,
+            "ge_1_episode": 14,
+            "ge_3_episodes": 14,
+            "ge_5_episodes": 14,
+            "ge_10_episodes": 14
+          }
         }
       }
     },
-    "five_minute_native_lattice_3pt_10m_elapsed": {
-      "total_episodes_cohort": 714,
-      "total_censored_cohort": 14,
-      "participant_coverage_cohort": {
-        "ge_1_episode": 42,
-        "ge_3_episodes": 40,
-        "ge_5_episodes": 34,
-        "ge_10_episodes": 28,
-        "total_participants": 45
-      },
-      "by_diagnostic_group": {
-        "normal": {
-          "participants": 15,
-          "episodes": 112,
-          "censored": 2,
-          "ge_1_episode": 13,
-          "ge_3_episodes": 11,
-          "ge_5_episodes": 7,
-          "ge_10_episodes": 4
+    "point_to_point_elapsed_duration_sensitivity": {
+      "description": "Sensitivity convention: elapsed duration between timestamps t_end - t_start >= 15 min; release duration t_rel_end - t_rel_start >= 10 min.",
+      "one_minute_representation": {
+        "entry_specification": "16 consecutive points (15 min elapsed), reset on nulls",
+        "release_specification": "11 consecutive points <= 175 mg/dL (10 min elapsed)",
+        "total_episodes_cohort": 667,
+        "total_censored_cohort": 17,
+        "participant_coverage_cohort": {
+          "ge_1_episode": 41,
+          "ge_3_episodes": 40,
+          "ge_5_episodes": 33,
+          "ge_10_episodes": 27,
+          "total_participants": 45
         },
-        "prediabetes": {
-          "participants": 16,
-          "episodes": 251,
-          "censored": 3,
-          "ge_1_episode": 15,
-          "ge_3_episodes": 15,
-          "ge_5_episodes": 13,
-          "ge_10_episodes": 10
-        },
-        "diabetes": {
-          "participants": 14,
-          "episodes": 351,
-          "censored": 9,
-          "ge_1_episode": 14,
-          "ge_3_episodes": 14,
-          "ge_5_episodes": 14,
-          "ge_10_episodes": 14
+        "by_diagnostic_group": {
+          "normal": {
+            "participants": 15,
+            "episodes": 101,
+            "censored": 2,
+            "ge_1_episode": 12,
+            "ge_3_episodes": 11,
+            "ge_5_episodes": 6,
+            "ge_10_episodes": 4
+          },
+          "prediabetes": {
+            "participants": 16,
+            "episodes": 234,
+            "censored": 2,
+            "ge_1_episode": 15,
+            "ge_3_episodes": 15,
+            "ge_5_episodes": 13,
+            "ge_10_episodes": 9
+          },
+          "diabetes": {
+            "participants": 14,
+            "episodes": 332,
+            "censored": 13,
+            "ge_1_episode": 14,
+            "ge_3_episodes": 14,
+            "ge_5_episodes": 14,
+            "ge_10_episodes": 14
+          }
         }
-      }
-    },
-    "five_minute_native_lattice_4pt_15m_elapsed": {
-      "total_episodes_cohort": 642,
-      "total_censored_cohort": 13,
-      "participant_coverage_cohort": {
-        "ge_1_episode": 41,
-        "ge_3_episodes": 40,
-        "ge_5_episodes": 33,
-        "ge_10_episodes": 26,
-        "total_participants": 45
       },
-      "by_diagnostic_group": {
-        "normal": {
-          "participants": 15,
-          "episodes": 94,
-          "censored": 2,
-          "ge_1_episode": 12,
-          "ge_3_episodes": 11,
-          "ge_5_episodes": 6,
-          "ge_10_episodes": 3
+      "five_minute_native_lattice": {
+        "entry_specification": "4 consecutive points (15 min elapsed), reset on nulls",
+        "release_specification": "3 consecutive points <= 175 mg/dL (10 min elapsed)",
+        "total_episodes_cohort": 642,
+        "total_censored_cohort": 13,
+        "participant_coverage_cohort": {
+          "ge_1_episode": 41,
+          "ge_3_episodes": 40,
+          "ge_5_episodes": 33,
+          "ge_10_episodes": 26,
+          "total_participants": 45
         },
-        "prediabetes": {
-          "participants": 16,
-          "episodes": 227,
-          "censored": 2,
-          "ge_1_episode": 15,
-          "ge_3_episodes": 15,
-          "ge_5_episodes": 13,
-          "ge_10_episodes": 9
-        },
-        "diabetes": {
-          "participants": 14,
-          "episodes": 321,
-          "censored": 9,
-          "ge_1_episode": 14,
-          "ge_3_episodes": 14,
-          "ge_5_episodes": 14,
-          "ge_10_episodes": 14
+        "by_diagnostic_group": {
+          "normal": {
+            "participants": 15,
+            "episodes": 94,
+            "censored": 2,
+            "ge_1_episode": 12,
+            "ge_3_episodes": 11,
+            "ge_5_episodes": 6,
+            "ge_10_episodes": 3
+          },
+          "prediabetes": {
+            "participants": 16,
+            "episodes": 227,
+            "censored": 2,
+            "ge_1_episode": 15,
+            "ge_3_episodes": 15,
+            "ge_5_episodes": 13,
+            "ge_10_episodes": 9
+          },
+          "diabetes": {
+            "participants": 14,
+            "episodes": 321,
+            "censored": 9,
+            "ge_1_episode": 14,
+            "ge_3_episodes": 14,
+            "ge_5_episodes": 14,
+            "ge_10_episodes": 14
+          }
         }
       }
     }
