@@ -860,6 +860,21 @@ def test_r3_4_final_aggregate_feasibility_reconciliation():
     assert deriv_60["invalid_endpoint_null_pairs"] == 57695
     assert deriv_60["final_valid_pairs"] == 622078
 
+    # Historical run count and Case 2 status reconciliation
+    assert "historical_run_count_reconciliation" in cfo_desc["exact_run_bounded_derivation"]
+    hrec = cfo_desc["exact_run_bounded_derivation"]["historical_run_count_reconciliation"]
+    assert hrec["status"] == "UNRESOLVED_HISTORICAL_NON_REPRODUCIBLE"
+    assert hrec["previous_counts"]["runs_le_30min"] == 94
+    assert hrec["previous_counts"]["runs_le_60min"] == 124
+    assert hrec["revised_canonical_counts"]["runs_le_30min"] == 1079
+    assert hrec["revised_canonical_counts"]["runs_le_60min"] == 1103
+
+    assert "historical_case_2_status" in cfo_desc["exact_run_bounded_derivation"]
+    assert (
+        cfo_desc["exact_run_bounded_derivation"]["historical_case_2_status"]["status"]
+        == "NONCANONICAL_UNRESOLVED_REMOVED"
+    )
+
     # Phase sensitivity clarification
     assert (
         "phase_sensitivity_clarification"

@@ -169,17 +169,24 @@
           "final_valid_pairs": 622078,
           "valid_pairs_formula": "679,773 - 57,695 = 622,078"
         },
-        "alternative_strictly_non_null_dexcom_runs_case_2": {
-          "total_runs": 1202,
-          "runs_gt_30min": 139,
-          "candidate_slots_30min": 624592,
-          "valid_pairs_30min": 618493,
-          "candidate_slots_60min": 620939,
-          "valid_pairs_60min": 614722,
-          "with_60m_autoregressive_history": {
-            "horizon_30min": 618236,
-            "horizon_60min": 616029
-          }
+        "historical_run_count_reconciliation": {
+          "status": "UNRESOLVED_HISTORICAL_NON_REPRODUCIBLE",
+          "previous_counts": {
+            "runs_le_30min": 94,
+            "runs_le_60min": 124
+          },
+          "revised_canonical_counts": {
+            "runs_le_30min": 1079,
+            "runs_gt_30min": 121,
+            "runs_le_60min": 1103,
+            "runs_gt_60min": 97,
+            "total_runs": 1200
+          },
+          "explanation": "The earlier figures of 94 runs <= 30m and 124 runs <= 60m cannot be reproduced from canonical dataset runs under any uniform filtering threshold. They are marked unresolved and superseded by the canonical distribution where 1,079 of 1,200 timestamp runs are single-minute rows (<= 30m), and 121 runs (> 30m) span 686,501 rows."
+        },
+        "historical_case_2_status": {
+          "status": "NONCANONICAL_UNRESOLVED_REMOVED",
+          "explanation": "The exploratory 'Case 2' calculation (which cited 633,803 non-null Dexcom rows across 1,202 sensor runs) exceeded the canonical cohort total of 629,825 valid Dexcom rows and exhibited inconsistent trailing-slot arithmetic. Because Stage 2 predictive modeling evaluates candidate native vertices (123,709 / 123,266 origins) and 1-minute autoregressive sequences (618,236 / 616,029 origins) rather than Case 2, Case 2 is removed from the canonical feasibility report and any retained historical results are formally labeled noncanonical/unresolved."
         }
       }
     }

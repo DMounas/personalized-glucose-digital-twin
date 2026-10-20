@@ -50,15 +50,19 @@ Candidate-origin counts exhibit remarkable balance across fixed phases (123,647 
 To guarantee that model performance is not an artifact of native phase selection, the evaluation protocol establishes the following:
 1. **Primary Evaluation:** Evaluated on session-specific inferred phase $\phi_s$ (Time Semantics T6). T6 inference remains diagnostic and must **never** select the primary test phase using future or test-set observations.
 2. **Phase Sensitivity Suite:** Evaluated across all five possible fixed phase offsets $\phi \in \{0, 1, 2, 3, 4\}$.
-3. **Operationalized Stopping Rule (>10% RMSE Delta):**
+3. **Operationalized Stopping Rule (>10% RMSE Delta & Absolute 2 mg/dL Threshold):**
    - **Target Metric:** Group-stratified 5-fold cross-validation test-set Root Mean Squared Error (RMSE) in mg/dL evaluated separately at forecast horizons $h = 30\text{ min}$ and $h = 60\text{ min}$.
    - **Reference Comparison Models:** 5 separate fixed-phase candidate models trained and evaluated on each fixed candidate lattice offset $\phi \in \{0, 1, 2, 3, 4\}$.
    - **Computational Formula:**
      $$\Delta_{\text{rel}} = \frac{\max_{\phi} \text{RMSE}(\phi) - \min_{\phi} \text{RMSE}(\phi)}{\min_{\phi} \text{RMSE}(\phi)} \times 100\%$$
      $$\Delta_{\text{abs}} = \max_{\phi} \text{RMSE}(\phi) - \min_{\phi} \text{RMSE}(\phi)$$
-   - **Trigger Conditions:** An architecture triggers the phase-sensitivity failure condition if either:
-     1. Relative variation exceeds 10.0%: $\Delta_{\text{rel}} > 10.0\%$, OR
+   - **Dual-Trigger Conditions:** An architecture triggers the phase-sensitivity stopping rule if **both** relative and absolute conditions are met (or if relative variation is marked high):
+     1. Relative variation exceeds 10.0%: $\Delta_{\text{rel}} > 10.0\%$, **AND**
      2. Absolute variation exceeds 2.0 mg/dL: $\Delta_{\text{abs}} > 2.0\text{ mg/dL}$.
+   - **Rationale for Absolute Threshold ($2.0\text{ mg/dL}$):**
+     At low baseline forecasting errors (e.g., an RMSE difference of $12.0\text{ mg/dL}$ vs $13.2\text{ mg/dL}$), $\Delta_{\text{rel}} = 10\%$ represents an absolute delta of only $1.2\text{ mg/dL}$. In continuous glucose monitoring, hardware sensor noise and standard Mean Absolute Relative Difference (MARD ~9–10%) routinely introduce point noise of $3$–$5\text{ mg/dL}$. Enforcing an absolute threshold floor of $2.0\text{ mg/dL}$ prevents false-alarm stopping triggers on clinically indistinguishable sensor noise jitter.
+   - **Flag for Claude's Strategic Decision:**
+     *Flagged for Claude's Review:* Whether the absolute threshold floor remains fixed at $2.0\text{ mg/dL}$ or should be formulated as an 'either/or' disjunction ($\Delta_{\text{rel}} > 10.0\% \lor \Delta_{\text{abs}} > 2.0\text{ mg/dL}$) or scaled relative to clinical Clarke Error Grid Zone boundaries is explicitly submitted for Claude's strategic decision.
    - **Protocol Action Upon Trigger:**
      - The architecture is formally classified as **phase-sensitive and dependent on linear-interpolation lattice alignment**.
      - All claims of hardware-lattice invariance are rejected.
@@ -72,8 +76,7 @@ To guarantee that model performance is not an artifact of native phase selection
 Statistical power and evaluation counts are defined strictly across nested hierarchical levels:
 - **Level 1 (Independent Units):** $K = 45$ participants (15 Normal, 16 Prediabetes, 14 Type 2 Diabetes).
 - **Level 2 (Contiguous Runs within Participants):**
-  - **Timestamp Runs:** 1,200 runs of contiguous timestamps ($\Delta t = 60\text{ s}$, 687,580 recorded rows).
-  - **Dexcom Valid Sensor Runs:** 1,202 runs of contiguous non-null Dexcom readings (633,803 valid rows).
+  - **Timestamp Runs:** 1,200 runs of contiguous timestamps ($\Delta t = 60\text{ s}$, 687,580 recorded rows across all 45 participant files, containing the canonical cohort total of 629,825 valid Dexcom observations).
 - **Level 3 (Candidate Forecast Origins Across Architectures):**
   - **Candidate 5-Minute Native Lattice Vertices (13-point history, $L=60\text{ min}$):**
     - +30 min horizon ($h=30$): **123,709 candidate origins** cohort-wide (Normal: 41,806; Prediabetes: 42,410; Diabetes: 39,493).
@@ -82,8 +85,8 @@ Statistical power and evaluation counts are defined strictly across nested hiera
   - **1-Minute Grid with 60-Minute Autoregressive History ($L=60\text{ min}$, 61 points):**
     - +30 min horizon ($h=30$): **618,236 candidate origins** cohort-wide (Normal: 209,006; Prediabetes: 211,800; Diabetes: 197,430).
     - +60 min horizon ($h=60$): **616,029 candidate origins** cohort-wide (Normal: 208,297; Prediabetes: 210,862; Diabetes: 196,870).
-  - **Historical Descriptive Offset Pairs ($L=0$, no input history requirement):**
-    - **Derivation on 1,200 Timestamp Runs (Case 1):**
+  - **Descriptive Baseline Offset Pairs ($L=0$, no input history requirement):**
+    - **Canonical Derivation on 1,200 Timestamp Runs:**
       - Total timestamp-contiguous runs: 1,200 (687,580 recorded rows).
       - At $h=30\text{ min}$:
         - 1,079 runs have length $\le 30\text{ min}$ (accounting for 1,079 rows total; isolated 1-minute rows).
@@ -97,17 +100,26 @@ Statistical power and evaluation counts are defined strictly across nested hiera
         - Candidate slots: $\sum_r \max(0, \text{len}(r) - 60) = 685,593 - (97 \times 60) = \mathbf{679,773}$.
         - Endpoint null pairs: 57,695.
         - Valid pairs: $679,773 - 57,695 = \mathbf{622,078}$.
-    - **Derivation on 1,202 Strictly Non-Null Dexcom Runs (Case 2):**
-      - Total non-null Dexcom runs: 1,202 (633,803 valid rows).
-      - At $h=30\text{ min}$: 1,063 runs $\le 30\text{ min}$ (5,041 rows); 139 runs $> 30\text{ min}$ (628,762 rows). Candidate slots: $628,762 - (139 \times 30) = 624,592$; valid in-run pairs: 618,493.
-      - At $h=60\text{ min}$: 1,085 runs $\le 60\text{ min}$ (6,081 rows); 117 runs $> 60\text{ min}$ (627,722 rows). Candidate slots: $627,722 - (117 \times 60) = 620,939$; valid in-run pairs: 614,722.
+    - **Historical Run Count Reconciliation:**
+      An earlier draft report cited 94 runs of length $\le 30\text{ min}$ and 124 runs of length $\le 60\text{ min}$. These historical figures cannot be reproduced from canonical data under any uniform filtering threshold and are formally classified as **unresolved and non-reproducible**. The canonical distribution is strictly established as 1,079 runs $\le 30\text{ min}$ (1,079 single-minute rows, leaving 121 runs $> 30\text{ min}$ spanning 686,501 rows) and 1,103 runs $\le 60\text{ min}$ (1,987 rows, leaving 97 runs $> 60\text{ min}$ spanning 685,593 rows).
+    - **Removal & Noncanonical Classification of Historical Case 2:**
+      The exploratory 'Case 2' calculation (which cited 633,803 non-null Dexcom rows across 1,202 sensor runs) exceeded the canonical cohort total of 629,825 valid Dexcom rows and exhibited inconsistent trailing-slot arithmetic. Because Stage 2 predictive modeling evaluates candidate native vertices (123,709 / 123,266 origins) and 1-minute autoregressive sequences (618,236 / 616,029 origins) rather than Case 2, Case 2 has been removed from the canonical aggregate feasibility report, and any retained historical references to 633,803 rows are formally labeled **noncanonical and unresolved**.
 - **Runs and windows are nested units within participants**, not independent subjects.
 
-### 4.2 Grouped Cross-Validation Scheme
-- **Cross-Validation Scheme:** 5-fold `StratifiedGroupKFold`.
-- **Grouping Unit:** Participant cluster ($K = 45$). Zero intra-participant leakage between training and testing partitions.
-- **Stratification Target:** Clinical baseline HbA1c stratum (Normal, Prediabetes, Type 2 Diabetes).
-- **Session Purging:** Multi-minute timestamp gaps serve as natural segment boundaries; no window or sequence bridges across a gap.
+### 4.2 Grouped Cross-Validation Scheme & Cross-Phase Target Handling
+- **Participant-Disjoint Partitioning:** 5-fold cross-validation with strictly participant-disjoint train/test splits (`StratifiedGroupKFold`). Zero intra-participant leakage between training and testing partitions; all observations from any individual participant belong exclusively to either the training set or test set within any fold.
+- **Stratification Target:** Clinical baseline HbA1c diagnostic stratum (Normal: 15, Prediabetes: 16, Type 2 Diabetes: 14 participants). Folds are balanced to ensure each fold contains 3 Normal, 3–4 Prediabetes, and 2–3 Type 2 Diabetes participants.
+- **Identical Fold Assignment Across Phases:** The exact same participant-to-fold assignments MUST be frozen and identically reused across all phase experiments $\phi \in \{0, 1, 2, 3, 4\}$. No re-shuffling or re-splitting across phase variants is permitted.
+- **Cross-Phase Target Alignment & Evaluation Definition:**
+  Because each candidate phase $\phi \in \{0, 1, 2, 3, 4\}$ defines a distinct candidate 5-minute sampling lattice $\mathcal{L}_\phi = \{ t \mid m(t) \equiv \phi \pmod 5 \}$, forecast origins $t$ and targets $t+h$ are phase-specific and do not share identical timestamps across different phases (e.g., Phase 0 evaluates targets at minutes $0, 5, 10, \dots$, whereas Phase 1 evaluates targets at minutes $1, 6, 11, \dots$).
+  To ensure rigorous, unbiased phase comparisons:
+  1. **Primary Protocol Comparison (Full Phase-Specific Test-Set RMSE):**
+     Each model $M_\phi$ is evaluated on all valid target points within its own candidate lattice $\mathcal{L}_\phi$ across the participant-disjoint test partition $\mathcal{D}_{\text{test}}$. Root Mean Squared Error (RMSE) is computed on the full evaluated target set for each fold and averaged across folds:
+     $$\text{RMSE}(\phi) = \sqrt{\frac{1}{|\mathcal{Y}_{\phi, \text{test}}|} \sum_{(t, y) \in \mathcal{Y}_{\phi, \text{test}}} (y_{t+h} - \hat{y}_{t+h}^{(\phi)})^2}$$
+     This measures the true operational performance of each candidate phase model across the test participants.
+  2. **Sensitivity Matched Comparison (Shared Target Window Aggregation):**
+     As an exploratory sensitivity analysis to guard against horizon-target compositional differences, fold-level performance is additionally verified on common 15-minute coarse grid vertices $\mathcal{L}_{15} \subset \mathcal{L}_\phi$ (where phases $\phi$ and $\phi'$ coincide on 15-minute multiples) or by grouping predictions into matched non-overlapping 15-minute evaluation bins. The primary stopping rule trigger, however, remains bound to the full test-set $\text{RMSE}(\phi)$.
+- **Session Purging:** Multi-minute timestamp gaps serve as natural segment boundaries; no input history window ($L=60\text{ min}$) or target sequence bridges across a gap.
 
 ### 4.3 Cohort Breakdown & Modulo-15 Provenance Audit
 The CGMacros v1.0.0 cohort comprises 45 unique participant files. A systematic audit of row counts demonstrates that **44 of 45 participant files have row counts exactly divisible by 15** ($N_i \pmod{15} = 0$). Exactly **one participant file** (`CGMacros-004`, 14,275 rows) has a non-zero remainder ($14,275 \pmod{15} = 10$).
