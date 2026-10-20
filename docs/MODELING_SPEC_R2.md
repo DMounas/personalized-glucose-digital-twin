@@ -3,7 +3,7 @@
 **Specification Version:** 2.0.0 (Stage 1B-R2)  
 **Status:** CORRECTED REVISION — PENDING INDEPENDENT REVIEW  
 **Supersedes:** `docs/MODELING_SPEC.md`  
-**Dependencies:** [`docs/reports/stage1b_r2_results.json`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/reports/stage1b_r2_results.json), [`docs/NATIVE_GRID_METHOD_R2.md`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/NATIVE_GRID_METHOD_R2.md)
+**Dependencies:** [`docs/reports/stage1b_r2_results.json`](docs/reports/stage1b_r2_results.json), [`docs/NATIVE_GRID_METHOD_R2.md`](docs/NATIVE_GRID_METHOD_R2.md)
 
 ---
 

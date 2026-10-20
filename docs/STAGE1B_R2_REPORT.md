@@ -11,10 +11,10 @@
 
 ## 1. Scope & Corrective Governance Overview
 
-Following a comprehensive internal code audit ([`docs/errata/STAGE1B_CORRECTION_AUDIT_2026-10-19.md`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/errata/STAGE1B_CORRECTION_AUDIT_2026-10-19.md)), this revision (Stage 1B-R2) systematically resolved six confirmed methodological defects in the initial Stage 1B release without modifying historical Stage 0 or Stage 1A baseline files (verified byte-identical via cryptographic SHA-256 baseline).
+Following a comprehensive internal code audit ([`docs/errata/STAGE1B_CORRECTION_AUDIT_2026-10-19.md`](docs/errata/STAGE1B_CORRECTION_AUDIT_2026-10-19.md)), this revision (Stage 1B-R2) systematically resolved six confirmed methodological defects in the initial Stage 1B release without modifying historical Stage 0 or Stage 1A baseline files (verified byte-identical via cryptographic SHA-256 baseline).
 
 ### Key Corrective Implementations:
-1. **Explicit Time Semantics (T1–T7):** Implemented in [`src/dtwin/timeaxis.py`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/src/dtwin/timeaxis.py). Row index is never treated as a temporal coordinate. Contiguous runs ($\Delta t = 60\text{ s}$) serve as the atomic unit of analysis. Zero gap-bridging or positional slicing.
+1. **Explicit Time Semantics (T1–T7):** Implemented in [`src/dtwin/timeaxis.py`](src/dtwin/timeaxis.py). Row index is never treated as a temporal coordinate. Contiguous runs ($\Delta t = 60\text{ s}$) serve as the atomic unit of analysis. Zero gap-bridging or positional slicing.
 2. **Run-Bounded Native-Grid Inference (C1):** Curvature bends ($d_2$) and linear reconstruction residuals are computed strictly intra-run, eliminating gap-boundary false bends. Lattice selection uses true elapsed-time coordinates $m(t) \pmod P$.
 3. **Disentangled Pairing (C1):** Partitioned Set A into 37,477 coincident native pairs, 4,568 Libre-native / Dexcom-interpolated pairs, 85,721 Dexcom-native / Libre-interpolated pairs, and 501,839 doubly-interpolated pairs.
 4. **Run-Bounded Horizons & Excursions (C2):** Eliminated `dropna()` positional slicing (enforced by AST lint). Horizons $(t, t+h)$ evaluated strictly intra-run. Excursions detect 683 Dexcom events ($>180\text{ mg/dL}$) with $5\text{ mg/dL}$ hysteresis margins and tracking of boundary-censored events.
@@ -68,8 +68,8 @@ The implementation passed all local automated quality gates:
 
 ## 4. Key Artifacts Generated in Stage 1B-R2
 
-1. **Formal Erratum Notice:** [`docs/errata/ERRATUM_2026-10-19_stage1b_corrections.md`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/errata/ERRATUM_2026-10-19_stage1b_corrections.md)
-2. **Technical Methodology Document:** [`docs/NATIVE_GRID_METHOD_R2.md`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/NATIVE_GRID_METHOD_R2.md)
-3. **Stage 2 Modeling Specification:** [`docs/MODELING_SPEC_R2.md`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/MODELING_SPEC_R2.md)
-4. **Machine-Readable Results JSON:** [`docs/reports/stage1b_r2_results.json`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/reports/stage1b_r2_results.json)
-5. **Comprehensive Scientific Report:** [`docs/reports/stage1b_r2_report.md`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/reports/stage1b_r2_report.md)
+1. **Formal Erratum Notice:** [`docs/errata/ERRATUM_2026-10-19_stage1b_corrections.md`](docs/errata/ERRATUM_2026-10-19_stage1b_corrections.md)
+2. **Technical Methodology Document:** [`docs/NATIVE_GRID_METHOD_R2.md`](docs/NATIVE_GRID_METHOD_R2.md)
+3. **Stage 2 Modeling Specification:** [`docs/MODELING_SPEC_R2.md`](docs/MODELING_SPEC_R2.md)
+4. **Machine-Readable Results JSON:** [`docs/reports/stage1b_r2_results.json`](docs/reports/stage1b_r2_results.json)
+5. **Comprehensive Scientific Report:** [`docs/reports/stage1b_r2_report.md`](docs/reports/stage1b_r2_report.md)

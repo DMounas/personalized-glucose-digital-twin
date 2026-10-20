@@ -2,10 +2,10 @@
 
 **Document Version:** 3.0.0 (Stage 1B-R3)  
 **Status:** CORRECTED REVISION — PENDING INDEPENDENT REVIEW  
-**Primary Engine:** [`src/dtwin/analysis/native_grid.py`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/src/dtwin/analysis/native_grid.py)  
-**Benchmark Suite:** [`src/dtwin/analysis/benchmark_generator.py`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/src/dtwin/analysis/benchmark_generator.py)  
+**Primary Engine:** [`src/dtwin/analysis/native_grid.py`](src/dtwin/analysis/native_grid.py)  
+**Benchmark Suite:** [`src/dtwin/analysis/benchmark_generator.py`](src/dtwin/analysis/benchmark_generator.py)  
 **Frozen Config Digest:** `1f91445a8b9c3dd8fb6e37ce66e369f13940347f4f7f9fa63d5090af50464c59`  
-**Committed JSON Output:** [`docs/reports/stage1b_r3_results.json`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/reports/stage1b_r3_results.json) (SHA-256: `44cfeb19fb5ef78b936a1e83cb71d9c4f736fd1201510dc71837df4e2beb0651`)  
+**Committed JSON Output:** [`docs/reports/stage1b_r3_results.json`](docs/reports/stage1b_r3_results.json) (SHA-256: `44cfeb19fb5ef78b936a1e83cb71d9c4f736fd1201510dc71837df4e2beb0651`)  
 
 ---
 

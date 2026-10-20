@@ -2,8 +2,8 @@
 
 **Document Version:** 2.0.0 (Stage 1B-R2)  
 **Status:** CORRECTED REVISION — PENDING INDEPENDENT REVIEW  
-**Primary Engine:** [`src/dtwin/analysis/native_grid.py`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/src/dtwin/analysis/native_grid.py)  
-**Benchmark Suite:** [`src/dtwin/analysis/benchmark_generator.py`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/src/dtwin/analysis/benchmark_generator.py)  
+**Primary Engine:** [`src/dtwin/analysis/native_grid.py`](src/dtwin/analysis/native_grid.py)  
+**Benchmark Suite:** [`src/dtwin/analysis/benchmark_generator.py`](src/dtwin/analysis/benchmark_generator.py)  
 **Frozen Config Digest:** `7e3d9b02c504146819218c68e8d4e93d160cb982043d5356613b861363b0833e`
 
 ---
@@ -66,7 +66,7 @@ To decisively separate 15-minute from 5-minute lattices:
 
 ## 3. Detector-Blind Synthetic Benchmark Suite (C5)
 
-To prevent self-certification bias, an independent generator module ([`benchmark_generator.py`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/src/dtwin/analysis/benchmark_generator.py)) was developed without shared helper functions. It simulates continuous physiological glucose dynamics (circadian rhythms, asymmetric dual-exponential postprandial curves, and Ornstein-Uhlenbeck stochastic drift) across 15 distinct test scenarios.
+To prevent self-certification bias, an independent generator module ([`benchmark_generator.py`](src/dtwin/analysis/benchmark_generator.py)) was developed without shared helper functions. It simulates continuous physiological glucose dynamics (circadian rhythms, asymmetric dual-exponential postprandial curves, and Ornstein-Uhlenbeck stochastic drift) across 15 distinct test scenarios.
 
 ### 3.1 Benchmark Evaluation Results (100 Series per Scenario, 1,500 Total Series)
 

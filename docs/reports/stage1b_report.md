@@ -1,9 +1,9 @@
 > [!WARNING]
 > **SUPERSEDED IN PART — see Stage 1B-R2 (2026-10-19):**
 > Several headline statistics, repeated-measures ANOVA formulations, and pairing classifications in this document have been superseded by the corrected revision:
-> - **Corrected Scientific Report:** [`docs/reports/stage1b_r2_report.md`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/reports/stage1b_r2_report.md)
-> - **Formal Erratum & Old-vs-New Traceability:** [`docs/errata/ERRATUM_2026-10-19_stage1b_corrections.md`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/errata/ERRATUM_2026-10-19_stage1b_corrections.md)
-> - **Corrected Results JSON:** [`docs/reports/stage1b_r2_results.json`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/reports/stage1b_r2_results.json)
+> - **Corrected Scientific Report:** [`docs/reports/stage1b_r2_report.md`](docs/reports/stage1b_r2_report.md)
+> - **Formal Erratum & Old-vs-New Traceability:** [`docs/errata/ERRATUM_2026-10-19_stage1b_corrections.md`](docs/errata/ERRATUM_2026-10-19_stage1b_corrections.md)
+> - **Corrected Results JSON:** [`docs/reports/stage1b_r2_results.json`](docs/reports/stage1b_r2_results.json)
 > Current revision status: **CORRECTED REVISION — PENDING INDEPENDENT REVIEW**.
 
 # Stage 1B Scientific Report (HISTORICAL)

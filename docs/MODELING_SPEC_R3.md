@@ -3,7 +3,7 @@
 **Specification Version:** 3.4.0 (Stage 1B-R3.4 Frozen)  
 **Status:** BOUNDED RECONCILIATION & STAGE 1B FREEZE (R3.4)  
 **Supersedes:** `docs/MODELING_SPEC_R2.md` and `docs/MODELING_SPEC.md`  
-**Dependencies:** [`docs/reports/stage1b_r3_results.json`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/reports/stage1b_r3_results.json), [`docs/reports/canonical_metrics.json`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/reports/canonical_metrics.json), [`docs/NATIVE_GRID_METHOD_R3.md`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/NATIVE_GRID_METHOD_R3.md)  
+**Dependencies:** [`docs/reports/stage1b_r3_results.json`](docs/reports/stage1b_r3_results.json), [`docs/reports/canonical_metrics.json`](docs/reports/canonical_metrics.json), [`docs/NATIVE_GRID_METHOD_R3.md`](docs/NATIVE_GRID_METHOD_R3.md)  
 
 ---
 

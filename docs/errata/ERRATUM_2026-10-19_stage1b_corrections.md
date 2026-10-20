@@ -3,7 +3,7 @@
 **Publication Date:** 2026-10-19  
 **Status:** CORRECTED REVISION — PENDING INDEPENDENT REVIEW  
 **Supersedes in Part:** `docs/STAGE1B_REPORT.md` and `docs/reports/stage1b_report.md`  
-**Related Audit:** [`docs/errata/STAGE1B_CORRECTION_AUDIT_2026-10-19.md`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/errata/STAGE1B_CORRECTION_AUDIT_2026-10-19.md)  
+**Related Audit:** [`docs/errata/STAGE1B_CORRECTION_AUDIT_2026-10-19.md`](docs/errata/STAGE1B_CORRECTION_AUDIT_2026-10-19.md)  
 **Frozen Config Digest:** `1f91445a8b9c3dd8fb6e37ce66e369f13940347f4f7f9fa63d5090af50464c59` (Version `1.3.0-r3.3`)
 
 ---

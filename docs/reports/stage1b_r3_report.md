@@ -3,13 +3,13 @@
 **Status:** STAGE 1B FROZEN — R3.4 FINAL RECONCILIATION COMPLETE  
 **Author:** Antigravity Implementation Engineer  
 **Date:** 2026-10-19 (Updated 2026-10-20 for R3.4 Freeze)  
-**Configuration File:** [`configs/stage1b.yaml`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/configs/stage1b.yaml) (Version `1.4.0-r3.4`)  
+**Configuration File:** [`configs/stage1b.yaml`](configs/stage1b.yaml) (Version `1.4.0-r3.4`)  
 **Frozen Config SHA-256:** `cf2763408891feb97c67dd5184ad4674dd2c98a736922ad322c8b66bc11bd467`  
-**Committed Machine-Readable Results:** [`docs/reports/stage1b_r3_results.json`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/reports/stage1b_r3_results.json) (SHA-256: `a9b8efc06b715f4c5fd46c54cb36a0ee151a91330e597e355e50fb9d8917181b`)  
-**Canonical Metrics Registry:** [`docs/reports/canonical_metrics.json`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/reports/canonical_metrics.json) (SHA-256: `70afb620d1ce781c4d6dafc71f29f7ce847e0e68f23f8e10c2b6c7be69126c3d`)  
+**Committed Machine-Readable Results:** [`docs/reports/stage1b_r3_results.json`](docs/reports/stage1b_r3_results.json) (SHA-256: `a9b8efc06b715f4c5fd46c54cb36a0ee151a91330e597e355e50fb9d8917181b`)  
+**Canonical Metrics Registry:** [`docs/reports/canonical_metrics.json`](docs/reports/canonical_metrics.json) (SHA-256: `70afb620d1ce781c4d6dafc71f29f7ce847e0e68f23f8e10c2b6c7be69126c3d`)  
 **File-by-File Audit Table:** `reports_local/file_by_file_row_counts.csv`  
 **Timestamp Integrity Audit Table:** `reports_local/timestamp_integrity_audit.csv`  
-**Formal Erratum Notice:** [`docs/errata/ERRATUM_2026-10-19_stage1b_corrections.md`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/errata/ERRATUM_2026-10-19_stage1b_corrections.md)  
+**Formal Erratum Notice:** [`docs/errata/ERRATUM_2026-10-19_stage1b_corrections.md`](docs/errata/ERRATUM_2026-10-19_stage1b_corrections.md)  
 
 ---
 

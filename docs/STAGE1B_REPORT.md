@@ -1,9 +1,9 @@
 > [!WARNING]
 > **SUPERSEDED IN PART — see Stage 1B-R2 (2026-10-19):**
 > Several headline statistics, repeated-measures ANOVA formulations, and pairing classifications in this document have been superseded by the corrected revision:
-> - **Corrected Completion Report:** [`docs/STAGE1B_R2_REPORT.md`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/STAGE1B_R2_REPORT.md)
-> - **Formal Erratum & Old-vs-New Traceability:** [`docs/errata/ERRATUM_2026-10-19_stage1b_corrections.md`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/errata/ERRATUM_2026-10-19_stage1b_corrections.md)
-> - **Corrected Results JSON:** [`docs/reports/stage1b_r2_results.json`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/reports/stage1b_r2_results.json)
+> - **Corrected Completion Report:** [`docs/STAGE1B_R2_REPORT.md`](docs/STAGE1B_R2_REPORT.md)
+> - **Formal Erratum & Old-vs-New Traceability:** [`docs/errata/ERRATUM_2026-10-19_stage1b_corrections.md`](docs/errata/ERRATUM_2026-10-19_stage1b_corrections.md)
+> - **Corrected Results JSON:** [`docs/reports/stage1b_r2_results.json`](docs/reports/stage1b_r2_results.json)
 > Current revision status: **CORRECTED REVISION — PENDING INDEPENDENT REVIEW**.
 
 # STAGE 1B COMPLETION REPORT (HISTORICAL)
@@ -65,20 +65,20 @@ Stage 1B execution has completed across all six required phases:
 ## 4. Deliverables Created & Updated
 
 1. **Analysis Modules**:
-   - [`src/dtwin/analysis/native_grid.py`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/src/dtwin/analysis/native_grid.py) (Native-grid inference, bend curvature detection, nested lattice disentanglement, and 2,500-sample synthetic benchmark engine).
-   - [`src/dtwin/analysis/dual_sensor.py`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/src/dtwin/analysis/dual_sensor.py) (Repeated-measures Bland-Altman, participant-clustered bootstrap, and apparent lag estimator).
-   - [`src/dtwin/analysis/tasks.py`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/src/dtwin/analysis/tasks.py) (Excursion episode persistence detection and descriptive forecast difficulty evaluator).
-   - [`src/dtwin/analysis/run_stage1b.py`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/src/dtwin/analysis/run_stage1b.py) (Master pipeline runner, deterministic execution engine, and JSON compiler).
+   - [`src/dtwin/analysis/native_grid.py`](src/dtwin/analysis/native_grid.py) (Native-grid inference, bend curvature detection, nested lattice disentanglement, and 2,500-sample synthetic benchmark engine).
+   - [`src/dtwin/analysis/dual_sensor.py`](src/dtwin/analysis/dual_sensor.py) (Repeated-measures Bland-Altman, participant-clustered bootstrap, and apparent lag estimator).
+   - [`src/dtwin/analysis/tasks.py`](src/dtwin/analysis/tasks.py) (Excursion episode persistence detection and descriptive forecast difficulty evaluator).
+   - [`src/dtwin/analysis/run_stage1b.py`](src/dtwin/analysis/run_stage1b.py) (Master pipeline runner, deterministic execution engine, and JSON compiler).
 2. **Configuration**:
-   - [`configs/stage1b.yaml`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/configs/stage1b.yaml) (Frozen analysis thresholds, seeds, bootstrap parameters, and acceptance targets).
+   - [`configs/stage1b.yaml`](configs/stage1b.yaml) (Frozen analysis thresholds, seeds, bootstrap parameters, and acceptance targets).
 3. **Documentation & Specifications**:
-   - [`docs/NATIVE_GRID_METHOD.md`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/NATIVE_GRID_METHOD.md) (Complete mathematical specification and synthetic benchmark validation report).
-   - [`docs/MODELING_SPEC.md`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/MODELING_SPEC.md) (Target selection, feature availability register, task feasibility decisions, and leakage guardrails).
-   - [`docs/reports/stage1b_preflight.md`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/reports/stage1b_preflight.md) (Reconciled preflight report with 687,580 rows, aggregate privacy, and hypotheses).
-   - [`docs/reports/stage1b_preflight_results.json`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/reports/stage1b_preflight_results.json) (Preflight machine-readable results).
-   - [`docs/reports/stage1b_report.md`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/reports/stage1b_report.md) (Full scientific report for Stage 1B).
-   - [`docs/reports/stage1b_results.json`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/reports/stage1b_results.json) (Stage 1B machine-readable results).
-   - [`docs/OPEN_QUESTIONS.md`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/OPEN_QUESTIONS.md) (Updated living register).
+   - [`docs/NATIVE_GRID_METHOD.md`](docs/NATIVE_GRID_METHOD.md) (Complete mathematical specification and synthetic benchmark validation report).
+   - [`docs/MODELING_SPEC.md`](docs/MODELING_SPEC.md) (Target selection, feature availability register, task feasibility decisions, and leakage guardrails).
+   - [`docs/reports/stage1b_preflight.md`](docs/reports/stage1b_preflight.md) (Reconciled preflight report with 687,580 rows, aggregate privacy, and hypotheses).
+   - [`docs/reports/stage1b_preflight_results.json`](docs/reports/stage1b_preflight_results.json) (Preflight machine-readable results).
+   - [`docs/reports/stage1b_report.md`](docs/reports/stage1b_report.md) (Full scientific report for Stage 1B).
+   - [`docs/reports/stage1b_results.json`](docs/reports/stage1b_results.json) (Stage 1B machine-readable results).
+   - [`docs/OPEN_QUESTIONS.md`](docs/OPEN_QUESTIONS.md) (Updated living register).
 4. **Local-Only Diagnostic Reports (Git-Ignored)**:
    - `reports_local/diagnostic_file_counts.csv` (Per-file row counts, sha256, and mod 5 checks).
    - `reports_local/row_count_reconciliation.json` (Diagnostic reconciliation record).

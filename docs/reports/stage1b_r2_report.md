@@ -3,10 +3,10 @@
 **Status:** CORRECTED REVISION — PENDING INDEPENDENT REVIEW  
 **Author:** Antigravity Implementation Engineer  
 **Date:** 2026-10-19  
-**Configuration File:** [`configs/stage1b.yaml`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/configs/stage1b.yaml)  
+**Configuration File:** [`configs/stage1b.yaml`](configs/stage1b.yaml)  
 **Frozen Config SHA-256:** `7e3d9b02c504146819218c68e8d4e93d160cb982043d5356613b861363b0833e`  
-**Committed Machine-Readable Results:** [`docs/reports/stage1b_r2_results.json`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/reports/stage1b_r2_results.json)  
-**Formal Erratum Notice:** [`docs/errata/ERRATUM_2026-10-19_stage1b_corrections.md`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/errata/ERRATUM_2026-10-19_stage1b_corrections.md)
+**Committed Machine-Readable Results:** [`docs/reports/stage1b_r2_results.json`](docs/reports/stage1b_r2_results.json)  
+**Formal Erratum Notice:** [`docs/errata/ERRATUM_2026-10-19_stage1b_corrections.md`](docs/errata/ERRATUM_2026-10-19_stage1b_corrections.md)
 
 ---
 
@@ -46,7 +46,7 @@ $$\text{HitRate}(P, \phi) = \frac{1}{|\mathcal{B}|} \sum_{b \in \mathcal{B}} \ma
 where $m(t)$ is the elapsed minute from series origin $t_0$. Nested 15-min vs 5-min lattices are differentiated via intermediate 5-minute bend analysis ($\phi+5, \phi+10 \pmod{15}$) and intra-run linear reconstruction residuals.
 
 ### 2.2 Detector-Blind Benchmark Suite (C5)
-An independent benchmark generator ([`benchmark_generator.py`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/src/dtwin/analysis/benchmark_generator.py)) evaluated 15 distinct scenarios across 1,500 total test series:
+An independent benchmark generator ([`benchmark_generator.py`](src/dtwin/analysis/benchmark_generator.py)) evaluated 15 distinct scenarios across 1,500 total test series:
 - **True Linear Grids (5m, 15m, rounded, dropped, flat):** 100.0% sensitivity (Wilson 95% CI: $[0.963, 1.000]$).
 - **Non-Linear Resampling (PCHIP, nearest-neighbor):** 100.0% correctly unresolved (Wilson 95% CI: $[0.963, 1.000]$).
 - **Physiological Continuous Simulation (Negative Control):** 100.0% specificity (Wilson 95% CI: $[0.963, 1.000]$).
@@ -136,10 +136,10 @@ The following checklist verifies that all Stage 1B-R2 requirements have been ful
 
 | Requirement ID | Audit Requirement | Verification Status | Artifact / Location |
 | :---: | :--- | :---: | :--- |
-| **C1** | Time semantics: row index never a time coordinate | **VERIFIED** | [`src/dtwin/timeaxis.py`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/src/dtwin/timeaxis.py), [`tests/test_stage1b_r2_regressions.py`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/tests/test_stage1b_r2_regressions.py) |
-| **C1** | Native grid: run-bounded $t_{\min} \pmod P$, zero boundary bends | **VERIFIED** | [`src/dtwin/analysis/native_grid.py`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/src/dtwin/analysis/native_grid.py) |
-| **C1** | Set A pairing: coincident native vs interpolated breakdown | **VERIFIED** | Coincident: 37,477; Libre-native/Dex-interp: 4,568; [`docs/reports/stage1b_r2_results.json`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/reports/stage1b_r2_results.json) |
-| **C2** | Forecast horizons: $(t, t+h)$ strictly within contiguous runs | **VERIFIED** | `pairs_at_offset` in [`src/dtwin/timeaxis.py`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/src/dtwin/timeaxis.py); 0 gap bridging |
+| **C1** | Time semantics: row index never a time coordinate | **VERIFIED** | [`src/dtwin/timeaxis.py`](src/dtwin/timeaxis.py), [`tests/test_stage1b_r2_regressions.py`](tests/test_stage1b_r2_regressions.py) |
+| **C1** | Native grid: run-bounded $t_{\min} \pmod P$, zero boundary bends | **VERIFIED** | [`src/dtwin/analysis/native_grid.py`](src/dtwin/analysis/native_grid.py) |
+| **C1** | Set A pairing: coincident native vs interpolated breakdown | **VERIFIED** | Coincident: 37,477; Libre-native/Dex-interp: 4,568; [`docs/reports/stage1b_r2_results.json`](docs/reports/stage1b_r2_results.json) |
+| **C2** | Forecast horizons: $(t, t+h)$ strictly within contiguous runs | **VERIFIED** | `pairs_at_offset` in [`src/dtwin/timeaxis.py`](src/dtwin/timeaxis.py); 0 gap bridging |
 | **C2** | AST lint forbidding `dropna()` positional slicing | **VERIFIED** | `test_lint_forbid_dropna_positional_slicing_in_analysis` passing |
 | **C2** | Excursions: run-bounded hysteresis & boundary censoring | **VERIFIED** | $5\text{ mg/dL}$ hysteresis; 49 / 21 / 58 censored episodes tracked |
 | **C3** | Unbalanced ANOVA: $n_0$ correction, $\mu_{\text{pool}}$ vs $\mu_{\text{eq}}$ | **VERIFIED** | $n_0 = 13,988.59$; $\mu_{\text{pool}}=-31.95$, $\mu_{\text{eq}}=-32.36$ |
@@ -147,10 +147,10 @@ The following checklist verifies that all Stage 1B-R2 requirements have been ful
 | **C3** | Censored sensitivity analysis ($\le 40, \ge 400\text{ mg/dL}$) | **VERIFIED** | $N=618,262$ points; $\mu_{\text{pool}}=-31.39$, $\sigma_{\text{rm}}=24.15$ |
 | **C4** | Lag convention: verified $\tau > 0$ means Libre leads Dexcom | **VERIFIED** | `test_reproduce_c4_lag_sign_convention_verification`; median $+5.0\text{ min}$ |
 | **C4** | Neutral language: observed disagreement, no unverified claims | **VERIFIED** | Adheres strictly to Section C4 language policy |
-| **C5** | Detector-blind synthetic validation across 15 scenarios | **VERIFIED** | [`src/dtwin/analysis/benchmark_generator.py`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/src/dtwin/analysis/benchmark_generator.py); 1,500 series with Wilson CIs |
+| **C5** | Detector-blind synthetic validation across 15 scenarios | **VERIFIED** | [`src/dtwin/analysis/benchmark_generator.py`](src/dtwin/analysis/benchmark_generator.py); 1,500 series with Wilson CIs |
 | **C6** | Privacy: zero participant IDs in committed reports | **VERIFIED** | Regex scanner verified; all individual diagnostics local-only |
-| **C7** | Formal erratum and old-vs-new traceability matrix | **VERIFIED** | [`docs/errata/ERRATUM_2026-10-19_stage1b_corrections.md`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/errata/ERRATUM_2026-10-19_stage1b_corrections.md) |
-| **C8** | Modeling spec R2: Dexcom primary, causal native constraints | **VERIFIED** | [`docs/MODELING_SPEC_R2.md`](file:///c:/New%20folder/HACKATHONS/glucose-digital-twin/docs/MODELING_SPEC_R2.md) |
+| **C7** | Formal erratum and old-vs-new traceability matrix | **VERIFIED** | [`docs/errata/ERRATUM_2026-10-19_stage1b_corrections.md`](docs/errata/ERRATUM_2026-10-19_stage1b_corrections.md) |
+| **C8** | Modeling spec R2: Dexcom primary, causal native constraints | **VERIFIED** | [`docs/MODELING_SPEC_R2.md`](docs/MODELING_SPEC_R2.md) |
 
 ---
 
