@@ -221,3 +221,94 @@ def compute_cohort_summary_and_bootstrap(
             "prohibited_pooling_checked": True,
         },
     }
+
+
+def compute_paired_bootstrap_difference(
+    participants_a: dict[str, ParticipantMetricRecord] | dict[str, dict[str, Any]],
+    participants_b: dict[str, ParticipantMetricRecord] | dict[str, dict[str, Any]],
+    metric_name: str = "rmse",
+    n_bootstrap: int = 2000,
+    bootstrap_seed: int = 42,
+) -> dict[str, Any]:
+    """Compute paired differences (Model A - Model B) across 45 participants with 95% bootstrap CI.
+
+    Negative values for error metrics (RMSE, MAE) indicate Model A achieves lower error
+    (superior performance) compared to Model B.
+
+    Resampling is strictly conducted over the 45 INDEPENDENT PARTICIPANTS.
+
+    Args:
+        participants_a: Mapping of participant_id -> ParticipantMetricRecord or dict.
+        participants_b: Mapping of participant_id -> ParticipantMetricRecord or dict.
+        metric_name: Metric to compare ('rmse', 'mae', or 'skill'). Defaults to 'rmse'.
+        n_bootstrap: Number of bootstrap iterations (default: 2,000).
+        bootstrap_seed: Random seed for bootstrap reproducibility (default: 42).
+
+    Returns:
+        Dictionary containing mean difference, median difference, 95% bootstrap CIs,
+        and count/fraction of participants where Model A improved upon Model B.
+    """
+    pids = sorted(participants_a.keys())
+    assert pids == sorted(participants_b.keys()), "Participant sets must match exactly"
+    n_participants = len(pids)
+    assert n_participants == 45, f"Expected 45 participants, found {n_participants}"
+
+    def _extract(
+        records: dict[str, ParticipantMetricRecord] | dict[str, dict[str, Any]],
+    ) -> np.ndarray:
+        attr_name = f"mean_{metric_name}"
+        vals: list[float] = []
+        for p in pids:
+            rec = records[p]
+            if isinstance(rec, ParticipantMetricRecord):
+                v = getattr(rec, attr_name)
+            elif isinstance(rec, dict):
+                v = rec[attr_name] if attr_name in rec else rec[metric_name]
+            else:
+                raise TypeError(f"Unsupported record type: {type(rec)}")
+            vals.append(float(v))
+        return np.array(vals, dtype=np.float64)
+
+    vals_a = _extract(participants_a)
+    vals_b = _extract(participants_b)
+    diff = vals_a - vals_b
+
+    mean_diff = float(np.mean(diff))
+    median_diff = float(np.median(diff))
+    std_diff = float(np.std(diff, ddof=1))
+
+    is_improved = (diff < 0.0) if metric_name in ("rmse", "mae") else (diff > 0.0)
+    n_improved = int(np.sum(is_improved))
+    fraction_improved = float(n_improved / n_participants)
+
+    rng = np.random.default_rng(bootstrap_seed)
+    boot_indices = rng.integers(0, n_participants, size=(n_bootstrap, n_participants))
+
+    boot_mean_diffs = np.mean(diff[boot_indices], axis=1)
+    boot_median_diffs = np.median(diff[boot_indices], axis=1)
+
+    ci_mean_diff = [
+        float(np.percentile(boot_mean_diffs, 2.5)),
+        float(np.percentile(boot_mean_diffs, 97.5)),
+    ]
+    ci_median_diff = [
+        float(np.percentile(boot_median_diffs, 2.5)),
+        float(np.percentile(boot_median_diffs, 97.5)),
+    ]
+
+    return {
+        "metric": metric_name,
+        "n_participants": n_participants,
+        "mean_diff": mean_diff,
+        "median_diff": median_diff,
+        "std_diff": std_diff,
+        "ci_95_mean_diff": ci_mean_diff,
+        "ci_95_median_diff": ci_median_diff,
+        "n_improved": n_improved,
+        "fraction_improved": fraction_improved,
+        "bootstrap_metadata": {
+            "resampling_unit": "45 independent participants",
+            "iterations": n_bootstrap,
+            "seed": bootstrap_seed,
+        },
+    }

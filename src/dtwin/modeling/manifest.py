@@ -132,6 +132,22 @@ def build_experiment_manifest(
                     "preprocessing": "CovariatePreprocessor (training-fold medians/modes) + MealPreprocessor + StandardScaler fitted strictly on training fold",
                     "regularization": "L2 Ridge penalty (alpha selected via inner 4-fold participant-grouped CV)",
                 },
+                {
+                    "rung": 6,
+                    "name": "Native HistGradientBoostingRegressor (Fixed Settings)",
+                    "formula": "y_hat(t+h) = GBDT(x_rung5)",
+                    "features": "13 guard-banded glucose lags + 3 meal timing features + 4 static covariates: [Age, Gender (Female=1), BMI, Baseline_HbA1c]",
+                    "preprocessing": "CovariatePreprocessor (training-fold medians/modes) + MealPreprocessor (fitted strictly on training fold)",
+                    "hyperparameters": {
+                        "loss": "squared_error",
+                        "learning_rate": 0.05,
+                        "max_iter": 100,
+                        "max_depth": 4,
+                        "min_samples_leaf": 50,
+                        "l2_regularization": 0.0,
+                        "random_state": 42,
+                    },
+                },
             ],
             "validation_design": {
                 "scheme": "Repeated Participant-Disjoint Stratified Cross-Validation",
