@@ -114,7 +114,7 @@ def generate_synthetic_trace(
                 keep_mask[0] = True
             if not keep_mask[-1]:
                 keep_mask[-1] = True
-            sample_indices = sample_indices[keep_mask]
+            sample_indices = sample_indices[keep_mask]  # type: ignore[assignment]
 
         sample_vals = true_glucose[sample_indices] + rng.normal(0, noise_std, len(sample_indices))
         if integer_rounding:
