@@ -19,6 +19,7 @@ from dtwin.modeling.baselines import (
     predict_guarded_persistence,
     tune_damped_trend_gamma,
 )
+from dtwin.modeling.covariates import fit_predict_covariate_ridge, tune_covariate_ridge_alpha
 from dtwin.modeling.cv import CVSplit, generate_repeated_cv_splits
 from dtwin.modeling.dataset import ParticipantOrigins, extract_cohort_guard_band_dataset
 from dtwin.modeling.manifest import build_experiment_manifest
@@ -63,6 +64,7 @@ def run_horizon_baselines(
     r3_rep_metrics: list[dict[str, dict[str, Any]]] = []
     r4_rep_metrics: list[dict[str, dict[str, Any]]] = []
     r4_nomacros_rep_metrics: list[dict[str, dict[str, Any]]] = []
+    r5_rep_metrics: list[dict[str, dict[str, Any]]] = []
 
     # Store fold hyperparameters: list of 50 entries
     fold_gammas: list[dict[str, Any]] = []
@@ -70,6 +72,7 @@ def run_horizon_baselines(
     fold_alphas_r3: list[dict[str, Any]] = []
     fold_alphas_r4: list[dict[str, Any]] = []
     fold_alphas_r4_nomacros: list[dict[str, Any]] = []
+    fold_alphas_r5: list[dict[str, Any]] = []
 
     # Repetition-level predictions collector for participant-level averaging
     # pid -> 2D array [10 repeats, n_origins]
@@ -79,6 +82,7 @@ def run_horizon_baselines(
     r3_preds_by_pid: dict[str, list[np.ndarray]] = {p: [] for p in sorted_pids}
     r4_preds_by_pid: dict[str, list[np.ndarray]] = {p: [] for p in sorted_pids}
     r4_nomacros_preds_by_pid: dict[str, list[np.ndarray]] = {p: [] for p in sorted_pids}
+    r5_preds_by_pid: dict[str, list[np.ndarray]] = {p: [] for p in sorted_pids}
 
     for r_idx in range(n_repeats):
         rep_splits = repeats_splits[r_idx]
@@ -88,6 +92,7 @@ def run_horizon_baselines(
         rep_r3_dict: dict[str, dict[str, Any]] = {}
         rep_r4_dict: dict[str, dict[str, Any]] = {}
         rep_r4_nomacros_dict: dict[str, dict[str, Any]] = {}
+        rep_r5_dict: dict[str, dict[str, Any]] = {}
 
         for sp in rep_splits:
             # Tune Rung 1 gamma on outer training participants (36)
@@ -235,6 +240,35 @@ def run_horizon_baselines(
                 include_macros=False,
             )
 
+            # Tune and fit Rung 5 Baseline-Covariate Augmentation
+            alpha_opt_r5, diag_r5 = tune_covariate_ridge_alpha(
+                dataset=dataset,
+                train_pids=sp.train_pids,
+                pid_to_group=pid_to_group,
+                horizon_minutes=horizon_minutes,
+                seed=sp.seed * 100 + sp.fold_idx,
+            )
+
+            fold_alphas_r5.append(
+                {
+                    "repeat_idx": sp.repeat_idx,
+                    "seed": sp.seed,
+                    "fold_idx": sp.fold_idx,
+                    "horizon_minutes": horizon_minutes,
+                    "alpha_opt": alpha_opt_r5,
+                    "tuning_diagnostics": diag_r5,
+                    "train_participants_count": len(sp.train_pids),
+                    "test_participants_count": len(sp.test_pids),
+                }
+            )
+
+            preds_r5_test, _, _, _, _ = fit_predict_covariate_ridge(
+                dataset=dataset,
+                train_pids=sp.train_pids,
+                test_pids=sp.test_pids,
+                alpha=alpha_opt_r5,
+            )
+
             # Evaluate on outer test participants (9)
             for test_pid in sp.test_pids:
                 orig = dataset[test_pid]
@@ -328,12 +362,27 @@ def run_horizon_baselines(
                 }
                 r4_nomacros_preds_by_pid[test_pid].append(pred_r4_no)
 
+                # Rung 5: Baseline-Covariate Augmentation
+                pred_r5 = preds_r5_test[test_pid]
+                rmse_r5, mae_r5, skill_r5 = compute_participant_metrics(
+                    y_true, pred_r5, y_base, is_persistence=False
+                )
+                rep_r5_dict[test_pid] = {
+                    "diag_group": orig.diag_group,
+                    "n_origins": n_orig,
+                    "rmse": rmse_r5,
+                    "mae": mae_r5,
+                    "skill": skill_r5,
+                }
+                r5_preds_by_pid[test_pid].append(pred_r5)
+
         r0_rep_metrics.append(rep_r0_dict)
         r1_rep_metrics.append(rep_r1_dict)
         r2_rep_metrics.append(rep_r2_dict)
         r3_rep_metrics.append(rep_r3_dict)
         r4_rep_metrics.append(rep_r4_dict)
         r4_nomacros_rep_metrics.append(rep_r4_nomacros_dict)
+        r5_rep_metrics.append(rep_r5_dict)
 
     # Consolidate participant metrics across 10 repetitions
     r0_consolidated = consolidate_repeated_metrics(r0_rep_metrics)
@@ -342,6 +391,7 @@ def run_horizon_baselines(
     r3_consolidated = consolidate_repeated_metrics(r3_rep_metrics)
     r4_consolidated = consolidate_repeated_metrics(r4_rep_metrics)
     r4_nomacros_consolidated = consolidate_repeated_metrics(r4_nomacros_rep_metrics)
+    r5_consolidated = consolidate_repeated_metrics(r5_rep_metrics)
 
     # Compute cohort summary and participant bootstrap CIs
     r0_summary = compute_cohort_summary_and_bootstrap(r0_consolidated)
@@ -350,6 +400,7 @@ def run_horizon_baselines(
     r3_summary = compute_cohort_summary_and_bootstrap(r3_consolidated)
     r4_summary = compute_cohort_summary_and_bootstrap(r4_consolidated)
     r4_nomacros_summary = compute_cohort_summary_and_bootstrap(r4_nomacros_consolidated)
+    r5_summary = compute_cohort_summary_and_bootstrap(r5_consolidated)
 
     # Average out-of-fold predictions across repetitions
     r0_mean_preds: dict[str, np.ndarray] = {
@@ -370,12 +421,16 @@ def run_horizon_baselines(
     r4_nomacros_mean_preds: dict[str, np.ndarray] = {
         p: np.mean(np.array(r4_nomacros_preds_by_pid[p]), axis=0) for p in sorted_pids
     }
+    r5_mean_preds: dict[str, np.ndarray] = {
+        p: np.mean(np.array(r5_preds_by_pid[p]), axis=0) for p in sorted_pids
+    }
 
     gammas_only = [fg["gamma_opt"] for fg in fold_gammas]
     alphas_r2_only = [fa["alpha_opt"] for fa in fold_alphas_r2]
     alphas_r3_only = [fa["alpha_opt"] for fa in fold_alphas_r3]
     alphas_r4_only = [fa["alpha_opt"] for fa in fold_alphas_r4]
     alphas_r4_nomacros_only = [fa["alpha_opt"] for fa in fold_alphas_r4_nomacros]
+    alphas_r5_only = [fa["alpha_opt"] for fa in fold_alphas_r5]
 
     return {
         "horizon_minutes": horizon_minutes,
@@ -415,6 +470,13 @@ def run_horizon_baselines(
             "min": float(np.min(alphas_r4_nomacros_only)),
             "max": float(np.max(alphas_r4_nomacros_only)),
             "all_50_splits": fold_alphas_r4_nomacros,
+        },
+        "alphas_r5_summary": {
+            "mean": float(np.mean(alphas_r5_only)),
+            "std": float(np.std(alphas_r5_only)),
+            "min": float(np.min(alphas_r5_only)),
+            "max": float(np.max(alphas_r5_only)),
+            "all_50_splits": fold_alphas_r5,
         },
         "rung0_guarded_persistence": {
             "summary": r0_summary,
@@ -512,6 +574,22 @@ def run_horizon_baselines(
                 for p in sorted_pids
             },
         },
+        "rung5_baseline_covariates": {
+            "summary": r5_summary,
+            "participants": {
+                p: {
+                    "diag_group": r5_consolidated[p].diag_group,
+                    "n_origins": r5_consolidated[p].n_origins,
+                    "mean_rmse": r5_consolidated[p].mean_rmse,
+                    "mean_mae": r5_consolidated[p].mean_mae,
+                    "mean_skill": r5_consolidated[p].mean_skill,
+                    "rmse_per_repeat": r5_consolidated[p].rmse_per_repeat,
+                    "mae_per_repeat": r5_consolidated[p].mae_per_repeat,
+                    "skill_per_repeat": r5_consolidated[p].skill_per_repeat,
+                }
+                for p in sorted_pids
+            },
+        },
         "oof_predictions": {
             "r0_mean": r0_mean_preds,
             "r1_mean": r1_mean_preds,
@@ -519,6 +597,7 @@ def run_horizon_baselines(
             "r3_mean": r3_mean_preds,
             "r4_mean": r4_mean_preds,
             "r4_nomacros_mean": r4_nomacros_mean_preds,
+            "r5_mean": r5_mean_preds,
         },
     }
 
@@ -542,6 +621,7 @@ def save_oof_predictions_csv_gz(
     - y_pred_rung3_activity_mean (Rung 3, averaged across 10 repeated CV test fits)
     - y_pred_rung4_meal_mean (Rung 4, averaged across 10 repeated CV test fits)
     - y_pred_rung4_nomacros_mean (Rung 4 Ablation, averaged across 10 repeated CV test fits)
+    - y_pred_rung5_covariates_mean (Rung 5, averaged across 10 repeated CV test fits)
     """
     rows: list[dict[str, Any]] = []
     sorted_pids = sorted(dataset.keys())
@@ -553,6 +633,7 @@ def save_oof_predictions_csv_gz(
     r3_preds = res["oof_predictions"]["r3_mean"]
     r4_preds = res["oof_predictions"]["r4_mean"]
     r4_no_preds = res["oof_predictions"]["r4_nomacros_mean"]
+    r5_preds = res["oof_predictions"]["r5_mean"]
 
     for pid in sorted_pids:
         orig = dataset[pid]
@@ -562,6 +643,7 @@ def save_oof_predictions_csv_gz(
         p_r3 = r3_preds[pid]
         p_r4 = r4_preds[pid]
         p_r4_no = r4_no_preds[pid]
+        p_r5 = r5_preds[pid]
 
         for i in range(len(orig.target)):
             rows.append(
@@ -577,6 +659,7 @@ def save_oof_predictions_csv_gz(
                     "y_pred_rung3_activity_mean": float(p_r3[i]),
                     "y_pred_rung4_meal_mean": float(p_r4[i]),
                     "y_pred_rung4_nomacros_mean": float(p_r4_no[i]),
+                    "y_pred_rung5_covariates_mean": float(p_r5[i]),
                 }
             )
 
@@ -631,9 +714,9 @@ def run_stage2_baselines_pipeline(
 
     report = {
         "metadata": {
-            "title": "Stage 2 Predictive Modeling Benchmark Results (Rungs 0, 1, 2, 3 & 4)",
+            "title": "Stage 2 Predictive Modeling Benchmark Results (Rungs 0, 1, 2, 3, 4 & 5)",
             "version": "1.0.0",
-            "experiment_id": "STAGE2-EXP-004-MEAL-RIDGE",
+            "experiment_id": "STAGE2-EXP-005-COVARIATES-RIDGE",
             "created_at_utc": manifest["metadata"]["created_at_utc"],
             "git_commit": manifest["artifact_integrity"]["git_commit"],
             "protocol_sha256": manifest["artifact_integrity"]["protocol"]["sha256"],

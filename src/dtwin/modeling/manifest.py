@@ -124,6 +124,14 @@ def build_experiment_manifest(
                     "preprocessing": "MealPreprocessor + StandardScaler fitted strictly on training fold",
                     "regularization": "L2 Ridge penalty (alpha selected via inner 4-fold participant-grouped CV)",
                 },
+                {
+                    "rung": 5,
+                    "name": "Baseline-Covariate Augmentation (No-Macros Timing + Static Covariates)",
+                    "formula": "y_hat(t+h) = w_0 + sum_{k=1}^13 w_k * StandardScaler(y(t - 5k)) + sum_{j=1}^3 w_{13+j} * StandardScaler(x_{meal_timing, j}) + sum_{m=1}^4 w_{16+m} * StandardScaler(x_{static, m})",
+                    "features": "13 guard-banded glucose lags + 3 meal timing features + 4 static covariates: [Age, Gender (Female=1), BMI, Baseline_HbA1c]",
+                    "preprocessing": "CovariatePreprocessor (training-fold medians/modes) + MealPreprocessor + StandardScaler fitted strictly on training fold",
+                    "regularization": "L2 Ridge penalty (alpha selected via inner 4-fold participant-grouped CV)",
+                },
             ],
             "validation_design": {
                 "scheme": "Repeated Participant-Disjoint Stratified Cross-Validation",

@@ -30,6 +30,7 @@ class ParticipantOrigins:
         default_factory=lambda: np.empty((0, 4), dtype=np.float64)
     )
     meal_features: np.ndarray = field(default_factory=lambda: np.empty((0, 7), dtype=np.float64))
+    static_covariates: np.ndarray = field(default_factory=lambda: np.empty((4,), dtype=np.float64))
 
     @property
     def n_origins(self) -> int:
@@ -41,6 +42,7 @@ def extract_participant_guard_band_origins(
     diag_group: str,
     horizon_minutes: int,
     phase: int = 0,
+    static_covariates: np.ndarray | None = None,
 ) -> ParticipantOrigins:
     """Extract eligible guard-band forecast origins from a single participant file.
 
@@ -213,6 +215,9 @@ def extract_participant_guard_band_origins(
         history_lags=history_lags_arr,
         activity_features=activity_arr,
         meal_features=meal_arr,
+        static_covariates=(
+            static_covariates if static_covariates is not None else np.empty((4,), dtype=np.float64)
+        ),
     )
 
 
@@ -233,7 +238,10 @@ def extract_cohort_guard_band_dataset(
     Returns:
         Mapping from participant_id to ParticipantOrigins.
     """
+    from dtwin.modeling.covariates import load_participant_covariates
+
     id_to_grp = load_diagnostic_group_mapping(bio_path)
+    cov_map = load_participant_covariates(bio_path)
     files = sorted(glob.glob(str(data_dir / "CGMacros-*" / "*.csv")))
 
     dataset: dict[str, ParticipantOrigins] = {}
@@ -241,11 +249,13 @@ def extract_cohort_guard_band_dataset(
         f_path = Path(f_path_str)
         pid = f_path.parent.name
         grp = id_to_grp.get(pid, "unknown")
+        cov = cov_map.get(pid, np.zeros(4, dtype=np.float64))
         origins = extract_participant_guard_band_origins(
             f_path,
             diag_group=grp,
             horizon_minutes=horizon_minutes,
             phase=phase,
+            static_covariates=cov,
         )
         dataset[pid] = origins
 
