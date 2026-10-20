@@ -487,24 +487,55 @@ def run_aggregate_feasibility_analysis(
             "descriptive_offset_pairs_no_history_baseline": {
                 "horizon_30min": 625098,
                 "horizon_60min": 622078,
-                "exact_arithmetic_derivation": {
-                    "horizon_30min": "682,871 candidate slots - 57,773 null endpoint pairs = 625,098 valid pairs",
-                    "horizon_60min": "679,773 candidate slots - 57,695 null endpoint pairs = 622,078 valid pairs",
-                    "boundary_truncation_rule": (
-                        "Candidate slots = sum_r max(0, len(r) - h) across all 1,200 timestamp runs "
-                        "(687,580 recorded rows). Truncates the trailing h minutes per run."
-                    ),
-                    "correction_note": (
-                        "Replaces erroneous back-of-the-envelope approximation "
-                        "629,825 - (30 * 1,202) = 593,765 != 625,098."
-                    ),
+                "exact_run_bounded_derivation": {
+                    "evaluated_run_architecture": "1,200 timestamp-contiguous runs across all 45 participant files (687,580 recorded rows).",
+                    "horizon_30min": {
+                        "total_runs": 1200,
+                        "runs_le_30min_count": 1079,
+                        "runs_le_30min_rows": 1079,
+                        "runs_gt_30min_count": 121,
+                        "runs_gt_30min_rows": 686501,
+                        "candidate_slots": 682871,
+                        "slots_formula": "sum_r max(0, len(r) - 30) = 686,501 - (121 * 30) = 682,871",
+                        "invalid_endpoint_null_pairs": 57773,
+                        "final_valid_pairs": 625098,
+                        "valid_pairs_formula": "682,871 - 57,773 = 625,098",
+                    },
+                    "horizon_60min": {
+                        "total_runs": 1200,
+                        "runs_le_60min_count": 1103,
+                        "runs_le_60min_rows": 1987,
+                        "runs_gt_60min_count": 97,
+                        "runs_gt_60min_rows": 685593,
+                        "candidate_slots": 679773,
+                        "slots_formula": "sum_r max(0, len(r) - 60) = 685,593 - (97 * 60) = 679,773",
+                        "invalid_endpoint_null_pairs": 57695,
+                        "final_valid_pairs": 622078,
+                        "valid_pairs_formula": "679,773 - 57,695 = 622,078",
+                    },
+                    "alternative_strictly_non_null_dexcom_runs_case_2": {
+                        "total_runs": 1202,
+                        "runs_gt_30min": 139,
+                        "candidate_slots_30min": 624592,
+                        "valid_pairs_30min": 618493,
+                        "candidate_slots_60min": 620939,
+                        "valid_pairs_60min": 614722,
+                        "with_60m_autoregressive_history": {
+                            "horizon_30min": 618236,
+                            "horizon_60min": 616029,
+                        },
+                    },
                 },
             },
         },
         "hyperglycemia_excursion_feasibility": {
-            "interval_bin_epoch_convention_primary": {
+            "exploratory_event_nature": (
+                "These excursion episodes are exploratory computational events derived from the released "
+                "interpolated representation, not directly observed clinical episodes or physical sensor recordings."
+            ),
+            "primary_computational_interval_bin_convention": {
                 "description": (
-                    "Primary clinical convention: each sample represents a measurement epoch of delta_t duration. "
+                    "Primary computational interval-bin convention: discrete points represent contiguous bins of delta_t width. "
                     "Total exposure duration = N * delta_t >= 15 min; release duration = M * delta_t >= 10 min."
                 ),
                 "one_minute_representation": make_excursion_summary(
@@ -514,7 +545,7 @@ def run_aggregate_feasibility_analysis(
                     entry_desc="15 consecutive points (15 min exposure), reset on nulls",
                     release_desc="10 consecutive points <= 175 mg/dL (10 min exposure)",
                 ),
-                "five_minute_native_lattice": make_excursion_summary(
+                "candidate_five_minute_lattice": make_excursion_summary(
                     grp_episodes_5m_conv_b,
                     grp_censored_5m_conv_b,
                     grp_ep_dist_5m_conv_b,
@@ -534,7 +565,7 @@ def run_aggregate_feasibility_analysis(
                     entry_desc="16 consecutive points (15 min elapsed), reset on nulls",
                     release_desc="11 consecutive points <= 175 mg/dL (10 min elapsed)",
                 ),
-                "five_minute_native_lattice": make_excursion_summary(
+                "candidate_five_minute_lattice": make_excursion_summary(
                     grp_episodes_5m_conv_a,
                     grp_censored_5m_conv_a,
                     grp_ep_dist_5m_conv_a,
@@ -598,12 +629,14 @@ def main() -> None:
     print(
         f"  5m native origins (+30m): {results['candidate_forecast_origins']['five_minute_native_lattice_t6_inferred_phase']['horizon_30min']['cohort_total']:,}"
     )
-    exc_b = results["hyperglycemia_excursion_feasibility"]["interval_bin_epoch_convention_primary"]
+    exc_b = results["hyperglycemia_excursion_feasibility"][
+        "primary_computational_interval_bin_convention"
+    ]
     print(
         f"  1m excursion episodes (Conv B): {exc_b['one_minute_representation']['total_episodes_cohort']} (censored: {exc_b['one_minute_representation']['total_censored_cohort']})"
     )
     print(
-        f"  5m excursion episodes (Conv B): {exc_b['five_minute_native_lattice']['total_episodes_cohort']} (censored: {exc_b['five_minute_native_lattice']['total_censored_cohort']})"
+        f"  5m excursion episodes (Conv B): {exc_b['candidate_five_minute_lattice']['total_episodes_cohort']} (censored: {exc_b['candidate_five_minute_lattice']['total_censored_cohort']})"
     )
     exc_a = results["hyperglycemia_excursion_feasibility"][
         "point_to_point_elapsed_duration_sensitivity"
@@ -612,7 +645,7 @@ def main() -> None:
         f"  1m excursion episodes (Conv A): {exc_a['one_minute_representation']['total_episodes_cohort']} (censored: {exc_a['one_minute_representation']['total_censored_cohort']})"
     )
     print(
-        f"  5m excursion episodes (Conv A): {exc_a['five_minute_native_lattice']['total_episodes_cohort']} (censored: {exc_a['five_minute_native_lattice']['total_censored_cohort']})"
+        f"  5m excursion episodes (Conv A): {exc_a['candidate_five_minute_lattice']['total_episodes_cohort']} (censored: {exc_a['candidate_five_minute_lattice']['total_censored_cohort']})"
     )
 
 

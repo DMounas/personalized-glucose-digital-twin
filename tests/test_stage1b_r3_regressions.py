@@ -843,15 +843,22 @@ def test_r3_4_final_aggregate_feasibility_reconciliation():
     cfo_desc = cfo["descriptive_offset_pairs_no_history_baseline"]
     assert cfo_desc["horizon_30min"] == 625098
     assert cfo_desc["horizon_60min"] == 622078
-    assert "exact_arithmetic_derivation" in cfo_desc
-    assert (
-        "682,871 candidate slots - 57,773 null endpoint pairs = 625,098 valid pairs"
-        in cfo_desc["exact_arithmetic_derivation"]["horizon_30min"]
-    )
-    assert (
-        "679,773 candidate slots - 57,695 null endpoint pairs = 622,078 valid pairs"
-        in cfo_desc["exact_arithmetic_derivation"]["horizon_60min"]
-    )
+    assert "exact_run_bounded_derivation" in cfo_desc
+    deriv_30 = cfo_desc["exact_run_bounded_derivation"]["horizon_30min"]
+    assert deriv_30["total_runs"] == 1200
+    assert deriv_30["runs_le_30min_count"] == 1079
+    assert deriv_30["runs_gt_30min_count"] == 121
+    assert deriv_30["candidate_slots"] == 682871
+    assert deriv_30["invalid_endpoint_null_pairs"] == 57773
+    assert deriv_30["final_valid_pairs"] == 625098
+
+    deriv_60 = cfo_desc["exact_run_bounded_derivation"]["horizon_60min"]
+    assert deriv_60["total_runs"] == 1200
+    assert deriv_60["runs_le_60min_count"] == 1103
+    assert deriv_60["runs_gt_60min_count"] == 97
+    assert deriv_60["candidate_slots"] == 679773
+    assert deriv_60["invalid_endpoint_null_pairs"] == 57695
+    assert deriv_60["final_valid_pairs"] == 622078
 
     # Phase sensitivity clarification
     assert (
@@ -865,9 +872,9 @@ def test_r3_4_final_aggregate_feasibility_reconciliation():
         ]
     )
 
-    # 7. Hyperglycemia excursions: Convention B (Interval-Bin Epoch Duration - Primary)
+    # 7. Hyperglycemia excursions: Primary computational interval-bin convention
     exc = data["hyperglycemia_excursion_feasibility"]
-    exc_b = exc["interval_bin_epoch_convention_primary"]
+    exc_b = exc["primary_computational_interval_bin_convention"]
     exc_1m = exc_b["one_minute_representation"]
     assert exc_1m["total_episodes_cohort"] == 678
     assert exc_1m["total_censored_cohort"] == 17
@@ -886,8 +893,8 @@ def test_r3_4_final_aggregate_feasibility_reconciliation():
     # 100% of diabetes participants have >= 10 episodes
     assert exc_1m["by_diagnostic_group"]["diabetes"]["ge_10_episodes"] == 14
 
-    # 8. Hyperglycemia excursions: Convention B (5-minute native lattice 3-pt)
-    exc_5m = exc_b["five_minute_native_lattice"]
+    # 8. Hyperglycemia excursions: Candidate 5-minute lattice (3-pt interval bin)
+    exc_5m = exc_b["candidate_five_minute_lattice"]
     assert exc_5m["total_episodes_cohort"] == 714
     assert exc_5m["total_censored_cohort"] == 14
     assert exc_5m["by_diagnostic_group"]["normal"]["episodes"] == 112
@@ -899,7 +906,7 @@ def test_r3_4_final_aggregate_feasibility_reconciliation():
     assert 112 + 251 + 351 == 714
     assert 2 + 3 + 9 == 14
 
-    # 9. Hyperglycemia excursions: Convention A (Point-to-Point Elapsed Duration - Sensitivity)
+    # 9. Hyperglycemia excursions: Point-to-Point Elapsed Duration (Sensitivity)
     exc_a = exc["point_to_point_elapsed_duration_sensitivity"]
     exc_1m_a = exc_a["one_minute_representation"]
     assert exc_1m_a["total_episodes_cohort"] == 667
@@ -909,7 +916,7 @@ def test_r3_4_final_aggregate_feasibility_reconciliation():
     assert exc_1m_a["by_diagnostic_group"]["diabetes"]["episodes"] == 332
     assert 101 + 234 + 332 == 667
 
-    exc_5m_a = exc_a["five_minute_native_lattice"]
+    exc_5m_a = exc_a["candidate_five_minute_lattice"]
     assert exc_5m_a["total_episodes_cohort"] == 642
     assert exc_5m_a["total_censored_cohort"] == 13
     assert exc_5m_a["by_diagnostic_group"]["normal"]["episodes"] == 94
