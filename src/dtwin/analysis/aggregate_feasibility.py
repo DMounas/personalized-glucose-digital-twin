@@ -123,6 +123,9 @@ def evaluate_participant_feasibility(
     origins_5m_t6_60 = 0
     origins_5m_phases_30 = {p: 0 for p in range(5)}
     origins_5m_phases_60 = {p: 0 for p in range(5)}
+    # 5-minute guard-band candidate origins: 13 non-null points [t-5, t-10, ..., t-65]
+    origins_5m_guard_phases_30 = {p: 0 for p in range(5)}
+    origins_5m_guard_phases_60 = {p: 0 for p in range(5)}
 
     # Excursions
     # Convention B: Interval-Bin Epoch Duration (Primary clinical convention: N * delta_t >= duration)
@@ -166,6 +169,18 @@ def evaluate_participant_feasibility(
                             origins_5m_phases_30[p] += 1
                         if t <= r_len - 61 and not np.isnan(r_slice[t + 60]):
                             origins_5m_phases_60[p] += 1
+
+        # 5-minute guard-band primary candidates: 13 lags [t-5, t-10, ..., t-65]
+        for p in range(5):
+            for t in range(65, r_len - 30):
+                if int(r_elapsed[t]) % 5 == p:
+                    guard_hist_idx = [t - 5 * k for k in range(1, 14)]
+                    guard_hist_vals = r_slice[guard_hist_idx]
+                    if not np.any(np.isnan(guard_hist_vals)):
+                        if not np.isnan(r_slice[t + 30]):
+                            origins_5m_guard_phases_30[p] += 1
+                        if t <= r_len - 61 and not np.isnan(r_slice[t + 60]):
+                            origins_5m_guard_phases_60[p] += 1
 
         # Determine run best phase (T6)
         best_p = 0
@@ -262,6 +277,8 @@ def evaluate_participant_feasibility(
         "origins_5m_t6_60": origins_5m_t6_60,
         "origins_5m_phases_30": origins_5m_phases_30,
         "origins_5m_phases_60": origins_5m_phases_60,
+        "origins_5m_guard_phases_30": origins_5m_guard_phases_30,
+        "origins_5m_guard_phases_60": origins_5m_guard_phases_60,
         "episodes_1m_conv_b": episodes_1m_conv_b,
         "censored_1m_conv_b": censored_1m_conv_b,
         "episodes_5m_conv_b": episodes_5m_conv_b,
@@ -311,6 +328,8 @@ def run_aggregate_feasibility_analysis(
     grp_origins_5m_t6_60 = {g: 0 for g in groups}
     grp_origins_5m_phases_30 = {g: {p: 0 for p in range(5)} for g in groups}
     grp_origins_5m_phases_60 = {g: {p: 0 for p in range(5)} for g in groups}
+    grp_origins_5m_guard_phases_30 = {g: {p: 0 for p in range(5)} for g in groups}
+    grp_origins_5m_guard_phases_60 = {g: {p: 0 for p in range(5)} for g in groups}
 
     # Excursion episode counts and participant distributions
     # Convention B (Interval-Bin Epoch Duration, Primary):
@@ -358,6 +377,8 @@ def run_aggregate_feasibility_analysis(
         for p in range(5):
             grp_origins_5m_phases_30[grp][p] += p_res["origins_5m_phases_30"][p]
             grp_origins_5m_phases_60[grp][p] += p_res["origins_5m_phases_60"][p]
+            grp_origins_5m_guard_phases_30[grp][p] += p_res["origins_5m_guard_phases_30"][p]
+            grp_origins_5m_guard_phases_60[grp][p] += p_res["origins_5m_guard_phases_60"][p]
 
         # Accumulate Convention B
         grp_episodes_1m_conv_b[grp] += p_res["episodes_1m_conv_b"]
@@ -416,6 +437,12 @@ def run_aggregate_feasibility_analysis(
 
     cohort_phases_30 = {p: sum(grp_origins_5m_phases_30[g][p] for g in groups) for p in range(5)}
     cohort_phases_60 = {p: sum(grp_origins_5m_phases_60[g][p] for g in groups) for p in range(5)}
+    cohort_guard_phases_30 = {
+        p: sum(grp_origins_5m_guard_phases_30[g][p] for g in groups) for p in range(5)
+    }
+    cohort_guard_phases_60 = {
+        p: sum(grp_origins_5m_guard_phases_60[g][p] for g in groups) for p in range(5)
+    }
 
     results: dict[str, Any] = {
         "metadata": {
@@ -448,6 +475,33 @@ def run_aggregate_feasibility_analysis(
             "evaluable_dexcom_runs_t6": sum(grp_evaluable_dex_runs.values()),
         },
         "candidate_forecast_origins": {
+            "primary_guard_band_forecast_origins_phi0": {
+                "specification": (
+                    "Primary evaluation grid: fixed five-minute phase phi=0 on deterministic minute coordinate. "
+                    "Requires all 13 glucose history values at t-5 through t-65 and target at t+h to be non-null "
+                    "and within the same contiguous Dexcom run. No glucose imputation is allowed in the primary experiment."
+                ),
+                "horizon_30min": {
+                    "cohort_total": cohort_guard_phases_30[0],
+                    "by_diagnostic_group": {
+                        g: grp_origins_5m_guard_phases_30[g][0] for g in groups
+                    },
+                },
+                "horizon_60min": {
+                    "cohort_total": cohort_guard_phases_60[0],
+                    "by_diagnostic_group": {
+                        g: grp_origins_5m_guard_phases_60[g][0] for g in groups
+                    },
+                },
+                "fixed_phases_sensitivity_analyses": {
+                    "specification": (
+                        "Phases 1-4 are prespecified sensitivity analyses only. "
+                        "No phase represents verified hardware timing."
+                    ),
+                    "horizon_30min": {f"phase_{p}": cohort_guard_phases_30[p] for p in range(5)},
+                    "horizon_60min": {f"phase_{p}": cohort_guard_phases_60[p] for p in range(5)},
+                },
+            },
             "one_minute_grid_60m_history": {
                 "horizon_30min": {
                     "cohort_total": sum(grp_origins_1m_30.values()),

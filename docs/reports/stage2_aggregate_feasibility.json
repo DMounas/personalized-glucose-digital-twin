@@ -37,6 +37,42 @@
     "evaluable_dexcom_runs_t6": 89
   },
   "candidate_forecast_origins": {
+    "primary_guard_band_forecast_origins_phi0": {
+      "specification": "Primary evaluation grid: fixed five-minute phase phi=0 on deterministic minute coordinate. Requires all 13 glucose history values at t-5 through t-65 and target at t+h to be non-null and within the same contiguous Dexcom run. No glucose imputation is allowed in the primary experiment.",
+      "horizon_30min": {
+        "cohort_total": 123599,
+        "by_diagnostic_group": {
+          "normal": 41787,
+          "prediabetes": 42341,
+          "diabetes": 39471
+        }
+      },
+      "horizon_60min": {
+        "cohort_total": 123164,
+        "by_diagnostic_group": {
+          "normal": 41648,
+          "prediabetes": 42156,
+          "diabetes": 39360
+        }
+      },
+      "fixed_phases_sensitivity_analyses": {
+        "specification": "Phases 1-4 are prespecified sensitivity analyses only. No phase represents verified hardware timing.",
+        "horizon_30min": {
+          "phase_0": 123599,
+          "phase_1": 123606,
+          "phase_2": 123576,
+          "phase_3": 123568,
+          "phase_4": 123571
+        },
+        "horizon_60min": {
+          "phase_0": 123164,
+          "phase_1": 123176,
+          "phase_2": 123149,
+          "phase_3": 123140,
+          "phase_4": 123143
+        }
+      }
+    },
     "one_minute_grid_60m_history": {
       "horizon_30min": {
         "cohort_total": 618236,

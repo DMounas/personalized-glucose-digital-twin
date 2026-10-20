@@ -839,6 +839,29 @@ def test_r3_4_final_aggregate_feasibility_reconciliation():
     assert cfo_5m["horizon_60min"]["by_group"]["diabetes"] == 39383
     assert 41665 + 42218 + 39383 == 123266
 
+    # Primary guard-band forecast origins (phi=0, 13 lags [t-5..t-65], targets t+30/60)
+    assert "primary_guard_band_forecast_origins_phi0" in cfo
+    cfo_guard = cfo["primary_guard_band_forecast_origins_phi0"]
+    assert cfo_guard["horizon_30min"]["cohort_total"] == 123599
+    assert cfo_guard["horizon_30min"]["by_diagnostic_group"]["normal"] == 41787
+    assert cfo_guard["horizon_30min"]["by_diagnostic_group"]["prediabetes"] == 42341
+    assert cfo_guard["horizon_30min"]["by_diagnostic_group"]["diabetes"] == 39471
+    assert 41787 + 42341 + 39471 == 123599
+
+    assert cfo_guard["horizon_60min"]["cohort_total"] == 123164
+    assert cfo_guard["horizon_60min"]["by_diagnostic_group"]["normal"] == 41648
+    assert cfo_guard["horizon_60min"]["by_diagnostic_group"]["prediabetes"] == 42156
+    assert cfo_guard["horizon_60min"]["by_diagnostic_group"]["diabetes"] == 39360
+    assert 41648 + 42156 + 39360 == 123164
+
+    # Sensitivity across phases 0-4
+    phases_30 = cfo_guard["fixed_phases_sensitivity_analyses"]["horizon_30min"]
+    assert phases_30["phase_0"] == 123599
+    assert phases_30["phase_1"] == 123606
+    assert phases_30["phase_2"] == 123576
+    assert phases_30["phase_3"] == 123568
+    assert phases_30["phase_4"] == 123571
+
     # Descriptive offset pairs (historical no-history baseline)
     cfo_desc = cfo["descriptive_offset_pairs_no_history_baseline"]
     assert cfo_desc["horizon_30min"] == 625098
