@@ -26,6 +26,9 @@ class ParticipantOrigins:
     target: np.ndarray  # y(t + h)
     elapsed_minutes: np.ndarray  # m(t)
     history_lags: np.ndarray = field(default_factory=lambda: np.empty((0, 13), dtype=np.float64))
+    activity_features: np.ndarray = field(
+        default_factory=lambda: np.empty((0, 4), dtype=np.float64)
+    )
 
     @property
     def n_origins(self) -> int:
@@ -56,9 +59,17 @@ def extract_participant_guard_band_origins(
         ParticipantOrigins containing aligned arrays of y_base, roc, and target.
     """
     pid = file_path.parent.name
-    df = pd.read_csv(file_path, usecols=["Timestamp", "Dexcom GL"])
+    df = pd.read_csv(file_path)
+    cols = [c.strip() for c in df.columns]
+    has_hr = "HR" in cols
+    mets_col = next((c for c in cols if c.lower() == "mets"), None)
+
     ts = pd.to_datetime(df["Timestamp"])
     dex = df["Dexcom GL"].to_numpy(dtype=float)
+    hr_arr = df["HR"].to_numpy(dtype=float) if has_hr else np.full(len(df), np.nan)
+    mets_arr = (
+        df[mets_col].to_numpy(dtype=float) if mets_col is not None else np.full(len(df), np.nan)
+    )
     elapsed_m = compute_elapsed_minutes(ts)
 
     runs = enumerate_runs(df)
@@ -69,6 +80,7 @@ def extract_participant_guard_band_origins(
     target_list: list[float] = []
     elapsed_list: list[int] = []
     history_lags_list: list[np.ndarray] = []
+    activity_list: list[list[float]] = []
 
     h = horizon_minutes
     max_lag = 65  # 13 lags at 5m steps
@@ -93,17 +105,43 @@ def extract_participant_guard_band_origins(
                         y_20 = float(r_slice[t - 20])
                         roc_val = (y_5 - y_20) / 15.0
 
+                        # Physical activity features over [t-30, t]
+                        orig_idx = r.start_index + t
+                        w_hr = hr_arr[orig_idx - 30 : orig_idx + 1]
+                        w_mets = mets_arr[orig_idx - 30 : orig_idx + 1]
+
+                        v_hr = w_hr[~np.isnan(w_hr)]
+                        m_hr = float(np.mean(v_hr)) if len(v_hr) > 0 else np.nan
+                        d_hr = (
+                            float(v_hr[-1] - v_hr[0])
+                            if len(v_hr) >= 2
+                            else (0.0 if len(v_hr) > 0 else np.nan)
+                        )
+
+                        v_mets = w_mets[~np.isnan(w_mets)]
+                        m_mets = float(np.mean(v_mets) / 10.0) if len(v_mets) > 0 else np.nan
+
+                        is_missing = (
+                            1.0 if (np.isnan(m_hr) or np.isnan(d_hr) or np.isnan(m_mets)) else 0.0
+                        )
+
                         timestamps_list.append(str(r_ts.iloc[t]))
                         y_base_list.append(y_5)
                         roc_list.append(roc_val)
                         target_list.append(float(target_val))
                         elapsed_list.append(int(r_elapsed[t]))
                         history_lags_list.append(guard_hist_vals.copy())
+                        activity_list.append([m_hr, d_hr, m_mets, is_missing])
 
     history_lags_arr = (
         np.array(history_lags_list, dtype=np.float64)
         if len(history_lags_list) > 0
         else np.empty((0, 13), dtype=np.float64)
+    )
+    activity_arr = (
+        np.array(activity_list, dtype=np.float64)
+        if len(activity_list) > 0
+        else np.empty((0, 4), dtype=np.float64)
     )
 
     return ParticipantOrigins(
@@ -116,6 +154,7 @@ def extract_participant_guard_band_origins(
         target=np.array(target_list, dtype=np.float64),
         elapsed_minutes=np.array(elapsed_list, dtype=np.int64),
         history_lags=history_lags_arr,
+        activity_features=activity_arr,
     )
 
 

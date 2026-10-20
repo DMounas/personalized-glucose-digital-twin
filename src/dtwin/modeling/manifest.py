@@ -100,6 +100,14 @@ def build_experiment_manifest(
                     "preprocessing": "StandardScaler fitted strictly on training fold",
                     "regularization": "L2 Ridge penalty (alpha selected via inner 4-fold participant-grouped CV)",
                 },
+                {
+                    "rung": 3,
+                    "name": "Activity-Augmented Ridge Regression",
+                    "formula": "y_hat(t+h) = w_0 + sum_{k=1}^13 w_k * StandardScaler(y(t - 5k)) + sum_{j=1}^4 w_{13+j} * StandardScaler(x_{activity, j})",
+                    "features": "13 guard-banded glucose lags + 4 past-30-minute activity features: [mean_HR, delta_HR, mean_METs/10, I_missing_activity]",
+                    "preprocessing": "ActivityPreprocessor (training-fold median imputation + missingness flag) + StandardScaler fitted strictly on training fold",
+                    "regularization": "L2 Ridge penalty (alpha selected via inner 4-fold participant-grouped CV)",
+                },
             ],
             "validation_design": {
                 "scheme": "Repeated Participant-Disjoint Stratified Cross-Validation",
