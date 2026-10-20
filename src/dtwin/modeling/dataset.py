@@ -29,6 +29,7 @@ class ParticipantOrigins:
     activity_features: np.ndarray = field(
         default_factory=lambda: np.empty((0, 4), dtype=np.float64)
     )
+    meal_features: np.ndarray = field(default_factory=lambda: np.empty((0, 7), dtype=np.float64))
 
     @property
     def n_origins(self) -> int:
@@ -72,6 +73,15 @@ def extract_participant_guard_band_origins(
     )
     elapsed_m = compute_elapsed_minutes(ts)
 
+    # Meal logging data
+    meal_mask = df["Carbs"].notna().to_numpy()
+    meal_indices = np.where(meal_mask)[0]
+    meal_ts = ts.iloc[meal_indices].to_numpy()
+    meal_carbs = df.loc[meal_mask, "Carbs"].to_numpy(dtype=float)
+    meal_protein = df.loc[meal_mask, "Protein"].to_numpy(dtype=float)
+    meal_fat = df.loc[meal_mask, "Fat"].to_numpy(dtype=float)
+    meal_fiber = df.loc[meal_mask, "Fiber"].to_numpy(dtype=float)
+
     runs = enumerate_runs(df)
 
     timestamps_list: list[str] = []
@@ -81,6 +91,7 @@ def extract_participant_guard_band_origins(
     elapsed_list: list[int] = []
     history_lags_list: list[np.ndarray] = []
     activity_list: list[list[float]] = []
+    meal_list: list[list[float]] = []
 
     h = horizon_minutes
     max_lag = 65  # 13 lags at 5m steps
@@ -125,6 +136,36 @@ def extract_participant_guard_band_origins(
                             1.0 if (np.isnan(m_hr) or np.isnan(d_hr) or np.isnan(m_mets)) else 0.0
                         )
 
+                        # Meal context features: look up most recent meal start <= t
+                        curr_t_ns = ts.iloc[orig_idx].to_numpy()
+                        pos = int(np.searchsorted(meal_ts, curr_t_ns, side="right")) - 1
+                        if pos < 0:
+                            time_since_meal = 1440.0
+                            meal_in_60m = 0.0
+                            carbs_val = 0.0
+                            protein_val = 0.0
+                            fat_val = 0.0
+                            fiber_val = 0.0
+                            no_recent_meal = 1.0
+                        else:
+                            dt_min = float((curr_t_ns - meal_ts[pos]) / np.timedelta64(1, "m"))
+                            if dt_min > 1440.0:
+                                time_since_meal = 1440.0
+                                meal_in_60m = 0.0
+                                carbs_val = 0.0
+                                protein_val = 0.0
+                                fat_val = 0.0
+                                fiber_val = 0.0
+                                no_recent_meal = 1.0
+                            else:
+                                time_since_meal = dt_min
+                                meal_in_60m = 1.0 if dt_min <= 60.0 else 0.0
+                                carbs_val = float(meal_carbs[pos])
+                                protein_val = float(meal_protein[pos])
+                                fat_val = float(meal_fat[pos])
+                                fiber_val = float(meal_fiber[pos])
+                                no_recent_meal = 0.0
+
                         timestamps_list.append(str(r_ts.iloc[t]))
                         y_base_list.append(y_5)
                         roc_list.append(roc_val)
@@ -132,6 +173,17 @@ def extract_participant_guard_band_origins(
                         elapsed_list.append(int(r_elapsed[t]))
                         history_lags_list.append(guard_hist_vals.copy())
                         activity_list.append([m_hr, d_hr, m_mets, is_missing])
+                        meal_list.append(
+                            [
+                                time_since_meal,
+                                meal_in_60m,
+                                carbs_val,
+                                protein_val,
+                                fat_val,
+                                fiber_val,
+                                no_recent_meal,
+                            ]
+                        )
 
     history_lags_arr = (
         np.array(history_lags_list, dtype=np.float64)
@@ -142,6 +194,11 @@ def extract_participant_guard_band_origins(
         np.array(activity_list, dtype=np.float64)
         if len(activity_list) > 0
         else np.empty((0, 4), dtype=np.float64)
+    )
+    meal_arr = (
+        np.array(meal_list, dtype=np.float64)
+        if len(meal_list) > 0
+        else np.empty((0, 7), dtype=np.float64)
     )
 
     return ParticipantOrigins(
@@ -155,6 +212,7 @@ def extract_participant_guard_band_origins(
         elapsed_minutes=np.array(elapsed_list, dtype=np.int64),
         history_lags=history_lags_arr,
         activity_features=activity_arr,
+        meal_features=meal_arr,
     )
 
 

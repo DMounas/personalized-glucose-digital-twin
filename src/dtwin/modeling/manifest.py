@@ -108,6 +108,22 @@ def build_experiment_manifest(
                     "preprocessing": "ActivityPreprocessor (training-fold median imputation + missingness flag) + StandardScaler fitted strictly on training fold",
                     "regularization": "L2 Ridge penalty (alpha selected via inner 4-fold participant-grouped CV)",
                 },
+                {
+                    "rung": 4,
+                    "name": "Meal-Context Ridge Regression",
+                    "formula": "y_hat(t+h) = w_0 + sum_{k=1}^13 w_k * StandardScaler(y(t - 5k)) + sum_{j=1}^7 w_{13+j} * StandardScaler(x_{meal, j})",
+                    "features": "13 guard-banded glucose lags + 7 meal context features: [time_since_last_meal, meal_in_last_60m, carbs, protein, fat, fiber, no_recent_meal]",
+                    "preprocessing": "MealPreprocessor (training-fold macro median imputation) + StandardScaler fitted strictly on training fold",
+                    "regularization": "L2 Ridge penalty (alpha selected via inner 4-fold participant-grouped CV)",
+                },
+                {
+                    "rung": "4_ablation_nomacros",
+                    "name": "Meal-Context Ridge Regression (No-Macros Ablation)",
+                    "formula": "y_hat(t+h) = w_0 + sum_{k=1}^13 w_k * StandardScaler(y(t - 5k)) + sum_{j=1}^3 w_{13+j} * StandardScaler(x_{meal_timing, j})",
+                    "features": "13 guard-banded glucose lags + 3 meal timing features: [time_since_last_meal, meal_in_last_60m, no_recent_meal]",
+                    "preprocessing": "MealPreprocessor + StandardScaler fitted strictly on training fold",
+                    "regularization": "L2 Ridge penalty (alpha selected via inner 4-fold participant-grouped CV)",
+                },
             ],
             "validation_design": {
                 "scheme": "Repeated Participant-Disjoint Stratified Cross-Validation",
