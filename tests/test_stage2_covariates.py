@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import numpy as np
+import pytest
 
 from dtwin.modeling.covariates import (
     CovariatePreprocessor,
@@ -20,6 +21,8 @@ from dtwin.modeling.meal import MealPreprocessor
 def test_load_participant_covariates() -> None:
     """Verify loading of baseline covariates from bio.csv."""
     bio_path = Path("data/cgmacros/CGMacros/bio.csv")
+    if not bio_path.exists():
+        pytest.skip("Raw dataset not present (bio.csv missing in CI environment)")
     cov_map = load_participant_covariates(bio_path)
 
     assert len(cov_map) == 45

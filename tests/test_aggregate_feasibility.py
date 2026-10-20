@@ -4,13 +4,16 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 from dtwin.analysis.aggregate_feasibility import load_diagnostic_group_mapping
 
 
 def test_load_diagnostic_group_mapping_counts_and_boundaries():
     """Verify participant mapping counts and boundary HbA1c classification."""
     bio_path = Path("data/cgmacros/CGMacros/bio.csv")
-    assert bio_path.exists()
+    if not bio_path.exists():
+        pytest.skip("Raw dataset not present (bio.csv missing in CI environment)")
 
     mapping = load_diagnostic_group_mapping(bio_path)
     assert len(mapping) == 45
