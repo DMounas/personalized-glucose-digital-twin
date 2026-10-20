@@ -1,0 +1,65 @@
+{
+  "metadata": {
+    "title": "Stage 3 Predictive Modeling Personalization Benchmark Manifest",
+    "experiment_id": "STAGE3-EXP-001-PERSONALIZATION",
+    "protocol_version": "1.0.0",
+    "created_at_utc": "2026-10-20T18:32:07.322865+00:00"
+  },
+  "artifact_integrity": {
+    "git_commit": "ac0c4c9becfc3f9570b1c73245351122b4bddb40",
+    "stage3_personalization_protocol": {
+      "path": "docs/STAGE3_PERSONALIZATION_PROTOCOL.md",
+      "sha256": "a402609c2758a0ed34704a8114e91040e10131338fb2a2071a501ac752e53475"
+    },
+    "stage2_protocol": {
+      "path": "docs/STAGE2_PROTOCOL_DRAFT.md",
+      "sha256": "d2af976a8163205d0cec9fbc6907f47d7bb2c6d7688df72e01692b3fb0d3435b"
+    },
+    "stage1b_config": {
+      "path": "configs/stage1b.yaml",
+      "sha256": "cf2763408891feb97c67dd5184ad4674dd2c98a736922ad322c8b66bc11bd467"
+    },
+    "stage2_feasibility_report": {
+      "path": "docs/reports/stage2_aggregate_feasibility.json",
+      "sha256": "860f730c12baa70bfbe6f9bfcdded69a537838a12ac5bdc861374879df3fafa1"
+    }
+  },
+  "experimental_setup": {
+    "global_model": "Rung 5 Baseline-Covariate Ridge Regression (20 features)",
+    "personalization_model": "Regularized Ridge Residual-Correction Model (16 dynamic features)",
+    "adaptation_windows_days": [
+      2,
+      4,
+      6
+    ],
+    "purge_minutes": 120,
+    "forecast_horizons_minutes": [
+      30,
+      60
+    ],
+    "validation_design": {
+      "scheme": "Repeated Participant-Disjoint Stratified Cross-Validation",
+      "n_repeats": 10,
+      "n_splits_per_repeat": 5,
+      "seeds": [
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51
+      ],
+      "outer_train_participants_count": 36,
+      "outer_test_participants_count": 9
+    },
+    "bootstrap_evaluation": {
+      "resampling_unit": "45 independent participants",
+      "iterations": 2000,
+      "seed": 42
+    }
+  }
+}
