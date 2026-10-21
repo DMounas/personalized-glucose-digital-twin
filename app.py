@@ -54,64 +54,63 @@ def get_loader() -> DashboardDataLoader:
 
 
 def configure_page() -> None:
-    """Set Streamlit page configuration and inject custom dark-theme styling."""
+    """Set Streamlit page configuration and inject custom light dual-tone styling."""
     st.set_page_config(
         page_title="Glucose Digital Twin | Research Dashboard",
-        page_icon="🧬",
         layout="wide",
         initial_sidebar_state="expanded",
     )
 
     custom_css = """
     <style>
-    /* Dark Theme Custom Foundation */
+    /* Light Mild Green and White Dual-Tone Foundation */
     .stApp {
-        background-color: #070D1A;
-        color: #F8FAFC;
+        background-color: #F8FBF9;
+        color: #1E293B;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
-    /* Sidebar Styling */
+    /* Sidebar Styling: Gentle soft green tint with crisp border */
     section[data-testid="stSidebar"] {
-        background-color: #0B1120;
-        border-right: 1px solid #1E293B;
+        background-color: #F0F7F3;
+        border-right: 1px solid #D6E8DC;
     }
 
-    /* Card styling */
+    /* Card styling: Crisp white with delicate mild green border and soft elevation */
     .metric-card {
-        background-color: #0F172A;
-        border: 1px solid #1E293B;
+        background-color: #FFFFFF;
+        border: 1px solid #D6E8DC;
         border-radius: 10px;
         padding: 16px 20px;
         margin-bottom: 12px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 2px 6px rgba(22, 101, 52, 0.05), 0 1px 2px rgba(22, 101, 52, 0.03);
     }
     .metric-card-title {
-        font-size: 0.8rem;
+        font-size: 0.78rem;
         font-weight: 700;
         letter-spacing: 0.05em;
         text-transform: uppercase;
-        color: #94A3B8;
+        color: #475569;
         margin-bottom: 4px;
     }
     .metric-card-value {
         font-size: 1.8rem;
         font-weight: 800;
-        color: #F8FAFC;
+        color: #14532D; /* Deep botanical forest green */
         line-height: 1.2;
     }
     .metric-card-subtitle {
-        font-size: 0.85rem;
-        font-weight: 500;
-        color: #38BDF8;
+        font-size: 0.84rem;
+        font-weight: 600;
+        color: #16A34A; /* Mild green accent */
         margin-top: 4px;
     }
 
     /* Significance badges */
     .badge-sig {
-        background-color: rgba(16, 185, 129, 0.15);
-        border: 1px solid #10B981;
-        color: #10B981;
+        background-color: #ECFDF5;
+        border: 1px solid #A7F3D0;
+        color: #065F46;
         padding: 4px 10px;
         border-radius: 6px;
         font-weight: 700;
@@ -119,9 +118,9 @@ def configure_page() -> None:
         display: inline-block;
     }
     .badge-ns {
-        background-color: rgba(148, 163, 184, 0.15);
-        border: 1px solid #64748B;
-        color: #94A3B8;
+        background-color: #F8FAFC;
+        border: 1px solid #E2E8F0;
+        color: #64748B;
         padding: 4px 10px;
         border-radius: 6px;
         font-weight: 700;
@@ -131,32 +130,33 @@ def configure_page() -> None:
 
     /* Disclaimer container */
     .disclaimer-box {
-        background-color: #1E1B4B;
-        border: 1px solid #4338CA;
+        background-color: #F0FDF4;
+        border: 1px solid #BBF7D0;
         border-radius: 8px;
         padding: 14px 18px;
         margin-top: 15px;
         margin-bottom: 20px;
     }
     .disclaimer-title {
-        color: #A5B4FC;
-        font-size: 0.85rem;
+        color: #166534;
+        font-size: 0.82rem;
         font-weight: 800;
         letter-spacing: 0.05em;
         text-transform: uppercase;
         margin-bottom: 4px;
     }
     .disclaimer-text {
-        color: #C7D2FE;
+        color: #14532D;
         font-size: 0.82rem;
-        line-height: 1.4;
+        line-height: 1.45;
         margin: 0;
     }
 
     /* Radio buttons & controls styling */
     div[role="radiogroup"] {
-        padding: 4px;
-        background-color: #0F172A;
+        padding: 6px;
+        background-color: #FFFFFF;
+        border: 1px solid #D6E8DC;
         border-radius: 8px;
     }
     </style>
@@ -170,31 +170,31 @@ def render_sidebar() -> str:
         st.markdown(
             """
             <div style="padding: 10px 0 16px 0;">
-                <span style="background-color: rgba(56, 189, 248, 0.15); border: 1px solid #0284C7; color: #38BDF8; font-size: 0.72rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; letter-spacing: 1px;">RESEARCH PROTOTYPE</span>
-                <h2 style="margin: 8px 0 2px 0; font-size: 1.35rem; font-weight: 900; color: #F8FAFC;">GLUCOSE DIGITAL TWIN</h2>
-                <p style="margin: 0; font-size: 0.8rem; color: #94A3B8;">Type 2 Diabetes Forecasting &amp; Residual Personalization</p>
+                <span style="background-color: rgba(22, 163, 74, 0.12); border: 1px solid #86EFAC; color: #166534; font-size: 0.72rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; letter-spacing: 1px;">RESEARCH PROTOTYPE</span>
+                <h2 style="margin: 8px 0 2px 0; font-size: 1.35rem; font-weight: 900; color: #0F291E;">GLUCOSE DIGITAL TWIN</h2>
+                <p style="margin: 0; font-size: 0.8rem; color: #4B6354;">Type 2 Diabetes Forecasting &amp; Residual Personalization</p>
             </div>
             """,
             unsafe_allow_html=True,
         )
 
         st.markdown("---")
-        st.markdown("### 🧭 Navigation")
+        st.markdown("### Navigation")
         nav_selection = st.radio(
             "Select Section",
             [
-                "📌 Project Overview",
-                "📈 Global Forecasting Explorer",
-                "🎯 Personalization Lab",
-                "🔬 Methodology & Guard Band",
+                "Project Overview",
+                "Global Forecasting Explorer",
+                "Personalization Lab",
+                "Methodology & Guard Band",
             ],
             label_visibility="collapsed",
         )
         if not nav_selection:
-            nav_selection = "📌 Project Overview"
+            nav_selection = "Project Overview"
 
         st.markdown("---")
-        st.markdown("### 📊 Cohort Metadata")
+        st.markdown("### Cohort Metadata")
         st.markdown(
             """
             - **Dataset**: PhysioNet CGMacros 1.0.0
@@ -207,7 +207,7 @@ def render_sidebar() -> str:
         )
 
         st.markdown("---")
-        st.markdown("### 🔗 Links & Attribution")
+        st.markdown("### Links & Attribution")
         st.markdown(
             """
             - [GitHub Repository](https://github.com/DMounas/personalized-glucose-digital-twin)
@@ -220,7 +220,7 @@ def render_sidebar() -> str:
         st.markdown(
             """
             <div class="disclaimer-box">
-                <div class="disclaimer-title">⚠️ Non-Clinical Disclaimer</div>
+                <div class="disclaimer-title">Non-Clinical Disclaimer</div>
                 <p class="disclaimer-text">
                     For research, educational, and benchmarking demonstration only.
                     Not certified for diagnosis, insulin dosage estimation, or patient care.
@@ -238,10 +238,10 @@ def render_project_overview(loader: DashboardDataLoader) -> None:
     st.markdown(
         """
         <div style="margin-bottom: 20px;">
-            <h1 style="font-size: 2.2rem; font-weight: 900; margin-bottom: 6px; color: #F8FAFC;">
+            <h1 style="font-size: 2.2rem; font-weight: 900; margin-bottom: 6px; color: #0F291E;">
                 Personalized Glucose Digital Twin for Type 2 Diabetes
             </h1>
-            <p style="font-size: 1.05rem; color: #94A3B8; max-width: 950px; line-height: 1.5;">
+            <p style="font-size: 1.05rem; color: #475569; max-width: 950px; line-height: 1.5;">
                 A leak-free, physiological continuous glucose forecasting framework and participant-specific
                 residual calibration engine evaluated on 45 individuals under repeated participant-disjoint cross-validation.
             </p>
@@ -302,7 +302,7 @@ def render_project_overview(loader: DashboardDataLoader) -> None:
     # Problem Statement & Solution Grid
     col_left, col_right = st.columns([1.1, 0.9])
     with col_left:
-        st.markdown("### 🎯 The Ambulatory Glucose Challenge")
+        st.markdown("### The Ambulatory Glucose Challenge")
         st.markdown(
             """
             Continuous Glucose Monitoring (CGM) enables proactive diabetes management, but machine learning models
@@ -318,7 +318,7 @@ def render_project_overview(loader: DashboardDataLoader) -> None:
             """
         )
 
-        st.markdown("### 💡 The Digital Twin Solution")
+        st.markdown("### The Digital Twin Solution")
         st.markdown(
             """
             This platform introduces three structural safeguards:
@@ -330,7 +330,7 @@ def render_project_overview(loader: DashboardDataLoader) -> None:
         )
 
     with col_right:
-        st.markdown("### 🏗️ System Architecture & Workflow")
+        st.markdown("### System Architecture & Workflow")
         if ARCHITECTURE_PATH.exists():
             st.image(
                 str(ARCHITECTURE_PATH),
@@ -343,7 +343,7 @@ def render_project_overview(loader: DashboardDataLoader) -> None:
     st.markdown("---")
 
     # Feature Matrix Breakdown Table
-    st.markdown("### 📋 Guarded Predictor Matrix Architecture ($R^{20}$ Feature Space)")
+    st.markdown("### Guarded Predictor Matrix Architecture ($R^{20}$ Feature Space)")
     feat_df = pd.DataFrame(
         [
             {
@@ -371,7 +371,7 @@ def render_project_overview(loader: DashboardDataLoader) -> None:
 
 def render_global_forecasting_explorer(loader: DashboardDataLoader) -> None:
     """Render Section B: Global Forecasting Explorer."""
-    st.markdown("## 📈 Stage 2 Global Forecasting Ladder")
+    st.markdown("## Stage 2 Global Forecasting Ladder")
     st.markdown(
         """
         Explore the 8-rung benchmark ladder evaluated across **10 repeated 5-fold participant-disjoint splits**
@@ -454,13 +454,13 @@ def render_global_forecasting_explorer(loader: DashboardDataLoader) -> None:
             y=names,
             x=rmses,
             orientation="h",
-            marker=dict(color=colors, line=dict(color="#334155", width=1)),
+            marker=dict(color=colors, line=dict(color="#CBD5E1", width=1)),
             error_x=dict(
                 type="data",
                 symmetric=False,
                 array=err_high,
                 arrayminus=err_low,
-                color="#F8FAFC",
+                color="#1E293B",
                 thickness=1.5,
                 width=4,
             ),
@@ -473,7 +473,7 @@ def render_global_forecasting_explorer(loader: DashboardDataLoader) -> None:
         x=r0.mean_rmse,
         line_width=1.5,
         line_dash="dot",
-        line_color="#EF4444",
+        line_color="#DC2626",
         annotation_text="Persistence Ref",
         annotation_position="top right",
     )
@@ -484,11 +484,11 @@ def render_global_forecasting_explorer(loader: DashboardDataLoader) -> None:
     fig.update_layout(
         title=f"Stage 2 Model Ladder Benchmark ({horizon_choice}) — Cohort Mean RMSE & 95% Bootstrap CIs",
         xaxis_title="Cohort Mean RMSE (mg/dL) [Lower is Better]",
-        yaxis=dict(autorange="reversed"),
-        xaxis=dict(range=[x_min, x_max]),
-        plot_bgcolor="#0F172A",
-        paper_bgcolor="#070D1A",
-        font=dict(color="#F8FAFC"),
+        yaxis=dict(autorange="reversed", gridcolor="#E2E8F0"),
+        xaxis=dict(range=[x_min, x_max], gridcolor="#E2E8F0", zerolinecolor="#CBD5E1"),
+        plot_bgcolor="#FFFFFF",
+        paper_bgcolor="#FFFFFF",
+        font=dict(color="#1E293B", family="Inter, sans-serif"),
         height=450,
         margin=dict(l=20, r=20, t=50, b=40),
     )
@@ -515,7 +515,7 @@ def render_global_forecasting_explorer(loader: DashboardDataLoader) -> None:
     # In-Depth Scientific Analysis: Linear Ridge vs Nonlinear GBDT
     col_a, col_b = st.columns(2)
     with col_a:
-        st.markdown("### 🏆 Why Rung 5 Ridge is the Selected Global Foundation")
+        st.markdown("### Why Rung 5 Ridge is the Selected Global Foundation")
         st.markdown(
             f"""
             - **Autoregressive Core (Rung 2)**: 13 guarded history lags reduce error from {r0.mean_rmse:.2f} to {r2.mean_rmse:.2f} mg/dL (+{r2.mean_skill_pct:.2f}% skill).
@@ -526,7 +526,7 @@ def render_global_forecasting_explorer(loader: DashboardDataLoader) -> None:
         )
 
     with col_b:
-        st.markdown("### 🌲 Linear Ridge vs. Nonlinear GBDT (Rung 6)")
+        st.markdown("### Linear Ridge vs. Nonlinear GBDT (Rung 6)")
         st.markdown(
             f"""
             - **Performance Parity**: The fixed `HistGradientBoostingRegressor` achieves **{r6.mean_rmse:.2f} mg/dL** (+{r6.mean_skill_pct:.2f}% skill).
@@ -538,7 +538,7 @@ def render_global_forecasting_explorer(loader: DashboardDataLoader) -> None:
 
 def render_personalization_lab(loader: DashboardDataLoader) -> None:
     """Render Section C: Personalization Lab."""
-    st.markdown("## 🎯 Stage 3 Online Personalization Lab")
+    st.markdown("## Stage 3 Online Personalization Lab")
     st.markdown(
         """
         Evaluate chronological adaptation: can updating the global Rung 5 Ridge forecaster with an individual's
@@ -625,9 +625,9 @@ def render_personalization_lab(loader: DashboardDataLoader) -> None:
     if h_key == "h30":
         st.markdown(
             f"""
-            <div style="background-color: rgba(56, 189, 248, 0.1); border: 1px solid #0284C7; border-radius: 8px; padding: 12px 18px; margin: 15px 0;">
+            <div style="background-color: #F8FAFC; border: 1px solid #CBD5E1; border-radius: 8px; padding: 12px 18px; margin: 15px 0;">
                 <span class="badge-ns">CONFIDENCE INTERVAL SPANS ZERO (NOT STATISTICALLY SIGNIFICANT)</span>
-                <p style="margin: 6px 0 0 0; font-size: 0.88rem; color: #BAE6FD;">
+                <p style="margin: 6px 0 0 0; font-size: 0.88rem; color: #334155;">
                     At the +30-minute horizon under <strong>{metric.window_label}</strong>, the paired 95% bootstrap confidence interval
                     is <strong>[{metric.ci_95_delta_rmse[0]:+.3f}, {metric.ci_95_delta_rmse[1]:+.3f}] mg/dL</strong>, which spans zero.
                     Although {metric.n_improved}/{metric.total_participants} ({metric.fraction_improved * 100:.1f}%) of participants experience error reduction,
@@ -640,9 +640,9 @@ def render_personalization_lab(loader: DashboardDataLoader) -> None:
     elif w_key == "window_2d":
         st.markdown(
             f"""
-            <div style="background-color: rgba(148, 163, 184, 0.1); border: 1px solid #475569; border-radius: 8px; padding: 12px 18px; margin: 15px 0;">
+            <div style="background-color: #F8FAFC; border: 1px solid #CBD5E1; border-radius: 8px; padding: 12px 18px; margin: 15px 0;">
                 <span class="badge-ns">EARLY CALIBRATION (SPANS ZERO)</span>
-                <p style="margin: 6px 0 0 0; font-size: 0.88rem; color: #CBD5E1;">
+                <p style="margin: 6px 0 0 0; font-size: 0.88rem; color: #334155;">
                     At the +60-minute horizon with only <strong>2 study days</strong> of adaptation, the paired 95% bootstrap CI is
                     <strong>[{metric.ci_95_delta_rmse[0]:+.3f}, {metric.ci_95_delta_rmse[1]:+.3f}] mg/dL</strong>.
                     Sparse calibration telemetry is vulnerable to overfitting individual noise.
@@ -654,9 +654,9 @@ def render_personalization_lab(loader: DashboardDataLoader) -> None:
     else:
         st.markdown(
             f"""
-            <div style="background-color: rgba(16, 185, 129, 0.12); border: 1px solid #10B981; border-radius: 8px; padding: 12px 18px; margin: 15px 0;">
+            <div style="background-color: #F0FDF4; border: 1px solid #86EFAC; border-radius: 8px; padding: 12px 18px; margin: 15px 0;">
                 <span class="badge-sig">STATISTICALLY SIGNIFICANT CALIBRATION BENEFIT (p &lt; 0.05)</span>
-                <p style="margin: 6px 0 0 0; font-size: 0.88rem; color: #A7F3D0;">
+                <p style="margin: 6px 0 0 0; font-size: 0.88rem; color: #14532D;">
                     At the +60-minute horizon under <strong>{metric.window_label}</strong>, the paired 95% bootstrap confidence interval
                     is <strong>[{metric.ci_95_delta_rmse[0]:+.3f}, {metric.ci_95_delta_rmse[1]:+.3f}] mg/dL</strong>, strictly excluding zero.
                     Personalization provides a statistically robust, reproducible error reduction with {metric.n_improved} of 45 participants improving.
@@ -681,7 +681,7 @@ def render_personalization_lab(loader: DashboardDataLoader) -> None:
                 x=x_wins,
                 y=g_rmses,
                 name="Matched Global Ridge",
-                marker_color="#64748B",
+                marker_color="#94A3B8",
                 hovertemplate="Global RMSE: %{y:.3f} mg/dL<extra></extra>",
             )
         )
@@ -690,7 +690,7 @@ def render_personalization_lab(loader: DashboardDataLoader) -> None:
                 x=x_wins,
                 y=p_rmses,
                 name="Personalized (Adapted)",
-                marker_color="#10B981" if h_key == "h60" else "#38BDF8",
+                marker_color="#15803D",
                 hovertemplate="Personalized RMSE: %{y:.3f} mg/dL<extra></extra>",
             )
         )
@@ -699,12 +699,14 @@ def render_personalization_lab(loader: DashboardDataLoader) -> None:
             title=f"Dose-Response Trajectory ({horizon_choice})",
             xaxis_title="Adaptation Window",
             yaxis_title="Cohort Mean RMSE (mg/dL)",
-            plot_bgcolor="#0F172A",
-            paper_bgcolor="#070D1A",
-            font=dict(color="#F8FAFC"),
+            plot_bgcolor="#FFFFFF",
+            paper_bgcolor="#FFFFFF",
+            font=dict(color="#1E293B", family="Inter, sans-serif"),
             legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
             margin=dict(l=20, r=20, t=60, b=40),
             height=380,
+            yaxis=dict(gridcolor="#E2E8F0"),
+            xaxis=dict(gridcolor="#E2E8F0"),
         )
         st.plotly_chart(fig_traj, use_container_width=True)
 
@@ -719,7 +721,7 @@ def render_personalization_lab(loader: DashboardDataLoader) -> None:
             y=0,
             line_width=1.5,
             line_dash="dash",
-            line_color="#EF4444",
+            line_color="#DC2626",
             annotation_text="Zero Effect (No Improvement)",
             annotation_position="bottom right",
         )
@@ -728,14 +730,14 @@ def render_personalization_lab(loader: DashboardDataLoader) -> None:
                 x=x_wins,
                 y=deltas,
                 mode="lines+markers",
-                marker=dict(size=10, color="#10B981" if h_key == "h60" else "#38BDF8"),
-                line=dict(width=2.5, color="#10B981" if h_key == "h60" else "#38BDF8"),
+                marker=dict(size=10, color="#15803D"),
+                line=dict(width=2.5, color="#15803D"),
                 error_y=dict(
                     type="data",
                     symmetric=False,
                     array=err_d_high,
                     arrayminus=err_d_low,
-                    color="#F8FAFC",
+                    color="#1E293B",
                     thickness=1.5,
                     width=6,
                 ),
@@ -746,18 +748,20 @@ def render_personalization_lab(loader: DashboardDataLoader) -> None:
             title=f"Paired ΔRMSE & 95% Bootstrap CIs ({horizon_choice})",
             xaxis_title="Adaptation Window",
             yaxis_title="Paired RMSE Change (mg/dL) [Negative = Improvement]",
-            plot_bgcolor="#0F172A",
-            paper_bgcolor="#070D1A",
-            font=dict(color="#F8FAFC"),
+            plot_bgcolor="#FFFFFF",
+            paper_bgcolor="#FFFFFF",
+            font=dict(color="#1E293B", family="Inter, sans-serif"),
             margin=dict(l=20, r=20, t=60, b=40),
             height=380,
+            yaxis=dict(gridcolor="#E2E8F0"),
+            xaxis=dict(gridcolor="#E2E8F0"),
         )
         st.plotly_chart(fig_delta, use_container_width=True)
 
     st.markdown("---")
 
     # Subgroup Clinical Phenotype Analysis
-    st.markdown("### 🧬 Clinical Phenotype Analysis (Subgroup Stratification)")
+    st.markdown("### Clinical Phenotype Analysis (Subgroup Stratification)")
     st.markdown(
         """
         Glycemic dynamics differ fundamentally by metabolic status. In normoglycemic participants, postprandial excursions
@@ -791,7 +795,7 @@ def render_personalization_lab(loader: DashboardDataLoader) -> None:
 
 def render_methodology_and_guard_band() -> None:
     """Render Section D: Methodology & Guard-Band Explorer."""
-    st.markdown("## 🔬 Scientific Methodology & Leakage Countermeasures")
+    st.markdown("## Scientific Methodology & Leakage Countermeasures")
     st.markdown(
         """
         Ambulatory machine learning algorithms often fail replication due to subtle data leakage.
@@ -813,7 +817,7 @@ def render_methodology_and_guard_band() -> None:
 
     c1, c2 = st.columns(2)
     with c1:
-        st.markdown("### 🛡️ Five Architectural Leakage Protections")
+        st.markdown("### Five Architectural Leakage Protections")
         st.markdown(
             """
             1. **The 5-Minute Guard Band Gap ($[t-5, t]$)**:
@@ -835,7 +839,7 @@ def render_methodology_and_guard_band() -> None:
         )
 
     with c2:
-        st.markdown("### ⚖️ Global vs. Personalization Evaluation Protocol")
+        st.markdown("### Global vs. Personalization Evaluation Protocol")
         eval_guide = pd.DataFrame(
             [
                 {
@@ -864,7 +868,7 @@ def render_methodology_and_guard_band() -> None:
 
     st.markdown("---")
 
-    st.markdown("### ⚠️ Methodological Scope & Responsible Use")
+    st.markdown("### Methodological Scope & Responsible Use")
     st.markdown(
         """
         - **Observational Telemetry**: The CGMacros dataset reflects free-living ambulatory participants with self-reported meals and activities.
@@ -882,13 +886,13 @@ def main() -> None:
     nav_selection = render_sidebar()
 
     logger.info("Rendering section: %s", nav_selection)
-    if nav_selection == "📌 Project Overview":
+    if nav_selection == "Project Overview":
         render_project_overview(loader)
-    elif nav_selection == "📈 Global Forecasting Explorer":
+    elif nav_selection == "Global Forecasting Explorer":
         render_global_forecasting_explorer(loader)
-    elif nav_selection == "🎯 Personalization Lab":
+    elif nav_selection == "Personalization Lab":
         render_personalization_lab(loader)
-    elif nav_selection == "🔬 Methodology & Guard Band":
+    elif nav_selection == "Methodology & Guard Band":
         render_methodology_and_guard_band()
 
 

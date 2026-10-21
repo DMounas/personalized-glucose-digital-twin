@@ -36,12 +36,12 @@ def test_app_navigation_overview(app: AppTest) -> None:
     # Check that sidebar radio contains all 4 sections
     radio = app.sidebar.radio[0]
     assert len(radio.options) == 4
-    assert radio.value == "📌 Project Overview"
+    assert radio.value == "Project Overview"
 
 
 def test_app_navigation_global_explorer(app: AppTest) -> None:
     """Verify Section B (Global Forecasting Explorer) loads and responds to horizon toggles."""
-    app.sidebar.radio[0].set_value("📈 Global Forecasting Explorer").run()
+    app.sidebar.radio[0].set_value("Global Forecasting Explorer").run()
     assert not app.exception
 
     # Test toggling to +60m
@@ -53,7 +53,7 @@ def test_app_navigation_global_explorer(app: AppTest) -> None:
 
 def test_app_navigation_personalization_lab(app: AppTest) -> None:
     """Verify Section C (Personalization Lab) loads and responds to horizon and window toggles."""
-    app.sidebar.radio[0].set_value("🎯 Personalization Lab").run()
+    app.sidebar.radio[0].set_value("Personalization Lab").run()
     assert not app.exception
 
     # Test toggling adaptation windows
@@ -68,5 +68,5 @@ def test_app_navigation_personalization_lab(app: AppTest) -> None:
 
 def test_app_navigation_methodology(app: AppTest) -> None:
     """Verify Section D (Methodology & Guard Band) loads without exception."""
-    app.sidebar.radio[0].set_value("🔬 Methodology & Guard Band").run()
+    app.sidebar.radio[0].set_value("Methodology & Guard Band").run()
     assert not app.exception
