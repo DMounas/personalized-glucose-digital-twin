@@ -25,6 +25,10 @@ dev = [
     "ruff>=0.1.0",
     "mypy>=1.0.0",
 ]
+submission = [
+    "python-pptx>=1.0.0",
+    "reportlab>=4.0.0",
+]
 
 [project.scripts]
 dtwin-audit = "dtwin.audit.cli:main"

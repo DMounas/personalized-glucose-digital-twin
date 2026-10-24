@@ -607,55 +607,51 @@ def generate_hero_banner_svg(output_path: Path, stage2_data: dict, stage3_data: 
 
 
 def generate_guard_band_timeline_svg(output_path: Path) -> None:
-    """Create temporal guard-band schematic SVG."""
+    """Create temporal guard-band schematic SVG in mild green light theme."""
     svg_code = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 320" width="100%" height="100%">
-  <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0B1120"/>
-      <stop offset="100%" stop-color="#0F172A"/>
-    </linearGradient>
-  </defs>
-  <rect width="1000" height="320" rx="12" fill="url(#bg)"/>
+  <!-- Canvas Background -->
+  <rect width="1000" height="320" rx="12" fill="#FFFFFF" stroke="#D6E8DC" stroke-width="1.5"/>
 
-  <text x="50" y="42" fill="#F8FAFC" font-family="Segoe UI, Inter, sans-serif" font-size="18" font-weight="800">Temporal Guard-Band Architecture (Stage 2 v1.0.0)</text>
-  <text x="50" y="65" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="12">Prevents interpolation leakage and boundary bleed across 1-minute to 5-minute sampling intervals</text>
+  <!-- Titles -->
+  <text x="50" y="42" fill="#0F291E" font-family="Segoe UI, Inter, sans-serif" font-size="18" font-weight="800">Temporal Guard-Band Architecture (Stage 2 v1.0.0)</text>
+  <text x="50" y="65" fill="#475569" font-family="Segoe UI, Inter, sans-serif" font-size="12">Prevents interpolation leakage and boundary bleed across 1-minute to 5-minute sampling intervals</text>
 
   <!-- Timeline axis -->
-  <line x1="80" y1="180" x2="920" y2="180" stroke="#334155" stroke-width="3"/>
+  <line x1="80" y1="180" x2="920" y2="180" stroke="#CBD5E1" stroke-width="3"/>
 
   <!-- Permitted History Zone: t-65 to t-5 -->
-  <rect x="100" y="110" width="370" height="140" rx="8" fill="#0284C7" fill-opacity="0.12" stroke="#38BDF8" stroke-width="1.5"/>
-  <text x="285" y="135" fill="#38BDF8" font-family="Segoe UI, Inter, sans-serif" font-size="12" font-weight="700" text-anchor="middle">PERMITTED GLUCOSE HISTORY</text>
-  <text x="285" y="155" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="11" text-anchor="middle">13 Lags: [y(t-65), y(t-60), ..., y(t-5)]</text>
+  <rect x="100" y="110" width="370" height="140" rx="8" fill="#F0FDF4" stroke="#86EFAC" stroke-width="1.5"/>
+  <text x="285" y="135" fill="#166534" font-family="Segoe UI, Inter, sans-serif" font-size="12" font-weight="700" text-anchor="middle">PERMITTED GLUCOSE HISTORY</text>
+  <text x="285" y="155" fill="#475569" font-family="Segoe UI, Inter, sans-serif" font-size="11" text-anchor="middle">13 Lags: [y(t-65), y(t-60), ..., y(t-5)]</text>
 
   <!-- Guard-Band Gap: t-5 to t -->
-  <rect x="470" y="110" width="80" height="140" rx="8" fill="#EF4444" fill-opacity="0.15" stroke="#EF4444" stroke-width="1.5" stroke-dasharray="4,4"/>
-  <text x="510" y="135" fill="#F87171" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="800" text-anchor="middle">GUARD</text>
-  <text x="510" y="152" fill="#F87171" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="800" text-anchor="middle">BAND</text>
-  <text x="510" y="170" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10" text-anchor="middle">5-min</text>
-  <text x="510" y="240" fill="#EF4444" font-family="Segoe UI, Inter, sans-serif" font-size="9.5" text-anchor="middle" font-weight="600">ZERO INPUT</text>
+  <rect x="470" y="110" width="80" height="140" rx="8" fill="#FEF2F2" stroke="#EF4444" stroke-width="1.5" stroke-dasharray="4,4"/>
+  <text x="510" y="135" fill="#DC2626" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="800" text-anchor="middle">GUARD</text>
+  <text x="510" y="152" fill="#DC2626" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="800" text-anchor="middle">BAND</text>
+  <text x="510" y="170" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10" text-anchor="middle">5-min</text>
+  <text x="510" y="240" fill="#DC2626" font-family="Segoe UI, Inter, sans-serif" font-size="9.5" text-anchor="middle" font-weight="600">ZERO INPUT</text>
 
   <!-- Issuance Marker t -->
-  <line x1="550" y1="90" x2="550" y2="270" stroke="#F8FAFC" stroke-width="2.5" stroke-dasharray="2,2"/>
-  <circle cx="550" cy="180" r="7" fill="#F8FAFC" stroke="#0F172A" stroke-width="3"/>
-  <text x="550" y="80" fill="#F8FAFC" font-family="Segoe UI, Inter, sans-serif" font-size="13" font-weight="800" text-anchor="middle">Forecast Issuance (t)</text>
+  <line x1="550" y1="90" x2="550" y2="270" stroke="#166534" stroke-width="2.5" stroke-dasharray="2,2"/>
+  <circle cx="550" cy="180" r="7" fill="#166534" stroke="#FFFFFF" stroke-width="2"/>
+  <text x="550" y="80" fill="#0F291E" font-family="Segoe UI, Inter, sans-serif" font-size="13" font-weight="800" text-anchor="middle">Forecast Issuance (t)</text>
 
   <!-- Forecast Targets: t+30 and t+60 -->
-  <rect x="570" y="110" width="350" height="140" rx="8" fill="#10B981" fill-opacity="0.12" stroke="#10B981" stroke-width="1.5"/>
-  <text x="745" y="135" fill="#10B981" font-family="Segoe UI, Inter, sans-serif" font-size="12" font-weight="700" text-anchor="middle">FORECAST HORIZONS</text>
+  <rect x="570" y="110" width="350" height="140" rx="8" fill="#F0FDF4" stroke="#15803D" stroke-width="1.5"/>
+  <text x="745" y="135" fill="#15803D" font-family="Segoe UI, Inter, sans-serif" font-size="12" font-weight="700" text-anchor="middle">FORECAST HORIZONS</text>
 
-  <circle cx="730" cy="180" r="6" fill="#10B981"/>
-  <text x="730" y="210" fill="#10B981" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700" text-anchor="middle">y(t + 30m)</text>
-  <text x="730" y="228" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10" text-anchor="middle">+35m from y(t-5)</text>
+  <circle cx="730" cy="180" r="6" fill="#15803D"/>
+  <text x="730" y="210" fill="#14532D" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700" text-anchor="middle">y(t + 30m)</text>
+  <text x="730" y="228" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10" text-anchor="middle">+35m from y(t-5)</text>
 
-  <circle cx="890" cy="180" r="6" fill="#10B981"/>
-  <text x="890" y="210" fill="#10B981" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700" text-anchor="middle">y(t + 60m)</text>
-  <text x="890" y="228" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10" text-anchor="middle">+65m from y(t-5)</text>
+  <circle cx="890" cy="180" r="6" fill="#15803D"/>
+  <text x="890" y="210" fill="#14532D" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700" text-anchor="middle">y(t + 60m)</text>
+  <text x="890" y="228" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10" text-anchor="middle">+65m from y(t-5)</text>
 
   <!-- Labeled Time Ticks -->
-  <text x="100" y="200" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10" text-anchor="middle">t - 65m</text>
-  <text x="470" y="200" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10" text-anchor="middle">t - 5m</text>
-  <text x="550" y="200" fill="#F8FAFC" font-family="Segoe UI, Inter, sans-serif" font-size="10" text-anchor="middle">t (0m)</text>
+  <text x="100" y="200" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10" text-anchor="middle">t - 65m</text>
+  <text x="470" y="200" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10" text-anchor="middle">t - 5m</text>
+  <text x="550" y="200" fill="#14532D" font-family="Segoe UI, Inter, sans-serif" font-size="10" font-weight="700" text-anchor="middle">t (0m)</text>
 </svg>"""
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with open(output_path, "w", encoding="utf-8") as f:
@@ -666,7 +662,7 @@ def generate_guard_band_timeline_svg(output_path: Path) -> None:
 def generate_system_architecture_svg(
     output_path: Path, stage2_data: dict, stage3_data: dict
 ) -> None:
-    """Create system architecture diagram SVG with dynamic metrics."""
+    """Create system architecture diagram SVG in mild green light theme with dynamic metrics."""
     s2_skill = (
         stage2_data["horizons"]["h60"]["rung5_baseline_covariates"]["summary"]["headline_skill"][
             "mean"
@@ -685,123 +681,125 @@ def generate_system_architecture_svg(
 
     svg_code = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 420" width="100%" height="100%">
   <defs>
-    <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#080E1A"/>
-      <stop offset="100%" stop-color="#0F172A"/>
-    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#16A34A"/>
+    </marker>
   </defs>
-  <rect width="1100" height="420" rx="14" fill="url(#bg2)"/>
 
-  <text x="50" y="40" fill="#F8FAFC" font-family="Segoe UI, Inter, sans-serif" font-size="18" font-weight="800">System Architecture &amp; Data Pipeline</text>
-  <text x="50" y="62" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="12">End-to-end reproducible pipeline from raw continuous glucose monitoring to participant-disjoint personalized evaluation</text>
+  <!-- Canvas Background -->
+  <rect width="1100" height="420" rx="14" fill="#FFFFFF" stroke="#D6E8DC" stroke-width="1.5"/>
+
+  <!-- Titles -->
+  <text x="50" y="40" fill="#0F291E" font-family="Segoe UI, Inter, sans-serif" font-size="18" font-weight="800">System Architecture &amp; Data Pipeline</text>
+  <text x="50" y="62" fill="#475569" font-family="Segoe UI, Inter, sans-serif" font-size="12">End-to-end reproducible pipeline from raw continuous glucose monitoring to participant-disjoint personalized evaluation</text>
 
   <!-- Stage Blocks -->
   <!-- Block 1: Ingestion & Run Segmentation -->
   <g transform="translate(50, 90)">
-    <rect width="180" height="290" rx="10" fill="#1E293B" stroke="#334155" stroke-width="1.5"/>
-    <rect width="180" height="34" rx="10" fill="#0284C7" fill-opacity="0.3"/>
-    <text x="90" y="22" fill="#38BDF8" font-family="Segoe UI, Inter, sans-serif" font-size="12" font-weight="800" text-anchor="middle">1. DATA INGESTION</text>
+    <rect width="180" height="290" rx="10" fill="#F8FBF9" stroke="#D6E8DC" stroke-width="1.5"/>
+    <rect width="180" height="34" rx="10" fill="#E8F5E9"/>
+    <text x="90" y="22" fill="#166534" font-family="Segoe UI, Inter, sans-serif" font-size="12" font-weight="800" text-anchor="middle">1. DATA INGESTION</text>
 
-    <text x="15" y="60" fill="#F8FAFC" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700">CGMacros Cohort</text>
-    <text x="15" y="78" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10">45 participants</text>
-    <text x="15" y="93" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10">Normal / Prediab / T2D</text>
+    <text x="15" y="60" fill="#14532D" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700">CGMacros Cohort</text>
+    <text x="15" y="78" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10">45 participants</text>
+    <text x="15" y="93" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10">Normal / Prediab / T2D</text>
 
-    <line x1="15" y1="110" x2="165" y2="110" stroke="#334155"/>
+    <line x1="15" y1="110" x2="165" y2="110" stroke="#E2E8F0"/>
 
-    <text x="15" y="130" fill="#F8FAFC" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700">Contiguous Runs</text>
-    <text x="15" y="148" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10">Delta = 60s validation</text>
-    <text x="15" y="163" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10">Zero gap interpolation</text>
+    <text x="15" y="130" fill="#14532D" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700">Contiguous Runs</text>
+    <text x="15" y="148" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10">Delta = 60s validation</text>
+    <text x="15" y="163" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10">Zero gap interpolation</text>
 
-    <line x1="15" y1="180" x2="165" y2="180" stroke="#334155"/>
+    <line x1="15" y1="180" x2="165" y2="180" stroke="#E2E8F0"/>
 
-    <text x="15" y="200" fill="#F8FAFC" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700">Lattice Grid (phi=0)</text>
-    <text x="15" y="218" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10">m(t) = round((t-t0)/60s)</text>
-    <text x="15" y="233" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10">m(t) mod 5 == 0</text>
+    <text x="15" y="200" fill="#14532D" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700">Lattice Grid (phi=0)</text>
+    <text x="15" y="218" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10">m(t) = round((t-t0)/60s)</text>
+    <text x="15" y="233" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10">m(t) mod 5 == 0</text>
   </g>
 
   <!-- Arrow 1 -> 2 -->
-  <path d="M 235 235 L 265 235" stroke="#38BDF8" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 235 235 L 265 235" stroke="#16A34A" stroke-width="2" marker-end="url(#arrow)"/>
 
   <!-- Block 2: Feature Matrix Construction -->
   <g transform="translate(270, 90)">
-    <rect width="210" height="290" rx="10" fill="#1E293B" stroke="#334155" stroke-width="1.5"/>
-    <rect width="210" height="34" rx="10" fill="#0284C7" fill-opacity="0.3"/>
-    <text x="105" y="22" fill="#38BDF8" font-family="Segoe UI, Inter, sans-serif" font-size="12" font-weight="800" text-anchor="middle">2. GUARDED FEATURES</text>
+    <rect width="210" height="290" rx="10" fill="#F8FBF9" stroke="#D6E8DC" stroke-width="1.5"/>
+    <rect width="210" height="34" rx="10" fill="#E8F5E9"/>
+    <text x="105" y="22" fill="#166534" font-family="Segoe UI, Inter, sans-serif" font-size="12" font-weight="800" text-anchor="middle">2. GUARDED FEATURES</text>
 
-    <text x="15" y="60" fill="#F8FAFC" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700">Glucose History (13)</text>
-    <text x="15" y="78" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10">y(t-5) through y(t-65)</text>
+    <text x="15" y="60" fill="#14532D" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700">Glucose History (13)</text>
+    <text x="15" y="78" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10">y(t-5) through y(t-65)</text>
 
-    <line x1="15" y1="95" x2="195" y2="95" stroke="#334155"/>
+    <line x1="15" y1="95" x2="195" y2="95" stroke="#E2E8F0"/>
 
-    <text x="15" y="115" fill="#F8FAFC" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700">Meal Context (3)</text>
-    <text x="15" y="133" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10">Time since last meal</text>
-    <text x="15" y="148" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10">Meal in 60m / No recent meal</text>
+    <text x="15" y="115" fill="#14532D" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700">Meal Context (3)</text>
+    <text x="15" y="133" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10">Time since last meal</text>
+    <text x="15" y="148" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10">Meal in 60m / No recent meal</text>
 
-    <line x1="15" y1="165" x2="195" y2="165" stroke="#334155"/>
+    <line x1="15" y1="165" x2="195" y2="165" stroke="#E2E8F0"/>
 
-    <text x="15" y="185" fill="#F8FAFC" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700">Static Covariates (4)</text>
-    <text x="15" y="203" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10">Age, Gender, BMI, HbA1c</text>
+    <text x="15" y="185" fill="#14532D" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700">Static Covariates (4)</text>
+    <text x="15" y="203" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10">Age, Gender, BMI, HbA1c</text>
 
-    <line x1="15" y1="220" x2="195" y2="220" stroke="#334155"/>
+    <line x1="15" y1="220" x2="195" y2="220" stroke="#E2E8F0"/>
 
-    <text x="15" y="240" fill="#10B981" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="800">Total Predictor Matrix</text>
-    <text x="15" y="258" fill="#F8FAFC" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700">R^20 Feature Vector</text>
+    <text x="15" y="240" fill="#16A34A" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="800">Total Predictor Matrix</text>
+    <text x="15" y="258" fill="#14532D" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700">R^20 Feature Vector</text>
   </g>
 
   <!-- Arrow 2 -> 3 -->
-  <path d="M 485 235 L 515 235" stroke="#38BDF8" stroke-width="2"/>
+  <path d="M 485 235 L 515 235" stroke="#16A34A" stroke-width="2" marker-end="url(#arrow)"/>
 
   <!-- Block 3: Global Model Ladder & Participant Disjoint CV -->
   <g transform="translate(520, 90)">
-    <rect width="240" height="290" rx="10" fill="#1E293B" stroke="#334155" stroke-width="1.5"/>
-    <rect width="240" height="34" rx="10" fill="#0284C7" fill-opacity="0.3"/>
-    <text x="120" y="22" fill="#38BDF8" font-family="Segoe UI, Inter, sans-serif" font-size="12" font-weight="800" text-anchor="middle">3. GLOBAL BENCHMARK</text>
+    <rect width="240" height="290" rx="10" fill="#F8FBF9" stroke="#D6E8DC" stroke-width="1.5"/>
+    <rect width="240" height="34" rx="10" fill="#E8F5E9"/>
+    <text x="120" y="22" fill="#166534" font-family="Segoe UI, Inter, sans-serif" font-size="12" font-weight="800" text-anchor="middle">3. GLOBAL BENCHMARK</text>
 
-    <text x="15" y="60" fill="#F8FAFC" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700">Participant-Disjoint CV</text>
-    <text x="15" y="78" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10">10 repeats x 5 folds (K=45)</text>
-    <text x="15" y="93" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10">Zero leakage between subjects</text>
+    <text x="15" y="60" fill="#14532D" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700">Participant-Disjoint CV</text>
+    <text x="15" y="78" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10">10 repeats x 5 folds (K=45)</text>
+    <text x="15" y="93" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10">Zero leakage between subjects</text>
 
-    <line x1="15" y1="110" x2="225" y2="110" stroke="#334155"/>
+    <line x1="15" y1="110" x2="225" y2="110" stroke="#E2E8F0"/>
 
-    <text x="15" y="130" fill="#F8FAFC" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700">Model Ladder (Rungs 0-6)</text>
-    <text x="15" y="148" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10">R0: Persistence (y_base)</text>
-    <text x="15" y="163" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10">R1: Damped Trend</text>
-    <text x="15" y="178" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10">R2-R5: Ridge + Activity/Meals/Cov</text>
-    <text x="15" y="193" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10">R6: Fixed GBDT</text>
+    <text x="15" y="130" fill="#14532D" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700">Model Ladder (Rungs 0-6)</text>
+    <text x="15" y="148" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10">R0: Persistence (y_base)</text>
+    <text x="15" y="163" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10">R1: Damped Trend</text>
+    <text x="15" y="178" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10">R2-R5: Ridge + Activity/Meals/Cov</text>
+    <text x="15" y="193" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10">R6: Fixed GBDT</text>
 
-    <line x1="15" y1="210" x2="225" y2="210" stroke="#334155"/>
+    <line x1="15" y1="210" x2="225" y2="210" stroke="#E2E8F0"/>
 
-    <text x="15" y="230" fill="#10B981" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="800">Best Population Model</text>
-    <text x="15" y="248" fill="#F8FAFC" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700">{callout_s2}</text>
+    <text x="15" y="230" fill="#16A34A" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="800">Best Population Model</text>
+    <text x="15" y="248" fill="#14532D" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700">{callout_s2}</text>
   </g>
 
   <!-- Arrow 3 -> 4 -->
-  <path d="M 765 235 L 795 235" stroke="#38BDF8" stroke-width="2"/>
+  <path d="M 765 235 L 795 235" stroke="#16A34A" stroke-width="2" marker-end="url(#arrow)"/>
 
   <!-- Block 4: Stage 3 Personalization Layer -->
   <g transform="translate(800, 90)">
-    <rect width="250" height="290" rx="10" fill="#1E293B" stroke="#10B981" stroke-width="1.8"/>
-    <rect width="250" height="34" rx="10" fill="#10B981" fill-opacity="0.25"/>
-    <text x="125" y="22" fill="#10B981" font-family="Segoe UI, Inter, sans-serif" font-size="12" font-weight="800" text-anchor="middle">4. PERSONALIZATION</text>
+    <rect width="250" height="290" rx="10" fill="#F0FDF4" stroke="#15803D" stroke-width="1.8"/>
+    <rect width="250" height="34" rx="10" fill="#DCFCE7"/>
+    <text x="125" y="22" fill="#166534" font-family="Segoe UI, Inter, sans-serif" font-size="12" font-weight="800" text-anchor="middle">4. PERSONALIZATION</text>
 
-    <text x="15" y="60" fill="#F8FAFC" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700">Residual Correction</text>
-    <text x="15" y="78" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10">r(t) = y(t+h) - y_hat_global(t+h)</text>
-    <text x="15" y="93" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10">16 dynamic features (Lags+Meals)</text>
+    <text x="15" y="60" fill="#14532D" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700">Residual Correction</text>
+    <text x="15" y="78" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10">r(t) = y(t+h) - y_hat_global(t+h)</text>
+    <text x="15" y="93" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10">16 dynamic features (Lags+Meals)</text>
 
-    <line x1="15" y1="110" x2="235" y2="110" stroke="#334155"/>
+    <line x1="15" y1="110" x2="235" y2="110" stroke="#BBF7D0"/>
 
-    <text x="15" y="130" fill="#F8FAFC" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700">Adaptation Windows</text>
-    <text x="15" y="148" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10">2, 4, and 6 Study Days</text>
-    <text x="15" y="163" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10">&gt;= 120m temporal purge buffer</text>
+    <text x="15" y="130" fill="#14532D" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700">Adaptation Windows</text>
+    <text x="15" y="148" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10">2, 4, and 6 Study Days</text>
+    <text x="15" y="163" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10">&gt;= 120m temporal purge buffer</text>
 
-    <line x1="15" y1="180" x2="235" y2="180" stroke="#334155"/>
+    <line x1="15" y1="180" x2="235" y2="180" stroke="#BBF7D0"/>
 
-    <text x="15" y="200" fill="#F8FAFC" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700">Bootstrap Evaluation</text>
-    <text x="15" y="218" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10">45 independent participant unit</text>
-    <text x="15" y="233" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10">B=2,000 paired bootstrap</text>
+    <text x="15" y="200" fill="#14532D" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="700">Bootstrap Evaluation</text>
+    <text x="15" y="218" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10">45 independent participant unit</text>
+    <text x="15" y="233" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10">B=2,000 paired bootstrap</text>
 
-    <line x1="15" y1="245" x2="235" y2="245" stroke="#334155"/>
-    <text x="15" y="265" fill="#10B981" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="800">{callout_s3}</text>
+    <line x1="15" y1="245" x2="235" y2="245" stroke="#BBF7D0"/>
+    <text x="15" y="265" fill="#15803D" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="800">{callout_s3}</text>
   </g>
 </svg>"""
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -811,47 +809,47 @@ def generate_system_architecture_svg(
 
 
 def generate_pipeline_workflow_svg(output_path: Path) -> None:
-    """Create linear pipeline flow SVG banner."""
+    """Create linear pipeline flow SVG banner in mild green light theme."""
     svg_code = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 120" width="100%" height="100%">
-  <rect width="1000" height="120" rx="10" fill="#0F172A" stroke="#1E293B" stroke-width="1.5"/>
+  <rect width="1000" height="120" rx="10" fill="#F8FBF9" stroke="#D6E8DC" stroke-width="1.5"/>
 
   <!-- Steps -->
   <g transform="translate(30, 25)">
-    <rect width="130" height="70" rx="8" fill="#1E293B" stroke="#0284C7"/>
-    <text x="65" y="32" fill="#38BDF8" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="800" text-anchor="middle">CGMacros</text>
-    <text x="65" y="52" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10" text-anchor="middle">45 Subjects (T2D)</text>
+    <rect width="130" height="70" rx="8" fill="#FFFFFF" stroke="#86EFAC"/>
+    <text x="65" y="32" fill="#166534" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="800" text-anchor="middle">CGMacros</text>
+    <text x="65" y="52" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10" text-anchor="middle">45 Subjects (T2D)</text>
   </g>
 
-  <path d="M 170 60 L 195 60" stroke="#38BDF8" stroke-width="2"/>
+  <path d="M 170 60 L 195 60" stroke="#16A34A" stroke-width="2"/>
 
   <g transform="translate(205, 25)">
-    <rect width="135" height="70" rx="8" fill="#1E293B" stroke="#0284C7"/>
-    <text x="67" y="32" fill="#38BDF8" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="800" text-anchor="middle">Guarded Lags</text>
-    <text x="67" y="52" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10" text-anchor="middle">13 Lags + Guard Band</text>
+    <rect width="135" height="70" rx="8" fill="#FFFFFF" stroke="#86EFAC"/>
+    <text x="67" y="32" fill="#166534" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="800" text-anchor="middle">Guarded Lags</text>
+    <text x="67" y="52" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10" text-anchor="middle">13 Lags + Guard Band</text>
   </g>
 
-  <path d="M 350 60 L 375 60" stroke="#38BDF8" stroke-width="2"/>
+  <path d="M 350 60 L 375 60" stroke="#16A34A" stroke-width="2"/>
 
   <g transform="translate(385, 25)">
-    <rect width="145" height="70" rx="8" fill="#1E293B" stroke="#0284C7"/>
-    <text x="72" y="32" fill="#38BDF8" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="800" text-anchor="middle">Model Ladder</text>
-    <text x="72" y="52" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10" text-anchor="middle">Rungs 0 through 6</text>
+    <rect width="145" height="70" rx="8" fill="#FFFFFF" stroke="#86EFAC"/>
+    <text x="72" y="32" fill="#166534" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="800" text-anchor="middle">Model Ladder</text>
+    <text x="72" y="52" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10" text-anchor="middle">Rungs 0 through 6</text>
   </g>
 
-  <path d="M 540 60 L 565 60" stroke="#38BDF8" stroke-width="2"/>
+  <path d="M 540 60 L 565 60" stroke="#16A34A" stroke-width="2"/>
 
   <g transform="translate(575, 25)">
-    <rect width="150" height="70" rx="8" fill="#1E293B" stroke="#10B981"/>
-    <text x="75" y="32" fill="#10B981" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="800" text-anchor="middle">Personalization</text>
-    <text x="75" y="52" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10" text-anchor="middle">2, 4, 6 Study Days</text>
+    <rect width="150" height="70" rx="8" fill="#F0FDF4" stroke="#15803D"/>
+    <text x="75" y="32" fill="#15803D" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="800" text-anchor="middle">Personalization</text>
+    <text x="75" y="52" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10" text-anchor="middle">2, 4, 6 Study Days</text>
   </g>
 
-  <path d="M 735 60 L 760 60" stroke="#10B981" stroke-width="2"/>
+  <path d="M 735 60 L 760 60" stroke="#15803D" stroke-width="2"/>
 
   <g transform="translate(770, 25)">
-    <rect width="190" height="70" rx="8" fill="#1E293B" stroke="#10B981"/>
-    <text x="95" y="32" fill="#10B981" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="800" text-anchor="middle">Participant Bootstrap</text>
-    <text x="95" y="52" fill="#94A3B8" font-family="Segoe UI, Inter, sans-serif" font-size="10" text-anchor="middle">B=2,000 Independent CIs</text>
+    <rect width="190" height="70" rx="8" fill="#F0FDF4" stroke="#15803D"/>
+    <text x="95" y="32" fill="#15803D" font-family="Segoe UI, Inter, sans-serif" font-size="11" font-weight="800" text-anchor="middle">Participant Bootstrap</text>
+    <text x="95" y="52" fill="#64748B" font-family="Segoe UI, Inter, sans-serif" font-size="10" text-anchor="middle">B=2,000 Independent CIs</text>
   </g>
 </svg>"""
     output_path.parent.mkdir(parents=True, exist_ok=True)
